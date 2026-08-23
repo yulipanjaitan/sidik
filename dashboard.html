@@ -20,6 +20,13 @@
         #sidebar { background: #ffffff; border-radius: 24px; border-right: 1px solid #e2e8f0; transition: transform 0.2s ease-in-out, width 0.2s ease-in-out; }
         .sidebar-hidden { transform: translateX(-100%); width: 0 !important; padding: 0 !important; overflow: hidden; opacity: 0; }
         header { background: #ffffff !important; border-radius: 20px; border: 1px solid #e2e8f0; }
+
+        /* CSS KHUSUS CETAK PDF / PRINT */
+        @media print {
+            body * { visibility: hidden; }
+            #printArea, #printArea * { visibility: visible; }
+            #printArea { position: absolute; left: 0; top: 0; width: 100%; padding: 20px; background: white; font-family: 'Times New Roman', Times, serif; font-size: 12pt; color: black; }
+        }
     </style>
 </head>
 <body id="appBody" class="min-h-screen text-slate-800 flex p-3 md:p-6">
@@ -61,17 +68,17 @@
             </div>
         </header>
         <main class="flex-1 space-y-6">
-            <!-- DASHBOARD -->
             <section id="content-dashboard" class="tab-content space-y-6 block">
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     <div class="soft-card p-5 rounded-2xl flex justify-between items-center"><div><p class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Total Berkas Perkara</p><h3 id="dashTotalPerkara" class="text-2xl font-bold text-slate-900 mt-1">1</h3><p class="text-[10px] text-emerald-700 font-bold mt-1">Sinkron & Aktif</p></div><div class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center text-sm shadow"><i class="fa-solid fa-folder-open"></i></div></div>
-                    <div class="soft-card p-5 rounded-2xl flex justify-between items-center"><div><p class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Status Sistem</p><h3 class="text-2xl font-bold text-slate-900 mt-1">Online</h3><p class="text-[10px] text-emerald-700 font-bold mt-1">Database Lokal Aktif</p></div><div class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center text-sm shadow"><i class="fa-solid fa-cloud"></i></div></div>
+                    <div class="soft-card p-5 rounded-2xl flex justify-between items-center"><div><p class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Perkara Pabean / Cukai</p><h3 id="dashKlasifikasiPerkara" class="text-lg font-bold text-blue-600 mt-1">Pabean: 1 | Cukai: 0</h3><p class="text-[10px] text-slate-500 mt-1">Klasifikasi Aktif</p></div><div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center text-sm shadow"><i class="fa-solid fa-scale-balanced"></i></div></div>
+                    <div class="soft-card p-5 rounded-2xl flex justify-between items-center"><div><p class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Komoditi Dominan</p><h3 id="dashKomoditiUtama" class="text-lg font-bold text-indigo-600 mt-1 truncate max-w-[150px]">Sparepart / Lainnya</h3><p class="text-[10px] text-slate-500 mt-1">Tekstil / Ballpress / Obat</p></div><div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-sm shadow"><i class="fa-solid fa-boxes-stacked"></i></div></div>
+                    <div class="soft-card p-5 rounded-2xl flex justify-between items-center"><div><p class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Estimasi Kerugian Negara</p><h3 id="dashTotalKerugian" class="text-lg font-bold text-rose-600 mt-1">Rp 0</h3><p class="text-[10px] text-rose-700 font-bold mt-1">Potensi Bea & Cukai</p></div><div class="w-10 h-10 rounded-xl bg-rose-600 text-white flex items-center justify-center text-sm shadow"><i class="fa-solid fa-triangle-exclamation"></i></div></div>
                 </div>
             </section>
-            <!-- INPUT -->
             <section id="content-input" class="tab-content space-y-6 hidden">
                 <div class="ios-container-group p-6 flex justify-between items-center">
-                    <div><span class="text-[10px] font-bold text-blue-600 uppercase bg-blue-50 px-2.5 py-1 rounded-full">Database Penyidikan</span><h3 class="text-sm font-bold text-slate-900 mt-2">Form Input Data Perkara</h3><p class="text-xs text-slate-500 mt-0.5">Input data utama perkara (SBP, LPP, LPF, SPLIT, Identitas Pelaku, Locus & Tempus).</p></div>
+                    <div><span class="text-[10px] font-bold text-blue-600 uppercase bg-blue-50 px-2.5 py-1 rounded-full">Database Penyidikan</span><h3 class="text-sm font-bold text-slate-900 mt-2">Form Input Data Perkara</h3><p class="text-xs text-slate-500 mt-0.5">Input data utama perkara, klasifikasi jenis perkara, komoditi, hingga kerugian negara.</p></div>
                     <button type="button" onclick="loadSampleData()" class="ios-btn-primary px-4 py-2.5 text-xs font-semibold flex items-center space-x-2"><i class="fa-solid fa-bolt mr-1"></i><span>Muat Data Kasus Hawila</span></button>
                 </div>
                 <form id="penyidikanForm" onsubmit="saveDataPerkara(event)" class="space-y-6">
@@ -82,6 +89,9 @@
                             <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Tanggal SBP</label><input type="date" id="tanggal_sbp" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="2025-12-12"></div>
                             <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor LPP</label><input type="text" id="nomor_lpp" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="1482"></div>
                             <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Tanggal LPP</label><input type="date" id="tanggal_lpp" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="2025-12-13"></div>
+                            <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Klasifikasi Jenis Perkara</label><select id="jenis_klasifikasi" class="w-full p-3.5 ios-input-field text-slate-800 font-medium"><option value="Pabean">Perkara Pabean</option><option value="Cukai">Perkara Cukai</option></select></div>
+                            <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Komoditi Utama</label><select id="komoditi_utama" class="w-full p-3.5 ios-input-field text-slate-800 font-medium"><option value="Tekstil">Tekstil / Garment</option><option value="Ballpress">Ballpress (Pakaian Bekas)</option><option value="Obat">Obat-obatan / Kosmetik</option><option value="Sparepart">Sparepart / Mesin / Lainnya</option></select></div>
+                            <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Estimasi Kerugian Negara (Rp)</label><input type="number" id="estimasi_kerugian" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="150000000"></div>
                             <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Asal Perkara</label><input type="text" id="asal_perkara" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="Seksi Penindakan"></div>
                             <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Status Penangkapan</label><input type="text" id="status_penangkapan" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="Penindakan Biasa"></div>
                         </div>
@@ -116,7 +126,6 @@
                     <div class="flex justify-end pt-2 pb-6"><button type="submit" class="ios-btn-primary px-8 py-4 text-xs font-bold tracking-wide flex items-center space-x-2 shadow-md"><i class="fa-solid fa-floppy-disk text-sm mr-1"></i><span>Simpan Data Perkara Utama</span></button></div>
                 </form>
             </section>
-            <!-- PENOMORAN -->
             <section id="content-penomoran" class="tab-content space-y-6 hidden">
                 <div class="soft-card p-6 rounded-2xl shadow-sm flex justify-between items-center">
                     <div><span class="text-[10px] font-bold text-blue-600 uppercase bg-blue-50 px-2.5 py-1 rounded-full">Menu Penomoran & Sinkronisasi</span><h3 class="text-sm font-bold text-slate-900 mt-2">Kelola, Simpan & Edit Penomoran Dokumen</h3><p class="text-xs text-slate-500 mt-0.5">Ubah atau simpan nomor urut dokumen resmi penyidikan agar otomatis tersinkron ke semua berkas.</p></div>
@@ -138,7 +147,6 @@
                     <div class="overflow-x-auto"><table class="w-full text-left text-xs"><thead class="border-b text-slate-500 bg-white"><tr><th class="p-3">Perusahaan / Pelaku</th><th class="p-3">No. LPP</th><th class="p-3">No. LPF</th><th class="p-3">No. SPLIT</th><th class="p-3">No. Sprint Cacah</th><th class="p-3">No. BA Cacah</th><th class="p-3">No. LHP</th><th class="p-3 text-center">Aksi Edit</th></tr></thead><tbody id="tablePenomoranBody" class="divide-y divide-slate-100"></tbody></table></div>
                 </div>
             </section>
-            <!-- PETUGAS -->
             <section id="content-petugas" class="tab-content space-y-6 hidden">
                 <div class="soft-card p-6 rounded-2xl shadow-sm flex justify-between items-center">
                     <div><span class="text-[10px] font-bold text-indigo-600 uppercase bg-indigo-50 px-2.5 py-1 rounded-full">Manajemen Personel</span><h3 class="text-sm font-bold text-slate-900 mt-2">Menu Petugas & Pejabat Penandatangan Dokumen</h3><p class="text-xs text-slate-500 mt-0.5">Pilih pejabat penandatangan dokumen yang aktif atau tambahkan pegawai/anggota baru.</p></div>
@@ -166,7 +174,6 @@
                     <div class="overflow-x-auto"><table class="w-full text-left text-xs"><thead class="border-b text-slate-500 bg-white"><tr><th class="p-3">Nama Pegawai</th><th class="p-3">NIP</th><th class="p-3">Jabatan / Peran</th><th class="p-3 text-center">Aksi</th></tr></thead><tbody id="tableMasterPegawai" class="divide-y divide-slate-100"></tbody></table></div>
                 </div>
             </section>
-            <!-- BA PENCACAHAN -->
             <section id="content-bacacah" class="tab-content space-y-6 hidden">
                 <div class="ios-container-group p-6 flex justify-between items-center">
                     <div><span class="text-[10px] font-bold text-emerald-600 uppercase bg-emerald-50 px-2.5 py-1 rounded-full">Modul Barang Bukti</span><h3 class="text-sm font-bold text-slate-900 mt-2">Menu Berita Acara & Sprint Pencacahan</h3><p class="text-xs text-slate-500 mt-0.5">Kelola rincian item barang bukti secara dinamis jika jumlahnya banyak.</p></div>
@@ -187,14 +194,12 @@
                     <div class="flex justify-end pt-2"><button type="button" onclick="simpanDataCacah()" class="ios-btn-primary px-8 py-3.5 text-xs font-bold tracking-wide flex items-center space-x-2 shadow-md"><i class="fa-solid fa-floppy-disk text-sm mr-1"></i><span>Simpan Rincian BA Pencacahan</span></button></div>
                 </div>
             </section>
-            <!-- CETAK -->
             <section id="content-cetak" class="tab-content space-y-6 hidden">
                 <div class="soft-card p-6 rounded-2xl shadow-sm"><h3 class="text-sm font-bold text-slate-900">Cetak & Generate Dokumen Resmi Penyidikan</h3><p class="text-xs text-slate-500 mt-0.5">Pilih dokumen yang ingin dicetak (LPP, LPF, SPLIT, Sprint Pencacahan, Berita Acara Pencacahan, atau LHP).</p></div>
                 <div class="soft-card rounded-2xl shadow-sm overflow-hidden">
                     <div class="overflow-x-auto"><table class="w-full text-left text-xs"><thead class="bg-slate-50 border-b text-slate-700 uppercase"><tr><th class="p-4">No. Perkara / LPP</th><th class="p-4">Perusahaan / Pelaku</th><th class="p-4">SBP & LPF</th><th class="p-4">Jumlah Item Barang</th><th class="p-4 text-center">Pilih Dokumen & Cetak</th></tr></thead><tbody id="tablePerkaraBody" class="divide-y divide-slate-100"></tbody></table></div>
                 </div>
             </section>
-            <!-- MONITORING -->
             <section id="content-monitoring" class="tab-content space-y-6 hidden">
                 <div class="soft-card p-6 rounded-2xl shadow-sm"><h3 class="text-sm font-bold text-slate-900">Monitoring & Statistik Seluruh Berkas Perkara</h3></div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -208,7 +213,6 @@
                     <div class="overflow-x-auto"><table class="w-full text-left text-xs"><thead class="border-b text-slate-500 bg-white"><tr><th class="p-3">Perusahaan / Pelaku</th><th class="p-3">No. SBP</th><th class="p-3">No. LPP</th><th class="p-3">No. LPF</th><th class="p-3">No. LHP</th><th class="p-3">Status</th></tr></thead><tbody id="tableMonitoringBody" class="divide-y divide-slate-100"></tbody></table></div>
                 </div>
             </section>
-            <!-- PENGATURAN & AKUN -->
             <section id="content-setting" class="tab-content space-y-6 hidden">
                 <div class="soft-card p-6 rounded-2xl shadow-sm"><h3 class="text-sm font-bold text-slate-900">Pengaturan Utama & Akun Pengguna</h3></div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -242,7 +246,6 @@
             </section>
         </main>
     </div>
-    <!-- MODAL EDIT NOMOR -->
     <div id="modalEditNomor" class="fixed inset-0 ios-overlay hidden items-center justify-center z-50 p-4">
         <div class="w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden ios-alert-box border border-slate-200 p-6 space-y-4">
             <div class="flex justify-between items-center border-b pb-3"><h3 class="text-sm font-bold text-slate-950"><i class="fa-solid fa-pen-to-square text-blue-600 mr-2"></i> Edit Penomoran Dokumen Perkara</h3><button type="button" onclick="tutupModalEditNomor()" class="text-slate-400 hover:text-slate-600 text-xs"><i class="fa-solid fa-xmark text-base"></i></button></div>
@@ -254,7 +257,6 @@
             </form>
         </div>
     </div>
-    <!-- MODAL TAMBAH PEGAWAI -->
     <div id="modalTambahPegawai" class="fixed inset-0 ios-overlay hidden items-center justify-center z-50 p-4">
         <div class="w-full max-w-md rounded-2xl shadow-2xl overflow-hidden ios-alert-box border border-slate-200 p-6 space-y-4">
             <div class="flex justify-between items-center border-b pb-3"><h3 class="text-sm font-bold text-slate-950">Tambah Pegawai / Personel Baru</h3><button type="button" onclick="tutupModalTambahPegawai()" class="text-slate-400 hover:text-slate-600 text-xs"><i class="fa-solid fa-xmark text-base"></i></button></div>
@@ -266,36 +268,50 @@
             </form>
         </div>
     </div>
-    <!-- MODAL CETAK DOKUMEN -->
+    
+    <!-- MODAL PILIH DOKUMEN DENGAN OPSI WORD & PDF -->
     <div id="dashboardModal" class="fixed inset-0 ios-overlay hidden items-center justify-center z-50 p-4">
         <div class="w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden text-center ios-alert-box border border-slate-200">
             <div class="pt-6 px-6 pb-4">
                 <div id="modalIconContainer" class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl bg-emerald-50 text-emerald-600"><i class="fa-solid fa-file-circle-check"></i></div>
                 <h3 id="modalTitle" class="text-base font-bold text-slate-900 mb-1">Pilih Dokumen Perkara</h3>
                 <p id="dynamicModalMessage" class="text-xs text-slate-600 leading-relaxed px-1 mb-4"></p>
-                <div id="dokumenSelectorContainer" class="space-y-2 text-left">
-                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider">Format Dokumen Output:</label>
-                    <select id="pilihJenisDokumen" class="w-full p-3 ios-input-field text-xs font-semibold">
-                        <option value="LPP">Lembar Penerimaan Perkara (LPP)</option>
-                        <option value="LPF">Laporan Penelitian Formal (LPF)</option>
-                        <option value="SPLIT">Surat Perintah Penelitian (SPLIT)</option>
-                        <option value="SPRINT_CACAH">Surat Perintah Pencacahan</option>
-                        <option value="BA_CACAH">Berita Acara Pencacahan (BA Cacah)</option>
-                        <option value="LHP">Lembar Hasil Penelitian (LHP)</option>
-                    </select>
+                <div id="dokumenSelectorContainer" class="space-y-3 text-left">
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Format Dokumen Output:</label>
+                        <select id="pilihJenisDokumen" class="w-full p-3 ios-input-field text-xs font-semibold">
+                            <option value="LPP">Lembar Penerimaan Perkara (LPP)</option>
+                            <option value="LPF">Laporan Penelitian Formal (LPF)</option>
+                            <option value="SPLIT">Surat Perintah Penelitian (SPLIT)</option>
+                            <option value="SPRINT_CACAH">Surat Perintah Pencacahan</option>
+                            <option value="BA_CACAH">Berita Acara Pencacahan (BA Cacah)</option>
+                            <option value="LHP">Lembar Hasil Penelitian (LHP)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Pilih Jenis Cetak / Unduh:</label>
+                        <select id="pilihFormatUnduh" class="w-full p-3 ios-input-field text-xs font-semibold bg-blue-50 text-blue-900">
+                            <option value="WORD">Unduh File Word (.doc)</option>
+                            <option value="PDF">Cetak / Simpan sebagai PDF (.pdf)</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <div class="border-t border-slate-100 flex divide-x divide-slate-100">
                 <button type="button" onclick="closeDashboardModal()" class="w-1/2 py-3 text-xs font-medium text-slate-500 hover:bg-slate-50">Tutup</button>
-                <button type="button" id="modalActionBtn" onclick="executeModalAction()" class="w-1/2 py-3 text-xs font-semibold text-slate-900 hover:bg-slate-50">Unduh Dokumen</button>
+                <button type="button" id="modalActionBtn" onclick="executeModalAction()" class="w-1/2 py-3 text-xs font-semibold text-slate-900 hover:bg-slate-50">Proses Dokumen</button>
             </div>
         </div>
     </div>
+
+    <!-- CONTAINER TERSEMBUNYI UNTUK CETAK PDF -->
+    <div id="printArea" class="hidden"></div>
+
     <script>
-        let daftarPerkara = JSON.parse(localStorage.getItem('bc_daftar_perkara')) || [{ nomor_sbp: "1659/Mandiri/KPU.2/2025", tanggal_sbp: "2025-12-12", nomor_lpp: "1482", tanggal_lpp: "2025-12-13", asal_perkara: "Seksi Penindakan", status_penangkapan: "Penindakan Biasa", nomor_lpf: "1482", tanggal_lpf: "2025-12-13", nomor_split: "1482", nama_pelaku: "PT HAWILA ADHI PERKASA", npwp_pelaku: "860753292225000", pj_pelaku: "CHANNER SIMBOLON", alamat_pelaku: "Ruko The Capitol Superblok Imperium Bkok B No. 41, Batam", tempat_kejadian: "TPS Dharma Bandar Mandala (DBM)", waktu_kejadian: "12 Desember 2025 pukul 13.00 WIB", jenis_pelanggaran: "Pasal 53 ayat (3) UU No. 17 Tahun 2006 dan Pasal 33 ayat (1), Pasal 71 ayat (1) PP No. 41 Tahun 2021", jenis_perkara: "Pengeluaran barang dari KPBPB Batam ke TLDDP tanpa/salah pemberitahuan pabean", modus_operandi: "Mengeluarkan barang dari KPBPB Batam ke TLDDP tanpa/salah pemberitahuan pabean", nomor_sprint_cacah: "1482/CACAH", nomor_ba_cacah: "1482/CACAH", lhp: "1482", daftar_barang: [{ uraian: "2 Pce / M Core B 81A447-2351, ETC", jumlah: "2 Pcs" }], dok_pabean: "PPFTZ-01 Nomor 011407 Tanggal 28 November 2025" }];
+        let daftarPerkara = JSON.parse(localStorage.getItem('bc_daftar_perkara')) || [{ nomor_sbp: "1659/Mandiri/KPU.2/2025", tanggal_sbp: "2025-12-12", nomor_lpp: "1482", tanggal_lpp: "2025-12-13", asal_perkara: "Seksi Penindakan", status_penangkapan: "Penindakan Biasa", nomor_lpf: "1482", tanggal_lpf: "2025-12-13", nomor_split: "1482", jenis_klasifikasi: "Pabean", komoditi_utama: "Sparepart", estimasi_kerugian: 150000000, nama_pelaku: "PT HAWILA ADHI PERKASA", npwp_pelaku: "860753292225000", pj_pelaku: "CHANNER SIMBOLON", alamat_pelaku: "Ruko The Capitol Superblok Imperium Bkok B No. 41, Batam", tempat_kejadian: "TPS Dharma Bandar Mandala (DBM)", waktu_kejadian: "12 Desember 2025 pukul 13.00 WIB", jenis_pelanggaran: "Pasal 53 ayat (3) UU No. 17 Tahun 2006 dan Pasal 33 ayat (1), Pasal 71 ayat (1) PP No. 41 Tahun 2021", jenis_perkara: "Pengeluaran barang dari KPBPB Batam ke TLDDP tanpa/salah pemberitahuan pabean", modus_operandi: "Mengeluarkan barang dari KPBPB Batam ke TLDDP tanpa/salah pemberitahuan pabean", nomor_sprint_cacah: "1482/CACAH", nomor_ba_cacah: "1482/CACAH", lhp: "1482", daftar_barang: [{ uraian: "2 Pce / M Core B 81A447-2351, ETC", jumlah: "2 Pcs" }], dok_pabean: "PPFTZ-01 Nomor 011407 Tanggal 28 November 2025" }];
         let configPenomoran = JSON.parse(localStorage.getItem('bc_config_penomoran')) || { kode_kantor: "KPU.206", tahun_nomor: "2025", kabid: "Muhtadi", nip_kabid: "19730908 199503 1 001", kasi: "Johan Kunaefi", nip_kasi: "19800606 200112 1 001" };
         let masterPegawai = JSON.parse(localStorage.getItem('bc_master_pegawai')) || [{ nama: "Muhtadi", nip: "19730908 199503 1 001", peran: "Kepala Bidang P2" }, { nama: "Johan Kunaefi", nip: "19800606 200112 1 001", peran: "Kepala Seksi Penyidikan" }, { nama: "Gindo Dabungke", nip: "19940305 201502 1 002", peran: "Penyidik / Ketua Tim" }, { nama: "Dilla Allianza", nip: "20001121 201912 2 001", peran: "Anggota Tim / Pembuat LPP" }];
-        let dataPetugasPerkara = JSON.parse(localStorage.getItem('bc_data_petugas_perkara')) || { kabid: "Muhtadi", nip_kabid: "19730908 199503 1 001", kasi: "Johan Kunaefi", nip_kasi: "19800606 200112 1 001", penyidik: "Gindo Dabungke", nip_penyidik: "19940305 201502 1 002", pembuat: "Dilla Allianza", nip_pembuat: "20001121 201912 2 001" };
+        let dataPetugasPerkara = JSON.parse(localStorage.getItem('bc_data_petugas_perkara')) || { kabid: "Muhtadi", nip_kabid: "19730908 199503 1 001", kasi: "Johan Kunaefi", nip_kasi: "19800606 200112 1 001", penyidik: "Gindo Dabungke", nip_penyidik: "19940305 201502 1 002", pembuat: "Dilla Allianza", nip_pembuat: "200011212019122001" };
         let userProfile = JSON.parse(localStorage.getItem('bc_user_profile')) || { name: "Penyidik Utama", email: "penyidik.batam@beacukai.go.id", nip: "198006062001121001", password: "", theme: "slate", avatar: "logo-beacukai.png", background: "" };
         let currentModalActionType = null, selectedPerkaraIndex = null, tempAvatarBase64 = null;
 
@@ -463,6 +479,9 @@
             daftarPerkara[0].tanggal_sbp = document.getElementById('tanggal_sbp').value;
             daftarPerkara[0].nomor_lpp = document.getElementById('nomor_lpp').value;
             daftarPerkara[0].tanggal_lpp = document.getElementById('tanggal_lpp').value;
+            daftarPerkara[0].jenis_klasifikasi = document.getElementById('jenis_klasifikasi').value;
+            daftarPerkara[0].komoditi_utama = document.getElementById('komoditi_utama').value;
+            daftarPerkara[0].estimasi_kerugian = parseFloat(document.getElementById('estimasi_kerugian').value) || 0;
             daftarPerkara[0].asal_perkara = document.getElementById('asal_perkara').value;
             daftarPerkara[0].status_penangkapan = document.getElementById('status_penangkapan').value;
             daftarPerkara[0].nomor_lpf = document.getElementById('nomor_lpf').value;
@@ -518,9 +537,9 @@
         function triggerPilihDokumen(index) {
             selectedPerkaraIndex = index; currentModalActionType = 'generate_dokumen';
             document.getElementById('modalTitle').innerText = "Pilih Dokumen Perkara";
-            document.getElementById('dynamicModalMessage').innerText = "Pilih instrumen dokumen resmi penyidikan Bea Cukai yang ingin di-generate ke Word:";
+            document.getElementById('dynamicModalMessage').innerText = "Pilih instrumen dokumen resmi penyidikan Bea Cukai serta format cetak yang diinginkan:";
             document.getElementById('dokumenSelectorContainer').style.display = 'block';
-            document.getElementById('modalActionBtn').innerText = "Unduh Dokumen";
+            document.getElementById('modalActionBtn').innerText = "Proses Dokumen";
             document.getElementById('dashboardModal').classList.remove('hidden'); document.getElementById('dashboardModal').classList.add('flex');
         }
         function showModalInfo(title, message) {
@@ -532,30 +551,229 @@
         function executeModalAction() {
             if (currentModalActionType === 'generate_dokumen' && selectedPerkaraIndex !== null) {
                 const item = daftarPerkara[selectedPerkaraIndex], jenisDoc = document.getElementById('pilihJenisDokumen').value;
+                const formatUnduh = document.getElementById('pilihFormatUnduh').value;
                 const namaFileClean = (item.nomor_lpp || 'dokumen').replace(/[\/\\:]/g, '_'), k = configPenomoran.kode_kantor, t = configPenomoran.tahun_nomor, p = dataPetugasPerkara;
                 let listBarangHtml = '';
                 if (item.daftar_barang) item.daftar_barang.forEach((b, idx) => { listBarangHtml += `<tr><td style="border: 1px solid #000; padding: 6px; text-align: center;">${idx+1}</td><td style="border: 1px solid #000; padding: 6px;">${b.uraian}</td><td style="border: 1px solid #000; padding: 6px; text-align: center;">${b.jumlah}</td></tr>`; });
-                let kontenHtml = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>${jenisDoc}</title></head><body style="font-family: Arial; font-size: 11pt; line-height: 1.5; padding: 20px;">`;
+                let kontenHtml = `<div style="font-family: Arial; font-size: 11pt; line-height: 1.5; padding: 20px;">`;
+                
                 if (jenisDoc === 'LPP') {
-                    kontenHtml += `<p style="text-align: center;"><strong>KEMENTERIAN KEUANGAN REPUBLIK INDONESIA</strong><br>DIREKTORAT JENDERAL BEA DAN CUKAI<br><strong>KANTOR PELAYANAN UTAMA BEA DAN CUKAI TIPE B BATAM</strong></p><hr><h3 style="text-align: center; text-transform: uppercase;">LEMBAR PENERIMAAN PERKARA (LPP)</h3><p><strong>Nomor : LPP-${item.nomor_lpp || '-'}/${k}/${t}</strong></p><p><strong>1. LP / Surat Nomor :</strong> ${item.nomor_lpp || '-'}/${k}/${t} Tanggal ${item.tanggal_lpp || '-'}</p><p><strong>2. SBP Nomor : SBP-${item.nomor_sbp || '-'} Tanggal ${item.tanggal_sbp || '-'}</strong></p><p><strong>Asal Perkara :</strong> ${item.asal_perkara || '-'}</p><p><strong>Jenis Penindakan :</strong> Pemeriksaan, penegahan, dan penyegelan barang</p><p><strong>Jenis Perkara :</strong> ${item.jenis_perkara || '-'}</p><p><strong>Status Penangkapan :</strong> ${item.status_penangkapan || '-'}</p><br><p><strong>Uraian Pelanggaran :</strong></p><p>Jenis Pelanggaran/Pasal : Kepabeanan - ${item.jenis_pelanggaran || '-'}</p><p>Modus Operandi : ${item.modus_operandi || '-'}</p><br><p><strong>Lokasi :</strong></p><p>a. Tempat : ${item.tempat_kejadian || '-'}</p><p>b. Waktu : ${item.tanggal_sbp || '-'} 13.00 WIB</p><br><p><strong>Pelaku Pelanggaran :</strong></p><p>a. Nama : ${item.nama_pelaku || '-'}</p><p>b. Alamat : ${item.alamat_pelaku || '-'}</p><br><p><strong>Barang Hasil Penindakan :</strong></p><p>1. Komoditi : Barang lainnya</p><p>2. Detail Uraian Barang : ${item.daftar_barang && item.daftar_barang[0] ? item.daftar_barang[0].uraian : '-'}</p><p>3. Dokumen Barang : ${item.dok_pabean || '-'}</p><br><br><table style="width: 100%;"><tr><td style="width: 50%;"><p>Catatan atasan pembuat LPP<br>Batam, ${item.tanggal_lpp || '-'}<br>Kepala Seksi Penyidikan<br>Ditandatangani secara elektronik<br><strong>${p.kasi}</strong><br>NIP. ${p.nip_kasi}</p></td><td style="width: 50%; text-align: center;"><p>Yang membuat LPP,<br>Ditandatangani secara elektronik<br><strong>${p.pembuat}</strong><br>NIP. ${p.nip_pembuat}</p></td></tr><tr><td colspan="2" style="text-align: center; padding-top: 20px;"><p>Mengetahui,<br>Kepala Bidang Penindakan dan Penyidikan<br>Ditandatangani secara elektronik<br><strong>${p.kabid}</strong><br>NIP. ${p.nip_kabid}</p></td></tr></table>`;
+                    kontenHtml += `
+                        <p style="text-align: center;">Kementerian Keuangan Republik Indonesia<br>Direktorat Jenderal Bea dan Cukai<br><strong>Kantor Pelayanan Utama Bea dan Cukai Tipe B Batam</strong></p>
+                        <hr>
+                        <h3 style="text-align: center; text-transform: uppercase;">LEMBAR PENERIMAAN PERKARA (LPP)</h3>
+                        <p><strong>Nomor : LPP-${item.nomor_lpp || '-'}/${k}/${t}</strong></p>
+                        <p><strong>LP / Surat Nomor :</strong> ${item.nomor_lpp || '-'}/${k}/${t} Tanggal ${item.tanggal_lpp || '-'}</p>
+                        <p><strong>SBP Nomor : SBP-${item.nomor_sbp || '-'} Tanggal ${item.tanggal_sbp || '-'}</strong></p>
+                        <p><strong>Asal Perkara :</strong> ${item.asal_perkara || '-'}</p>
+                        <p><strong>Klasifikasi Perkara :</strong> ${item.jenis_klasifikasi || 'Pabean'}</p>
+                        <p><strong>Komoditi :</strong> ${item.komoditi_utama || 'Sparepart'}</p>
+                        <p><strong>Estimasi Kerugian Negara :</strong> Rp ${(item.estimasi_kerugian || 0).toLocaleString('id-ID')}</p>
+                        <p><strong>Jenis Penindakan :</strong> Pemeriksaan, penegahan, dan penyegelan barang</p>
+                        <p><strong>Jenis Perkara :</strong> ${item.jenis_perkara || '-'}</p>
+                        <p><strong>Status Penangkapan :</strong> ${item.status_penangkapan || '-'}</p>
+                        <br>
+                        <p><strong>Uraian Pelanggaran</strong></p>
+                        <p>Jenis Pelanggaran/Pasal : Kepabeanan - ${item.jenis_pelanggaran || '-'}</p>
+                        <p>Modus Operandi : ${item.modus_operandi || '-'}</p>
+                        <br>
+                        <p><strong>Lokasi</strong></p>
+                        <p>a. tempat : ${item.tempat_kejadian || '-'}</p>
+                        <p>b. tanggal dan waktu : ${item.tanggal_sbp || '-'} 13.00 WIB</p>
+                        <br>
+                        <p><strong>4. Pelaku Pelanggaran</strong></p>
+                        <p>a. Nama : ${item.nama_pelaku || '-'}</p>
+                        <p>b. Alamat : ${item.alamat_pelaku || '-'}</p>
+                        <br>
+                        <p><strong>Barang Hasil Penindakan</strong></p>
+                        <p>1. Komoditi : ${item.komoditi_utama || 'Barang lainnya'}</p>
+                        <p>2. Detail Uraian Barang : ${item.daftar_barang && item.daftar_barang[0] ? item.daftar_barang[0].uraian : '-'}</p>
+                        <p>3. Dokumen Barang : ${item.dok_pabean || '-'}</p>
+                        <br><br>
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="width: 50%;">
+                                    <p>Catatan atasan pembuat LPP<br>Batam, ${item.tanggal_lpp || '-'}<br>Kepala Seksi Penyidikan<br>Ditandatangani secara elektronik<br><strong>${p.kasi}</strong><br>NIP. ${p.nip_kasi}</p>
+                                </td>
+                                <td style="width: 50%; text-align: center;">
+                                    <p>Yang membuat LPP,<br>Ditandatangani secara elektronik<br><strong>${p.pembuat}</strong><br>NIP. ${p.nip_pembuat}</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align: center; padding-top: 20px;">
+                                    <p>Mengetahui,<br>Kepala Bidang Penindakan dan Penyidikan<br>Ditandatangani secara elektronik<br><strong>${p.kabid}</strong><br>NIP. ${p.nip_kabid}</p>
+                                </td>
+                            </tr>
+                        </table>
+                    `;
                 } else if (jenisDoc === 'LPF') {
-                    kontenHtml += `<p style="text-align: center;"><strong>KEMENTERIAN KEUANGAN REPUBLIK INDONESIA</strong><br>DIREKTORAT JENDERAL BEA DAN CUKAI<br><strong>KANTOR PELAYANAN UTAMA BEA DAN CUKAI TIPE B BATAM</strong></p><hr><h3 style="text-align: center; text-transform: uppercase;">LAPORAN PENELITIAN FORMAL (LPF)</h3><p><strong>Nomor : LPF-${item.nomor_lpf || '-'}/${k}/${t}</strong></p><p><strong>Uraian Pelanggaran :</strong></p><p>1. Jenis Pelanggaran / Pasal : Kepabeanan - ${item.jenis_pelanggaran || '-'}</p><p>2. Tempat (Locus) : ${item.tempat_kejadian || '-'}</p><p>3. Waktu (Tempus) : ${item.tanggal_lpp || '-'} 13.00 WIB</p><p>4. Pelaku : ${item.nama_pelaku || '-'} (${item.alamat_pelaku || '-'})</p><p>5. Status Penangkapan : ${item.status_penangkapan || '-'}</p><br><p><strong>Kelengkapan Dokumen Penindakan :</strong></p><p>1. SBP : SBP-${item.nomor_sbp || '-'} Tgl ${item.tanggal_sbp || '-'}</p><p>2. LP : ${item.nomor_lpp || '-'}/${k}/${t} Tgl ${item.tanggal_lpp || '-'}</p><br><p><strong>Barang Hasil Penindakan :</strong></p><p>Uraian Barang : ${item.daftar_barang && item.daftar_barang[0] ? item.daftar_barang[0].uraian : '-'}</p><p>Dokumen Asal : ${item.dok_pabean || '-'}</p><br><p><strong>Kesimpulan & Usulan :</strong> Perlu dilakukan penelitian atas dugaan pelanggaran administrasi</p><br><br><table style="width: 100%;"><tr><td style="width: 50%;"><p>Batam, ${item.tanggal_lpp || '-'}<br>Kepala Seksi Penyidikan<br>Ditandatangani secara elektronik<br><strong>${p.kasi}</strong></p></td><td style="width: 50%; text-align: center;"><p>Tim Peneliti,<br>Ditandatangani secara elektronik<br><strong>${p.penyidik}</strong></p></td></tr></table>`;
+                    kontenHtml += `
+                        <p style="text-align: center;">Kementerian Keuangan Republik Indonesia<br>Direktorat Jenderal Bea dan Cukai<br><strong>Kantor Pelayanan Utama Bea dan Cukai Tipe B Batam</strong></p>
+                        <hr>
+                        <h3 style="text-align: center; text-transform: uppercase;">LAPORAN PENELITIAN FORMAL (LPF)</h3>
+                        <p><strong>Nomor : LPF-${item.nomor_lpf || '-'}/${k}/${t}</strong></p>
+                        <p><strong>Uraian Pelanggaran</strong></p>
+                        <p>1. Jenis Pelanggaran / Pasal : Kepabeanan - ${item.jenis_pelanggaran || '-'}</p>
+                        <p>2. Tempat (Locus) : ${item.tempat_kejadian || '-'}</p>
+                        <p>3. Waktu (Tempus) : ${item.tanggal_lpp || '-'} 13.00 WIB</p>
+                        <p>4. Pelaku : Nama: ${item.nama_pelaku || '-'} | Alamat: ${item.alamat_pelaku || '-'}</p>
+                        <p>5. Status Penangkapan : ${item.status_penangkapan || '-'}</p>
+                        <br>
+                        <p><strong>Kelengkapan Dokumen Penindakan</strong></p>
+                        <p>1. No. SBP : SBP-${item.nomor_sbp || '-'} tanggal ${item.tanggal_sbp || '-'}</p>
+                        <p>2. No. LP : ${item.nomor_lpp || '-'}/${k}/${t} tanggal ${item.tanggal_lpp || '-'}</p>
+                        <br>
+                        <p><strong>Barang Hasil Penindakan</strong></p>
+                        <p>Uraian Barang : ${item.daftar_barang && item.daftar_barang[0] ? item.daftar_barang[0].uraian : '-'}</p>
+                        <p>Dokumen Asal : ${item.dok_pabean || '-'}</p>
+                        <br>
+                        <p><strong>Kesimpulan :</strong> Perlu dilakukan penelitian atas dugaan pelanggaran administrasi</p>
+                        <br><br>
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="width: 50%;">
+                                    <p>Batam, ${item.tanggal_lpp || '-'}<br>Kepala Seksi Penyidikan<br>Ditandatangani secara elektronik<br><strong>${p.kasi}</strong><br>NIP. ${p.nip_kasi}</p>
+                                </td>
+                                <td style="width: 50%; text-align: center;">
+                                    <p>Tim Peneliti,<br>Ditandatangani secara elektronik<br><strong>${p.penyidik}</strong></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align: center; padding-top: 20px;">
+                                    <p>Mengetahui,<br>Kepala Bidang Penindakan dan Penyidikan<br>Ditandatangani secara elektronik<br><strong>${p.kabid}</strong><br>NIP. ${p.nip_kabid}</p>
+                                </td>
+                            </tr>
+                        </table>
+                    `;
                 } else if (jenisDoc === 'SPLIT') {
-                    kontenHtml += `<p style="text-align: center;"><strong>KEMENTERIAN KEUANGAN REPUBLIK INDONESIA</strong><br>DIREKTORAT JENDERAL BEA DAN CUKAI<br><strong>KANTOR PELAYANAN UTAMA BEA DAN CUKAI TIPE B BATAM</strong></p><hr><h3 style="text-align: center; text-transform: uppercase;">SURAT PERINTAH PENELITIAN (SPLIT)</h3><p style="text-align: center;"><strong>Nomor : SPLIT-${item.nomor_split || '-'}/${k}/${t}</strong></p><p><strong>DASAR :</strong> Undang-undang Kepabeanan & Cukai, serta Laporan Pelanggaran Nomor ${item.nomor_lpp || '-'}/${k}/${t} tanggal ${item.tanggal_lpp || '-'}.</p><p><strong>PERTIMBANGAN :</strong> Bahwa untuk mengumpulkan bahan keterangan dan menemukan bukti permulaan yang cukup, perlu dikeluarkan Surat Perintah Penelitian.</p><h3 style="text-align: center;">D I P E R I N T A H K A N</h3><p><strong>Kepada Tim Peneliti :</strong></p><p>1. ${p.penyidik} (Koordinator / Ketua Tim)</p><p>2. ${p.pembuat} (Anggota)</p><p><strong>Untuk :</strong> Melakukan tugas penelitian berupa mencari, mengumpulkan bahan keterangan, dan menemukan bukti permulaan yang cukup atas perkara ${item.jenis_perkara || '-'}, yang diduga dilakukan oleh ${item.nama_pelaku || '-'}.</p><br><br><table style="width: 100%;"><tr><td style="width: 50%;"></td><td style="width: 50%; text-align: center;"><p>Dikeluarkan di : Batam<br>Pada tanggal : ${item.tanggal_lpp || '-'}<br>Kepala Bidang Penindakan dan Penyidikan<br>Ditandatangani secara elektronik<br><strong>${p.kabid}</strong><br>NIP. ${p.nip_kabid}</p></td></tr></table>`;
+                    kontenHtml += `
+                        <p style="text-align: center;">Kementerian Keuangan Republik Indonesia<br>Direktorat Jenderal Bea dan Cukai<br><strong>Kantor Pelayanan Utama Bea dan Cukai Tipe B Batam</strong></p>
+                        <hr>
+                        <h3 style="text-align: center; text-transform: uppercase;">SURAT PERINTAH PENELITIAN (SPLIT)</h3>
+                        <p style="text-align: center;"><strong>Nomor : SPLIT-${item.nomor_split || '-'}/${k}/${t}</strong></p>
+                        <p><strong>Dasar :</strong> Undang-undang nomor 17 tahun 2006 tentang Kepabeanan; Laporan Pelanggaran Nomor ${item.nomor_lpp || '-'}/${k}/${t} tanggal ${item.tanggal_lpp || '-'}.</p>
+                        <p><strong>Pertimbangan :</strong> Bahwa untuk mengumpulkan bahan keterangan dan menemukan bukti permulaan yang cukup, perlu dikeluarkan Surat Perintah Penelitian.</p>
+                        <h3 style="text-align: center;">D I P E R I N T A H K A N</h3>
+                        <p><strong>Kepada Tim Peneliti :</strong></p>
+                        <p>1. ${p.penyidik} (Koordinator Tim Peneliti)</p>
+                        <p>2. ${p.pembuat} (Pembuat LPP)</p>
+                        <p><strong>Untuk :</strong> Melakukan tugas penelitian berupa mencari, mengumpulkan bahan keterangan, dan menemukan bukti permulaan yang cukup atas perkara ${item.jenis_perkara || '-'}, yang diduga dilakukan oleh ${item.nama_pelaku || '-'}.</p>
+                        <br><br>
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="width: 50%;"></td>
+                                <td style="width: 50%; text-align: center;">
+                                    <p>Dikeluarkan di : Batam<br>Pada tanggal : ${item.tanggal_lpp || '-'}<br>Kepala Bidang Penindakan dan Penyidikan<br>Ditandatangani secara elektronik<br><strong>${p.kabid}</strong><br>NIP. ${p.nip_kabid}</p>
+                                </td>
+                            </tr>
+                        </table>
+                    `;
                 } else if (jenisDoc === 'SPRINT_CACAH') {
-                    kontenHtml += `<p style="text-align: center;"><strong>KEMENTERIAN KEUANGAN REPUBLIK INDONESIA</strong><br>DIREKTORAT JENDERAL BEA DAN CUKAI<br><strong>KANTOR PELAYANAN UTAMA BEA DAN CUKAI TIPE B BATAM</strong></p><hr><h3 style="text-align: center; text-transform: uppercase;">SURAT PERINTAH PENCACAHAN BARANG HASIL PENINDAKAN</h3><p style="text-align: center;"><strong>Nomor : PRINT-${item.nomor_sprint_cacah || '-'}/${t}</strong></p><p><strong>DASAR & PERTIMBANGAN :</strong> Dalam rangka penelitian dan penyelidikan, perlu untuk melakukan tindakan pencacahan barang hasil penindakan berdasarkan LP Nomor ${item.nomor_lpp || '-'}/${k}/${t}.</p><h3 style="text-align: center;">D I P E R I N T A H K A N</h3><p><strong>Kepada Petugas Pencacahan :</strong></p><p>1. ${p.penyidik}</p><p>2. ${p.pembuat}</p><p><strong>Untuk :</strong> Melakukan pencacahan atas Laporan Pelanggaran nomor ${item.nomor_lpp || '-'}/${k}/${t}. Surat perintah ini berlaku sampai dengan selesai.</p><br><br><table style="width: 100%;"><tr><td style="width: 50%;"></td><td style="width: 50%; text-align: center;"><p>Dikeluarkan di : Batam<br>Pada tanggal : ${item.tanggal_lpp || '-'}<br>Kepala Bidang Penindakan dan Penyidikan<br>Ditandatangani secara elektronik<br><strong>${p.kabid}</strong><br>NIP. ${p.nip_kabid}</p></td></tr></table>`;
+                    kontenHtml += `
+                        <p style="text-align: center;">Kementerian Keuangan Republik Indonesia<br>Direktorat Jenderal Bea dan Cukai<br><strong>Kantor Pelayanan Utama Bea dan Cukai Tipe B Batam</strong></p>
+                        <hr>
+                        <h3 style="text-align: center; text-transform: uppercase;">SURAT PERINTAH PENCACAHAN BARANG HASIL PENINDAKAN</h3>
+                        <p style="text-align: center;"><strong>Nomor : PRINT-${item.nomor_sprint_cacah || '-'}/${t}</strong></p>
+                        <p><strong>Dasar & Pertimbangan :</strong> Dalam rangka penelitian dan penyelidikan, perlu untuk melakukan tindakan pencacahan barang hasil penindakan berdasarkan LP Nomor ${item.nomor_lpp || '-'}/${k}/${t}.</p>
+                        <h3 style="text-align: center;">D I P E R I N T A H K A N</h3>
+                        <p><strong>Kepada Tim Pencacahan :</strong></p>
+                        <p>1. ${p.penyidik}</p>
+                        <p>2. ${p.pembuat}</p>
+                        <p><strong>Untuk :</strong> Melakukan pencacahan atas Laporan Pelanggaran nomor ${item.nomor_lpp || '-'}/${k}/${t}. Surat perintah ini berlaku sampai dengan selesai.</p>
+                        <br><br>
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="width: 50%;"></td>
+                                <td style="width: 50%; text-align: center;">
+                                    <p>Dikeluarkan di : Batam<br>Pada tanggal : ${item.tanggal_lpp || '-'}<br>Kepala Bidang Penindakan dan Penyidikan<br>Ditandatangani secara elektronik<br><strong>${p.kabid}</strong><br>NIP. ${p.nip_kabid}</p>
+                                </td>
+                            </tr>
+                        </table>
+                    `;
                 } else if (jenisDoc === 'BA_CACAH') {
-                    kontenHtml += `<p style="text-align: center;"><strong>KEMENTERIAN KEUANGAN REPUBLIK INDONESIA</strong><br>DIREKTORAT JENDERAL BEA DAN CUKAI<br><strong>KANTOR PELAYANAN UTAMA BEA DAN CUKAI TIPE B BATAM</strong></p><hr><h3 style="text-align: center; text-transform: uppercase;">BERITA ACARA PENCACAHAN</h3><p style="text-align: center;"><strong>Nomor : BA-${item.nomor_ba_cacah || '-'}/${t}</strong></p><p>Pada hari ini Rabu tanggal tujuh belas bulan Desember tahun dua ribu dua puluh lima di Tempat Penimbunan Pabean Kantor Pelayanan Utama Bea Cukai Tipe B Batam, berdasarkan Surat Perintah Pencacahan nomor PRINT-${item.nomor_sprint_cacah || '-'}/${t}, kami tim penyidik dan pemeriksa (${p.penyidik} dan ${p.pembuat}) telah melakukan pencacahan terhadap Barang Hasil Penindakan dari ${item.tempat_kejadian || '-'} sesuai SBP Nomor ${item.nomor_sbp || '-'}.</p><br><h4>Lampiran Rincian Hasil Pencacahan Barang Bukti:</h4><table style="width: 100%; border-collapse: collapse;"><tr style="background-color: #f2f2f7;"><th style="border: 1px solid #000; padding: 6px; width: 10%;">No</th><th style="border: 1px solid #000; padding: 6px; width: 65%;">Uraian Nama Barang / Spesifikasi</th><th style="border: 1px solid #000; padding: 6px; width: 25%;">Jumlah / Satuan</th></tr>${listBarangHtml}</table><p><strong>Dokumen Pabean Asal :</strong> ${item.dok_pabean || '-'}</p><br><br><table style="width: 100%;"><tr><td style="width: 50%;"></td><td style="width: 50%; text-align: center;"><p>Yang Melakukan Pencacahan,<br>Ditandatangani secara elektronik<br><strong>${p.penyidik} & ${p.pembuat}</strong></p></td></tr></table>`;
+                    kontenHtml += `
+                        <p style="text-align: center;">Kementerian Keuangan Republik Indonesia<br>Direktorat Jenderal Bea dan Cukai<br><strong>Kantor Pelayanan Utama Bea dan Cukai Tipe B Batam</strong><br>JALAN KUDA LAUT BATU AMPAR BATAM 29432</p>
+                        <hr>
+                        <h3 style="text-align: center; text-transform: uppercase;">BERITA ACARA PENCACAHAN</h3>
+                        <p style="text-align: center;"><strong>Nomor : BA-${item.nomor_ba_cacah || '-'}/${k}/${t}</strong></p>
+                        <p>Pada hari ini Rabu tanggal tujuh belas bulan Desember tahun dua ribu dua puluh lima di Tempat Penimbunan Pabean Kantor Pelayanan Utama Bea Cukai Tipe B Batam, berdasarkan Surat Perintah Pencacahan nomor PRINT-${item.nomor_sprint_cacah || '-'}/${t}, kami tim pemeriksa telah melakukan pencacahan terhadap Barang Hasil Penindakan dari ${item.tempat_kejadian || '-'} sesuai SBP Nomor ${item.nomor_sbp || '-'}.</p>
+                        <br>
+                        <h4>Lampiran Rincian Hasil Pencacahan Barang Bukti:</h4>
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr style="background-color: #f2f2f7;">
+                                <th style="border: 1px solid #000; padding: 6px; width: 10%;">No</th>
+                                <th style="border: 1px solid #000; padding: 6px; width: 65%;">Uraian Nama Barang / Spesifikasi</th>
+                                <th style="border: 1px solid #000; padding: 6px; width: 25%;">Jumlah / Satuan</th>
+                            </tr>
+                            ${listBarangHtml}
+                        </table>
+                        <p><strong>Dokumen Pabean Asal :</strong> ${item.dok_pabean || '-'}</p>
+                        <br><br>
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="width: 50%;"></td>
+                                <td style="width: 50%; text-align: center;">
+                                    <p>Yang Melakukan Pencacahan,<br>Ditandatangani secara elektronik<br><strong>${p.penyidik} & ${p.pembuat}</strong></p>
+                                </td>
+                            </tr>
+                        </table>
+                    `;
                 } else if (jenisDoc === 'LHP') {
-                    kontenHtml += `<p style="text-align: center;"><strong>KEMENTERIAN KEUANGAN REPUBLIK INDONESIA</strong><br>DIREKTORAT JENDERAL BEA DAN CUKAI<br><strong>KANTOR PELAYANAN UTAMA BEA DAN CUKAI TIPE B BATAM</strong></p><hr><h3 style="text-align: center; text-transform: uppercase;">LEMBAR HASIL PENELITIAN (LHP)</h3><p style="text-align: center;"><strong>NOMOR : LHP-${item.lhp || '-'}/${k}/${t}</strong></p><p><strong>A. URAIAN PELANGGARAN</strong></p><p>Jenis Pelanggaran : Kepabeanan (${item.jenis_pelanggaran || '-'})</p><p>Locus : ${item.tempat_kejadian || '-'}</p><p>Tempus : ${item.waktu_kejadian || '-'}</p><p>Nama Pelanggar : ${item.nama_pelaku || '-'}</p><p>Alamat : ${item.alamat_pelaku || '-'}</p><p>NPWP : ${item.npwp_pelaku || '-'}</p><p>Uraian Barang : ${item.daftar_barang && item.daftar_barang[0] ? item.daftar_barang[0].uraian : '-'}</p><p>Dokumen Pabean : ${item.dok_pabean || '-'}</p><p><strong>B. MODUS PELANGGARAN</strong></p><p>Pada tanggal ${item.tanggal_sbp || '-'} di ${item.tempat_kejadian || '-'}, petugas KPU Bea dan Cukai Tipe B Batam telah melakukan penegahan terhadap barang bukti yang diduga dikeluarkan dari KPBPB Batam ke TLDDP tanpa/salah pemberitahuan pabean sesuai SBP Nomor ${item.nomor_sbp || '-'}.</p><p><strong>C. PEMENUHAN UNSUR PASAL</strong></p><p>Mengacu pada Undang-Undang Nomor 17 Tahun 2006 tentang Kepabeanan Pasal 53 ayat (3), Pasal 115, serta PP Nomor 41 Tahun 2021 Pasal 33 ayat (1) dan Pasal 71 ayat (1).</p><p><strong>D. KESIMPULAN</strong></p><p>Hasil penelitian dugaan pelanggaran terhadap ${item.nama_pelaku || '-'} dapat diproses lebih lanjut oleh unit pejabat pemeriksa dokumen.</p><p><strong>E. ALTERNATIF PENYELESAIAN PERKARA</strong></p><p>Penelitian dugaan pelanggaran kepabeanan tidak dilanjutkan / diselesaikan sesuai ketentuan kepabeanan yang berlaku.</p><br><br><table style="width: 100%;"><tr><td style="width: 50%;"><p>Ketua Tim Peneliti<br>Ditandatangani secara elektronik<br><strong>${p.penyidik}</strong><br><br>Kepala Seksi Penyidikan<br>Ditandatangani secara elektronik<br><strong>${p.kasi}</strong></p></td><td style="width: 50%; text-align: center;"><p>Mengetahui,<br>Kepala Bidang Penindakan dan Penyidikan<br>Ditandatangani secara elektronik<br><strong>${p.kabid}</strong><br>NIP. ${p.nip_kabid}</p></td></tr></table>`;
+                    kontenHtml += `
+                        <p style="text-align: center;">Kementerian Keuangan Republik Indonesia<br>Direktorat Jenderal Bea dan Cukai<br><strong>Kantor Pelayanan Utama Bea dan Cukai Tipe B Batam</strong></p>
+                        <hr>
+                        <h3 style="text-align: center; text-transform: uppercase;">LEMBAR HASIL PENELITIAN (LHP)</h3>
+                        <p style="text-align: center;"><strong>NOMOR : LHP-${item.lhp || '-'}/${k}/${t}</strong></p>
+                        <p><strong>A. URAIAN PELANGGARAN</strong></p>
+                        <p>Klasifikasi Perkara : ${item.jenis_klasifikasi || 'Pabean'} (${item.jenis_pelanggaran || '-'})</p>
+                        <p>Komoditi : ${item.komoditi_utama || 'Sparepart'}</p>
+                        <p>Estimasi Kerugian Negara : Rp ${(item.estimasi_kerugian || 0).toLocaleString('id-ID')}</p>
+                        <p>Locus : ${item.tempat_kejadian || '-'}</p>
+                        <p>Tempus : ${item.waktu_kejadian || '-'}</p>
+                        <p>Nama Pelanggar : ${item.nama_pelaku || '-'}</p>
+                        <p>Alamat : ${item.alamat_pelaku || '-'}</p>
+                        <p>NPWP : ${item.npwp_pelaku || '-'}</p>
+                        <p>Uraian Barang : ${item.daftar_barang && item.daftar_barang[0] ? item.daftar_barang[0].uraian : '-'}</p>
+                        <p>Dokumen Pabean : ${item.dok_pabean || '-'}</p>
+                        <p><strong>B. MODUS PELANGGARAN</strong></p>
+                        <p>Pada tanggal ${item.tanggal_sbp || '-'} di ${item.tempat_kejadian || '-'}, petugas KPU Bea dan Cukai Tipe B Batam telah melakukan penegahan terhadap barang bukti yang diduga dikeluarkan dari KPBPB Batam ke TLDDP tanpa/salah pemberitahuan pabean sesuai SBP Nomor ${item.nomor_sbp || '-'}.</p>
+                        <p><strong>C. PEMENUHAN UNSUR PASAL</strong></p>
+                        <p>Mengacu pada Undang-Undang Nomor 17 Tahun 2006 tentang Kepabeanan Pasal 53 ayat (3) serta PP Nomor 41 Tahun 2021.</p>
+                        <p><strong>D. KESIMPULAN</strong></p>
+                        <p>Hasil penelitian dugaan pelanggaran terhadap ${item.nama_pelaku || '-'} dapat diproses lebih lanjut oleh unit pejabat pemeriksa dokumen.</p>
+                        <p><strong>E. ALTERNATIF PENYELESAIAN PERKARA</strong></p>
+                        <p>Penelitian dugaan pelanggaran kepabeanan tidak dilanjutkan / diselesaikan sesuai ketentuan kepabeanan yang berlaku.</p>
+                        <br><br>
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="width: 50%;">
+                                    <p>Ketua Tim Peneliti<br>Ditandatangani secara elektronik<br><strong>${p.penyidik}</strong><br><br>Kepala Seksi Penyidikan<br>Ditandatangani secara elektronik<br><strong>${p.kasi}</strong></p>
+                                </td>
+                                <td style="width: 50%; text-align: center;">
+                                    <p>Mengetahui,<br>Kepala Bidang Penindakan dan Penyidikan<br>Ditandatangani secara elektronik<br><strong>${p.kabid}</strong><br>NIP. ${p.nip_kabid}</p>
+                                </td>
+                            </tr>
+                        </table>
+                    `;
                 }
-                kontenHtml += `</body></html>`;
-                const blob = new Blob(['\ufeff' + kontenHtml], { type: 'application/msword' });
-                const url = URL.createObjectURL(blob), a = document.createElement('a');
-                a.href = url; a.download = `${jenisDoc}_${namaFileClean}.doc`;
-                document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+                kontenHtml += `</div>`;
+
+                if (formatUnduh === 'PDF') {
+                    // Cetak / Simpan sebagai PDF via Browser Print
+                    const printArea = document.getElementById('printArea');
+                    printArea.innerHTML = kontenHtml;
+                    closeDashboardModal();
+                    window.print();
+                } else {
+                    // Unduh sebagai Word (.doc)
+                    const fullDocHtml = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>${jenisDoc}</title></head><body>${kontenHtml}</body></html>`;
+                    const blob = new Blob(['\ufeff' + fullDocHtml], { type: 'application/msword' });
+                    const url = URL.createObjectURL(blob), a = document.createElement('a');
+                    a.href = url; a.download = `${jenisDoc}_${namaFileClean}.doc`;
+                    document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+                    closeDashboardModal();
+                }
             }
-            closeDashboardModal();
         }
         function updateMonitoringStats() {
             const total = daftarPerkara.length;
@@ -564,6 +782,23 @@
             document.getElementById('statSbp').innerText = total;
             document.getElementById('statLpf').innerText = total;
             document.getElementById('statLhp').innerText = total;
+
+            let pabeanCount = 0;
+            let cukaiCount = 0;
+            let totalKerugian = 0;
+            let listKomoditi = [];
+
+            daftarPerkara.forEach(item => {
+                if (item.jenis_klasifikasi === 'Cukai') cukaiCount++;
+                else pabeanCount++;
+
+                totalKerugian += (item.estimasi_kerugian || 0);
+                if(item.komoditi_utama) listKomoditi.push(item.komoditi_utama);
+            });
+
+            document.getElementById('dashKlasifikasiPerkara').innerText = `Pabean: ${pabeanCount} | Cukai: ${cukaiCount}`;
+            document.getElementById('dashKomoditiUtama').innerText = listKomoditi.length > 0 ? listKomoditi[0] : '-';
+            document.getElementById('dashTotalKerugian').innerText = `Rp ${totalKerugian.toLocaleString('id-ID')}`;
         }
         initProfile(); updateMonitoringStats();
     </script>
