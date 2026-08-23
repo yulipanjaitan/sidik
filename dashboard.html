@@ -134,10 +134,16 @@
                 </button>
                 <button type="button" onclick="switchTab('input', this)" id="btn-input" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition">
                     <i class="fa-solid fa-pen-to-square w-4"></i>
-                    <span>Input Data Keseluruhan</span>
+                    <span>Input Data Perkara</span>
                 </button>
-                <button type="button" onclick="switchTab('penomoran', this)" id="btn-penomoran" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition">
-                    <i class="fa-solid fa-list-ol w-4"></i>
+                <!-- Sub-Menu Berita Acara Pencacahan (Halaman Khusus di bawah Input Data) -->
+                <button type="button" onclick="switchTab('bacacah', this)" id="btn-bacacah" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition pl-8 border-l-2 border-emerald-500">
+                    <i class="fa-solid fa-boxes-stacked w-4 text-emerald-600"></i>
+                    <span>Sub-Menu BA Pencacahan</span>
+                </button>
+                <!-- Sub-Menu Penomoran -->
+                <button type="button" onclick="switchTab('penomoran', this)" id="btn-penomoran" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition pl-8 border-l-2 border-blue-500">
+                    <i class="fa-solid fa-list-ol w-4 text-blue-500"></i>
                     <span>Sub-Menu Penomoran</span>
                 </button>
                 <button type="button" onclick="switchTab('cetak', this)" id="btn-cetak" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition">
@@ -220,8 +226,8 @@
                 <div class="ios-container-group p-6 flex justify-between items-center">
                     <div>
                         <span class="text-[10px] font-bold text-blue-600 uppercase bg-blue-50 px-2.5 py-1 rounded-full">Database Penyidikan</span>
-                        <h3 class="text-sm font-bold text-slate-900 mt-2">Form Input Data Perkara & Berita Acara Pencacahan</h3>
-                        <p class="text-xs text-slate-500 mt-0.5">Input data menyeluruh dari SBP, LPP, LPF, SPLIT, hingga rincian barang bukti pencacahan.</p>
+                        <h3 class="text-sm font-bold text-slate-900 mt-2">Form Input Data Perkara</h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Input data utama perkara (SBP, LPP, LPF, SPLIT, Identitas Pelaku, Locus & Tempus).</p>
                     </div>
                     <button type="button" onclick="loadSampleData()" class="ios-btn-primary px-4 py-2.5 text-xs font-semibold flex items-center space-x-2">
                         <i class="fa-solid fa-bolt mr-1"></i> <span>Muat Data Kasus Hawila</span>
@@ -337,60 +343,70 @@
                         </div>
                     </div>
 
-                    <!-- 5. SUB-MENU BERITA ACARA PENCACAHAN (BA CACAH) & TAMBAH BARIS BARANG -->
-                    <div class="ios-container-group p-6 md:p-8 space-y-5">
-                        <div class="flex justify-between items-center border-b pb-3">
-                            <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center text-blue-900">
-                                <i class="fa-solid fa-boxes-stacked mr-2"></i> V. Sub-Menu Berita Acara Pencacahan (BA Cacah & Sprint Cacah)
-                            </h4>
-                            <button type="button" onclick="tambahBarisBarang()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-bold px-3 py-1.5 rounded-xl shadow transition">
-                                <i class="fa-solid fa-plus mr-1"></i> Tambah Barang Bukti
-                            </button>
-                        </div>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 text-xs mb-4">
-                            <div>
-                                <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor Sprint Pencacahan</label>
-                                <input type="text" id="nomor_sprint_cacah" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="Sprint-Cacah/10/XII/2025">
-                            </div>
-                            <div>
-                                <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor BA Pencacahan</label>
-                                <input type="text" id="nomor_ba_cacah" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="BAP-Cacah/12/XII/2025">
-                            </div>
-                            <div>
-                                <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor LHP (Laporan Hasil Penelitian)</label>
-                                <input type="text" id="lhp" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="LHP-10/KPU.2/2025">
-                            </div>
-                        </div>
-
-                        <!-- Daftar Baris Barang Dinamis -->
-                        <div class="space-y-3">
-                            <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider">Rincian Barang Hasil Pencacahan (Bisa Ditambah Jika Banyak):</label>
-                            <div id="containerBarangCacah" class="space-y-3">
-                                <div class="flex items-center space-x-2 barang-row">
-                                    <input type="text" placeholder="Uraian Nama Barang / Spesifikasi" class="flex-1 p-3 ios-input-field text-xs font-medium uraian-barang-input" value="2 Pce / M Core B 81A447-2351, ETC" required>
-                                    <input type="text" placeholder="Jumlah / Satuan" class="w-36 p-3 ios-input-field text-xs font-medium jumlah-barang-input" value="2 Pcs" required>
-                                    <button type="button" onclick="hapusBarisBarang(this)" class="bg-rose-100 hover:bg-rose-200 text-rose-600 p-3 rounded-xl text-xs transition"><i class="fa-solid fa-trash"></i></button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="pt-3">
-                            <label class="block font-semibold text-slate-600 mb-1.5 ml-1 text-xs">Dokumen Pabean Asal</label>
-                            <input type="text" id="dok_pabean" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium text-xs" value="PPFTZ-01 No. 011407 Tgl 28 November 2025">
-                        </div>
-                    </div>
-
                     <div class="flex justify-end pt-2 pb-6">
                         <button type="submit" class="ios-btn-primary px-8 py-4 text-xs font-bold tracking-wide flex items-center space-x-2 shadow-md">
                             <i class="fa-solid fa-floppy-disk text-sm mr-1"></i> 
-                            <span>Simpan Perkara & Dokumen Lengkap</span>
+                            <span>Simpan Data Perkara Utama</span>
                         </button>
                     </div>
                 </form>
             </section>
 
-            <!-- SUB-MENU PENOMORAN (MANAJEMEN NOMOR SURAT) -->
+            <!-- SUB-MENU BERITA ACARA PENCACAHAN (HALAMAN KHUSUS) -->
+            <section id="content-bacacah" class="tab-content space-y-6 hidden">
+                <div class="ios-container-group p-6 flex justify-between items-center">
+                    <div>
+                        <span class="text-[10px] font-bold text-emerald-600 uppercase bg-emerald-50 px-2.5 py-1 rounded-full">Modul Barang Bukti</span>
+                        <h3 class="text-sm font-bold text-slate-900 mt-2">Sub-Menu Berita Acara & Sprint Pencacahan</h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Kelola penomoran cacah serta tambah rincian item barang bukti secara dinamis jika jumlahnya banyak.</p>
+                    </div>
+                    <button type="button" onclick="tambahBarisBarang()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow transition flex items-center space-x-2">
+                        <i class="fa-solid fa-plus"></i> <span>Tambah Baris Barang</span>
+                    </button>
+                </div>
+
+                <div class="ios-container-group p-6 md:p-8 space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 text-xs">
+                        <div>
+                            <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor Sprint Pencacahan</label>
+                            <input type="text" id="input_sprint_cacah" class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="Sprint-Cacah/10/XII/2025">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor BA Pencacahan</label>
+                            <input type="text" id="input_ba_cacah" class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="BAP-Cacah/12/XII/2025">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor LHP</label>
+                            <input type="text" id="input_lhp" class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="LHP-10/KPU.2/2025">
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 pt-2">
+                        <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider">Rincian Barang Hasil Pencacahan:</label>
+                        <div id="containerBarangCacah" class="space-y-3">
+                            <div class="flex items-center space-x-2 barang-row">
+                                <input type="text" placeholder="Uraian Nama Barang / Spesifikasi" class="flex-1 p-3 ios-input-field text-xs font-medium uraian-barang-input" value="2 Pce / M Core B 81A447-2351, ETC" required>
+                                <input type="text" placeholder="Jumlah / Satuan" class="w-36 p-3 ios-input-field text-xs font-medium jumlah-barang-input" value="2 Pcs" required>
+                                <button type="button" onclick="hapusBarisBarang(this)" class="bg-rose-100 hover:bg-rose-200 text-rose-600 p-3 rounded-xl text-xs transition"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-3">
+                        <label class="block font-semibold text-slate-600 mb-1.5 ml-1 text-xs">Dokumen Pabean Asal</label>
+                        <input type="text" id="input_dok_pabean" class="w-full p-3.5 ios-input-field text-slate-800 font-medium text-xs" value="PPFTZ-01 No. 011407 Tgl 28 November 2025">
+                    </div>
+
+                    <div class="flex justify-end pt-2">
+                        <button type="button" onclick="simpanDataCacah()" class="ios-btn-primary px-8 py-3.5 text-xs font-bold tracking-wide flex items-center space-x-2 shadow-md">
+                            <i class="fa-solid fa-floppy-disk text-sm mr-1"></i> 
+                            <span>Simpan Rincian BA Pencacahan</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SUB-MENU PENOMORAN (HALAMAN KHUSUS) -->
             <section id="content-penomoran" class="tab-content space-y-6 hidden">
                 <div class="soft-card p-6 rounded-2xl shadow-sm flex justify-between items-center">
                     <div>
@@ -750,6 +766,7 @@
             if (targetId === 'cetak') renderTablePerkara();
             else if (targetId === 'monitoring') renderTableMonitoring();
             else if (targetId === 'penomoran') renderTablePenomoran();
+            else if (targetId === 'bacacah') loadDataCacahToForm();
             
             updateMonitoringStats();
         }
@@ -784,6 +801,34 @@
 
         function saveDataPerkara(event) {
             event.preventDefault();
+            if(daftarPerkara.length === 0) daftarPerkara.push({});
+
+            daftarPerkara[0].nomor_sbp = document.getElementById('nomor_sbp').value;
+            daftarPerkara[0].tanggal_sbp = document.getElementById('tanggal_sbp').value;
+            daftarPerkara[0].nomor_lpp = document.getElementById('nomor_lpp').value;
+            daftarPerkara[0].tanggal_lpp = document.getElementById('tanggal_lpp').value;
+            daftarPerkara[0].asal_perkara = document.getElementById('asal_perkara').value;
+            daftarPerkara[0].status_penangkapan = document.getElementById('status_penangkapan').value;
+            daftarPerkara[0].nomor_lpf = document.getElementById('nomor_lpf').value;
+            daftarPerkara[0].tanggal_lpf = document.getElementById('tanggal_lpf').value;
+            daftarPerkara[0].nomor_split = document.getElementById('nomor_split').value;
+            daftarPerkara[0].nama_pelaku = document.getElementById('nama_pelaku').value;
+            daftarPerkara[0].npwp_pelaku = document.getElementById('npwp_pelaku').value;
+            daftarPerkara[0].pj_pelaku = document.getElementById('pj_pelaku').value;
+            daftarPerkara[0].alamat_pelaku = document.getElementById('alamat_pelaku').value;
+            daftarPerkara[0].tempat_kejadian = document.getElementById('tempat_kejadian').value;
+            daftarPerkara[0].waktu_kejadian = document.getElementById('waktu_kejadian').value;
+            daftarPerkara[0].jenis_pelanggaran = document.getElementById('jenis_pelanggaran').value;
+            daftarPerkara[0].jenis_perkara = document.getElementById('jenis_perkara').value;
+            daftarPerkara[0].modus_operandi = document.getElementById('modus_operandi').value;
+
+            localStorage.setItem('bc_daftar_perkara', JSON.stringify(daftarPerkara));
+            showModalInfo("Berhasil Disimpan", "Data utama perkara berhasil disimpan.");
+            updateMonitoringStats();
+        }
+
+        function simpanDataCacah() {
+            if(daftarPerkara.length === 0) daftarPerkara.push({});
             
             const barangRows = document.querySelectorAll('.barang-row');
             let daftarBarang = [];
@@ -795,37 +840,39 @@
                 }
             });
 
-            const baru = {
-                nomor_sbp: document.getElementById('nomor_sbp').value,
-                tanggal_sbp: document.getElementById('tanggal_sbp').value,
-                nomor_lpp: document.getElementById('nomor_lpp').value,
-                tanggal_lpp: document.getElementById('tanggal_lpp').value,
-                asal_perkara: document.getElementById('asal_perkara').value,
-                status_penangkapan: document.getElementById('status_penangkapan').value,
-                nomor_lpf: document.getElementById('nomor_lpf').value,
-                tanggal_lpf: document.getElementById('tanggal_lpf').value,
-                nomor_split: document.getElementById('nomor_split').value,
-                nama_pelaku: document.getElementById('nama_pelaku').value,
-                npwp_pelaku: document.getElementById('npwp_pelaku').value,
-                pj_pelaku: document.getElementById('pj_pelaku').value,
-                alamat_pelaku: document.getElementById('alamat_pelaku').value,
-                tempat_kejadian: document.getElementById('tempat_kejadian').value,
-                waktu_kejadian: document.getElementById('waktu_kejadian').value,
-                jenis_pelanggaran: document.getElementById('jenis_pelanggaran').value,
-                jenis_perkara: document.getElementById('jenis_perkara').value,
-                modus_operandi: document.getElementById('modus_operandi').value,
-                nomor_sprint_cacah: document.getElementById('nomor_sprint_cacah').value,
-                nomor_ba_cacah: document.getElementById('nomor_ba_cacah').value,
-                lhp: document.getElementById('lhp').value,
-                daftar_barang: daftarBarang,
-                dok_pabean: document.getElementById('dok_pabean').value
-            };
+            daftarPerkara[0].nomor_sprint_cacah = document.getElementById('input_sprint_cacah').value;
+            daftarPerkara[0].nomor_ba_cacah = document.getElementById('input_ba_cacah').value;
+            daftarPerkara[0].lhp = document.getElementById('input_lhp').value;
+            daftarPerkara[0].dok_pabean = document.getElementById('input_dok_pabean').value;
+            daftarPerkara[0].daftar_barang = daftarBarang;
 
-            daftarPerkara.push(baru);
             localStorage.setItem('bc_daftar_perkara', JSON.stringify(daftarPerkara));
-
-            showModalInfo("Berhasil Disimpan", `Berkas perkara LPP No: ${baru.nomor_lpp} beserta nomor dokumen lengkap berhasil disimpan.`);
+            showModalInfo("Berhasil Disimpan", "Rincian Berita Acara Pencacahan & Barang Bukti berhasil disimpan.");
             updateMonitoringStats();
+        }
+
+        function loadDataCacahToForm() {
+            if(daftarPerkara.length > 0) {
+                const item = daftarPerkara[0];
+                if(item.nomor_sprint_cacah) document.getElementById('input_sprint_cacah').value = item.nomor_sprint_cacah;
+                if(item.nomor_ba_cacah) document.getElementById('input_ba_cacah').value = item.nomor_ba_cacah;
+                if(item.lhp) document.getElementById('input_lhp').value = item.lhp;
+                if(item.dok_pabean) document.getElementById('input_dok_pabean').value = item.dok_pabean;
+
+                if(item.daftar_barang && item.daftar_barang.length > 0) {
+                    const container = document.getElementById('containerBarangCacah');
+                    container.innerHTML = '';
+                    item.daftar_barang.forEach(b => {
+                        container.innerHTML += `
+                            <div class="flex items-center space-x-2 barang-row">
+                                <input type="text" placeholder="Uraian Nama Barang / Spesifikasi" class="flex-1 p-3 ios-input-field text-xs font-medium uraian-barang-input" value="${b.uraian}" required>
+                                <input type="text" placeholder="Jumlah / Satuan" class="w-36 p-3 ios-input-field text-xs font-medium jumlah-barang-input" value="${b.jumlah}" required>
+                                <button type="button" onclick="hapusBarisBarang(this)" class="bg-rose-100 hover:bg-rose-200 text-rose-600 p-3 rounded-xl text-xs transition"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        `;
+                    });
+                }
+            }
         }
 
         function renderTablePerkara() {
@@ -839,10 +886,10 @@
                 const totalItem = item.daftar_barang ? item.daftar_barang.length : 0;
                 tbody.innerHTML += `
                     <tr class="hover:bg-slate-50 transition">
-                        <td class="p-4 font-semibold text-slate-900">${item.nomor_lpp}<br><span class="text-[10px] text-slate-400 font-normal">Tgl: ${item.tanggal_lpp}</span></td>
-                        <td class="p-4 font-medium">${item.nama_pelaku}</td>
-                        <td class="p-4 text-slate-600">SBP: ${item.nomor_sbp}<br><span class="text-[10px] text-slate-400">LPF: ${item.nomor_lpf}</span></td>
-                        <td class="p-4 text-slate-600"><span class="bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded-md text-[10px]">${totalItem} Jenis Barang</span></td>
+                        <td class="p-4 font-semibold text-slate-900">${item.nomor_lpp || '-'}<br><span class="text-[10px] text-slate-400 font-normal">Tgl: ${item.tanggal_lpp || '-'}</span></td>
+                        <td class="p-4 font-medium">${item.nama_pelaku || '-'}</td>
+                        <td class="p-4 text-slate-600">SBP: ${item.nomor_sbp || '-'}<br><span class="text-[10px] text-slate-400">LPF: ${item.nomor_lpf || '-'}</span></td>
+                        <td class="p-4 text-slate-600"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-md text-[10px]">${totalItem} Jenis Barang</span></td>
                         <td class="p-4 text-center">
                             <button type="button" onclick="triggerPilihDokumen(${index})" class="bg-slate-900 hover:bg-slate-800 text-white px-3.5 py-2 rounded-xl text-xs font-semibold shadow transition flex items-center justify-center mx-auto space-x-1.5">
                                 <i class="fa-solid fa-file-arrow-down"></i> <span>Pilih Dokumen</span>
@@ -863,13 +910,13 @@
             daftarPerkara.forEach((item) => {
                 tbody.innerHTML += `
                     <tr class="hover:bg-slate-50 transition">
-                        <td class="p-3 font-semibold text-slate-900">${item.nama_pelaku}</td>
-                        <td class="p-3 font-medium text-blue-600">${item.nomor_lpp}</td>
-                        <td class="p-3 font-medium text-indigo-600">${item.nomor_lpf}</td>
+                        <td class="p-3 font-semibold text-slate-900">${item.nama_pelaku || '-'}</td>
+                        <td class="p-3 font-medium text-blue-600">${item.nomor_lpp || '-'}</td>
+                        <td class="p-3 font-medium text-indigo-600">${item.nomor_lpf || '-'}</td>
                         <td class="p-3 font-medium text-emerald-600">${item.nomor_split || '-'}</td>
-                        <td class="p-3 font-medium text-amber-600">${item.nomor_sprint_cacah}</td>
-                        <td class="p-3 font-medium text-purple-600">${item.nomor_ba_cacah}</td>
-                        <td class="p-3 font-medium text-rose-600">${item.lhp}</td>
+                        <td class="p-3 font-medium text-amber-600">${item.nomor_sprint_cacah || '-'}</td>
+                        <td class="p-3 font-medium text-purple-600">${item.nomor_ba_cacah || '-'}</td>
+                        <td class="p-3 font-medium text-rose-600">${item.lhp || '-'}</td>
                     </tr>
                 `;
             });
@@ -885,11 +932,11 @@
             daftarPerkara.forEach((item) => {
                 tbody.innerHTML += `
                     <tr class="hover:bg-slate-50 transition">
-                        <td class="p-3 font-semibold text-slate-900">${item.nama_pelaku}</td>
-                        <td class="p-3 text-slate-600">${item.nomor_sbp}</td>
-                        <td class="p-3 text-slate-600">${item.nomor_lpp}</td>
-                        <td class="p-3 text-slate-600">${item.nomor_lpf}</td>
-                        <td class="p-3 text-slate-600">${item.lhp}</td>
+                        <td class="p-3 font-semibold text-slate-900">${item.nama_pelaku || '-'}</td>
+                        <td class="p-3 text-slate-600">${item.nomor_sbp || '-'}</td>
+                        <td class="p-3 text-slate-600">${item.nomor_lpp || '-'}</td>
+                        <td class="p-3 text-slate-600">${item.nomor_lpf || '-'}</td>
+                        <td class="p-3 text-slate-600">${item.lhp || '-'}</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-800 font-bold text-[10px] px-2 py-1 rounded-full">Lengkap</span></td>
                     </tr>
                 `;
@@ -928,7 +975,7 @@
             if (currentModalActionType === 'generate_dokumen' && selectedPerkaraIndex !== null) {
                 const item = daftarPerkara[selectedPerkaraIndex];
                 const jenisDoc = document.getElementById('pilihJenisDokumen').value;
-                const namaFileClean = item.nomor_lpp.replace(/[\/\\:]/g, '_');
+                const namaFileClean = (item.nomor_lpp || 'dokumen').replace(/[\/\\:]/g, '_');
 
                 let listBarangHtml = '';
                 if(item.daftar_barang && item.daftar_barang.length > 0) {
@@ -937,12 +984,12 @@
                     });
                 }
 
-                let nomorSuratAktif = item.nomor_lpp;
-                if(jenisDoc === 'LPF') nomorSuratAktif = item.nomor_lpf;
-                else if(jenisDoc === 'SPLIT') nomorSuratAktif = item.nomor_split;
-                else if(jenisDoc === 'SPRINT_CACAH') nomorSuratAktif = item.nomor_sprint_cacah;
-                else if(jenisDoc === 'BA_CACAH') nomorSuratAktif = item.nomor_ba_cacah;
-                else if(jenisDoc === 'LHP') nomorSuratAktif = item.lhp;
+                let nomorSuratAktif = item.nomor_lpp || '';
+                if(jenisDoc === 'LPF') nomorSuratAktif = item.nomor_lpf || '';
+                else if(jenisDoc === 'SPLIT') nomorSuratAktif = item.nomor_split || '';
+                else if(jenisDoc === 'SPRINT_CACAH') nomorSuratAktif = item.nomor_sprint_cacah || '';
+                else if(jenisDoc === 'BA_CACAH') nomorSuratAktif = item.nomor_ba_cacah || '';
+                else if(jenisDoc === 'LHP') nomorSuratAktif = item.lhp || '';
 
                 const kontenHtml = `
                     <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
@@ -952,16 +999,16 @@
                         <h3 style="text-align: center; text-transform: uppercase;">${jenisDoc.replace('_', ' ')}</h3>
                         <hr>
                         <p><strong>Nomor Dokumen:</strong> ${nomorSuratAktif}</p>
-                        <p><strong>Tanggal:</strong> ${item.tanggal_lpp}</p>
-                        <p><strong>Nama Perusahaan / Pelaku:</strong> ${item.nama_pelaku}</p>
-                        <p><strong>NPWP:</strong> ${item.npwp_pelaku}</p>
-                        <p><strong>Penanggung Jawab:</strong> ${item.pj_pelaku}</p>
-                        <p><strong>Alamat:</strong> ${item.alamat_pelaku}</p>
+                        <p><strong>Tanggal:</strong> ${item.tanggal_lpp || '-'}</p>
+                        <p><strong>Nama Perusahaan / Pelaku:</strong> ${item.nama_pelaku || '-'}</p>
+                        <p><strong>NPWP:</strong> ${item.npwp_pelaku || '-'}</p>
+                        <p><strong>Penanggung Jawab:</strong> ${item.pj_pelaku || '-'}</p>
+                        <p><strong>Alamat:</strong> ${item.alamat_pelaku || '-'}</p>
                         <hr>
-                        <p><strong>Locus:</strong> ${item.tempat_kejadian}</p>
-                        <p><strong>Tempus:</strong> ${item.waktu_kejadian}</p>
-                        <p><strong>Uraian Pelanggaran:</strong> ${item.jenis_perkara} (${item.jenis_pelanggaran})</p>
-                        <p><strong>Modus Operandi:</strong> ${item.modus_operandi}</p>
+                        <p><strong>Locus:</strong> ${item.tempat_kejadian || '-'}</p>
+                        <p><strong>Tempus:</strong> ${item.waktu_kejadian || '-'}</p>
+                        <p><strong>Uraian Pelanggaran:</strong> ${item.jenis_perkara || '-'} (${item.jenis_pelanggaran || '-'})</p>
+                        <p><strong>Modus Operandi:</strong> ${item.modus_operandi || '-'}</p>
                         
                         ${jenisDoc === 'BA_CACAH' || jenisDoc === 'SPRINT_CACAH' ? `
                             <br><h4>Rincian Hasil Pencacahan Barang Bukti:</h4>
@@ -975,7 +1022,7 @@
                             </table>
                         ` : `<p><strong>Barang Bukti Utama:</strong> ${item.daftar_barang && item.daftar_barang[0] ? item.daftar_barang[0].uraian : '-'}</p>`}
 
-                        <p><strong>Dokumen Pabean Asal:</strong> ${item.dok_pabean}</p>
+                        <p><strong>Dokumen Pabean Asal:</strong> ${item.dok_pabean || '-'}</p>
                         <br><br>
                         <table style="width: 100%;">
                             <tr>
