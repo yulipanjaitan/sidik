@@ -7,14 +7,22 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .modal-overlay { background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(6px); }
+        .modal-box { animation: modalPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+        @keyframes modalPop {
+            0% { transform: scale(0.85); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
 </head>
 <body class="bg-slate-100 min-h-screen font-sans text-slate-800">
 
     <!-- Top Navigation Bar -->
-    <header class="bg-blue-900 text-white shadow-md sticky top-0 z-50">
+    <header class="bg-blue-900 text-white shadow-md sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-3">
-                <div class="bg-blue-800 p-2 rounded-lg border border-blue-700">
+                <div class="bg-blue-800 p-2 rounded-lg border border-blue-700 shadow">
                     <i class="fa-solid fa-scale-balanced text-yellow-400 text-xl"></i>
                 </div>
                 <div>
@@ -23,10 +31,10 @@
                 </div>
             </div>
             <div class="flex items-center space-x-4">
-                <span class="text-xs bg-blue-800 px-3 py-1.5 rounded-full border border-blue-700">
+                <span class="text-xs bg-blue-800 px-3 py-1.5 rounded-full border border-blue-700 shadow-inner">
                     <i class="fa-solid fa-user-shield mr-1.5 text-yellow-400"></i> Penyidik / Admin
                 </span>
-                <a href="index.html" class="text-xs bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg transition">
+                <a href="index.html" class="text-xs bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg shadow transition">
                     <i class="fa-solid fa-power-off mr-1"></i> Keluar
                 </a>
             </div>
@@ -40,10 +48,10 @@
         <div class="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
                 <h2 class="text-2xl font-bold text-slate-900">Form Input Data Perkara Penyidikan</h2>
-                <p class="text-xs text-slate-500 mt-1">Masukkan data penindakan untuk pembuatan LPP, LPF, SPLIT, SPPBHP, Berita Acara, dan LHP secara otomatis.</p>
+                <p class="text-xs text-slate-500 mt-1">Masukkan data penindakan untuk pembuatan LPP, LPF, SPLIT, Berita Acara, dan LHP secara otomatis.</p>
             </div>
             <div class="flex gap-2">
-                <button type="button" onclick="loadSampleData()" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold px-4 py-2.5 rounded-lg shadow transition flex items-center">
+                <button type="button" onclick="loadSampleData()" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold px-4 py-2.5 rounded-xl shadow-md transition flex items-center">
                     <i class="fa-solid fa-bolt mr-1.5"></i> Muat Contoh Kasus (PT Hawila)
                 </button>
             </div>
@@ -52,7 +60,7 @@
         <!-- Form Card -->
         <form id="penyidikanForm" onsubmit="generateDocument(event)" class="space-y-6">
             
-            <!-- SECTION 1: Informasi Dasar Perkara & Surat -->
+            <!-- SECTION 1 -->
             <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
                 <h3 class="text-sm font-bold text-blue-900 uppercase tracking-wider mb-4 border-b pb-2 flex items-center">
                     <i class="fa-solid fa-file-lines mr-2 text-blue-600"></i> I. Informasi Dasar & Nomor Surat
@@ -85,7 +93,7 @@
                 </div>
             </div>
 
-            <!-- SECTION 2: Uraian Pelanggaran & Lokasi -->
+            <!-- SECTION 2 -->
             <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
                 <h3 class="text-sm font-bold text-blue-900 uppercase tracking-wider mb-4 border-b pb-2 flex items-center">
                     <i class="fa-solid fa-triangle-exclamation mr-2 text-blue-600"></i> II. Uraian Pelanggaran & Locus / Tempus
@@ -103,18 +111,10 @@
                         <label class="block font-semibold text-slate-700 mb-1">Tempat Kejadian (Locus)</label>
                         <input type="text" id="tempat_kejadian" required class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-600 outline-none" value="TPS Dharma Bandar Mandala (DBM)">
                     </div>
-                    <div>
-                        <label class="block font-semibold text-slate-700 mb-1">Waktu Kejadian (Jam & Hari)</label>
-                        <input type="text" id="waktu_kejadian" required class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-600 outline-none" value="13.00 WIB (Jumat, 12 Desember 2025)">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-slate-700 mb-1">Modus Operandi</label>
-                        <input type="text" id="modus_operandi" required class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-600 outline-none" value="Mengeluarkan barang dari KPBPB Batam ke TLDDP tanpa/salah pemberitahuan pabean">
-                    </div>
                 </div>
             </div>
 
-            <!-- SECTION 3: Pelaku Pelanggaran -->
+            <!-- SECTION 3 -->
             <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
                 <h3 class="text-sm font-bold text-blue-900 uppercase tracking-wider mb-4 border-b pb-2 flex items-center">
                     <i class="fa-solid fa-building mr-2 text-blue-600"></i> III. Identitas Pelaku / Perusahaan
@@ -132,17 +132,13 @@
                         <label class="block font-semibold text-slate-700 mb-1">Penanggung Jawab</label>
                         <input type="text" id="pj_pelaku" required class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-600 outline-none" value="CHANNER SIMBOLON">
                     </div>
-                    <div class="md:col-span-3">
-                        <label class="block font-semibold text-slate-700 mb-1">Alamat Perusahaan</label>
-                        <input type="text" id="alamat_pelaku" required class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-600 outline-none" value="Ruko The Capitol Superblok Imperium Blok B No. 41, Batam">
-                    </div>
                 </div>
             </div>
 
-            <!-- SECTION 4: Barang Hasil Penindakan & Dokumen Pabean -->
+            <!-- SECTION 4 & 5 -->
             <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
                 <h3 class="text-sm font-bold text-blue-900 uppercase tracking-wider mb-4 border-b pb-2 flex items-center">
-                    <i class="fa-solid fa-boxes-stacked mr-2 text-blue-600"></i> IV. Barang Hasil Penindakan & Dokumen Asal
+                    <i class="fa-solid fa-boxes-stacked mr-2 text-blue-600"></i> IV. Barang & Dokumen Pabean
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
                     <div>
@@ -150,41 +146,12 @@
                         <input type="text" id="komoditi" required class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-600 outline-none" value="Barang lainnya">
                     </div>
                     <div>
-                        <label class="block font-semibold text-slate-700 mb-1">Jumlah / Jenis Koli</label>
-                        <input type="text" id="jumlah_koli" required class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-600 outline-none" value="2 Pce / UNPACKED OR UNPACKAGED">
-                    </div>
-                    <div>
                         <label class="block font-semibold text-slate-700 mb-1">Uraian Barang</label>
                         <input type="text" id="uraian_barang" required class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-600 outline-none" value="2 Pce / M Core B 81A447-2351, ETC">
                     </div>
                     <div>
-                        <label class="block font-semibold text-slate-700 mb-1">Jenis Dokumen Pabean Asal</label>
-                        <input type="text" id="dok_asal" required class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-600 outline-none" value="PPFTZ-01">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-slate-700 mb-1">Nomor Dokumen Pabean</label>
+                        <label class="block font-semibold text-slate-700 mb-1">Nomor Dokumen PPFTZ-01</label>
                         <input type="text" id="no_dok_asal" required class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-600 outline-none" value="011407">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-slate-700 mb-1">Tanggal Dokumen Pabean</label>
-                        <input type="date" id="tgl_dok_asal" required class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-600 outline-none" value="2025-11-28">
-                    </div>
-                </div>
-            </div>
-
-            <!-- SECTION 5: Pejabat Penandatangan -->
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
-                <h3 class="text-sm font-bold text-blue-900 uppercase tracking-wider mb-4 border-b pb-2 flex items-center">
-                    <i class="fa-solid fa-user-tie mr-2 text-blue-600"></i> V. Pejabat Penandatangan
-                </h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                    <div>
-                        <label class="block font-semibold text-slate-700 mb-1">Kepala Bidang P2</label>
-                        <input type="text" id="kabid_p2" required class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-600 outline-none" value="Muhtadi (NIP. 19730908 199503 1 001)">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-slate-700 mb-1">Kepala Seksi Penyidikan</label>
-                        <input type="text" id="kasi_sidik" required class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-600 outline-none" value="Johan Kunaefi (NIP. 19800606 200112 1 001)">
                     </div>
                 </div>
             </div>
@@ -193,10 +160,10 @@
             <div class="bg-blue-50 border border-blue-200 rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-4">
                 <div>
                     <h4 class="text-sm font-bold text-blue-900">Siap Cetak Dokumen Resmi?</h4>
-                    <p class="text-xs text-blue-700 mt-0.5">Sistem akan memproses data di atas menjadi format berkas siap unduh (Word / PDF).</p>
+                    <p class="text-xs text-blue-700 mt-0.5">Sistem akan memproses data di atas menjadi format berkas siap unduh (.docx).</p>
                 </div>
                 <div class="flex items-center gap-3 w-full md:w-auto">
-                    <button type="submit" class="flex-1 md:flex-none bg-blue-900 hover:bg-blue-800 text-white text-xs font-bold px-6 py-3 rounded-xl shadow-lg transition flex items-center justify-center">
+                    <button type="submit" class="flex-1 md:flex-none bg-blue-900 hover:bg-blue-800 text-white text-xs font-bold px-6 py-3.5 rounded-xl shadow-lg transition flex items-center justify-center">
                         <i class="fa-solid fa-file-word mr-2 text-lg text-blue-300"></i> Generate Dokumen Word (.docx)
                     </button>
                 </div>
@@ -205,18 +172,46 @@
         </form>
     </main>
 
+    <!-- MODERN MODAL POP-UP (DASHBOARD) -->
+    <div id="dashboardModal" class="fixed inset-0 modal-overlay hidden items-center justify-center z-50 p-4">
+        <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden p-6 text-center modal-box border border-slate-100">
+            <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl bg-blue-100 text-blue-600 shadow-md">
+                <i class="fa-solid fa-file-circle-check"></i>
+            </div>
+            <h3 id="modalTitle" class="text-lg font-bold text-slate-900 mb-1">Dokumen Berhasil Disiapkan</h3>
+            <p id="modalMessage" class="text-xs text-slate-600 mb-6 leading-relaxed px-2">File dokumen LPP, LPF, dan Berita Acara untuk perkara ini telah berhasil di-generate dan siap diunduh.</p>
+            <div class="flex gap-3">
+                <button onclick="closeDashboardModal()" class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-800 font-semibold py-3 rounded-2xl text-xs transition">
+                    Tutup
+                </button>
+                <button onclick="simulateDownload()" class="flex-1 bg-blue-900 hover:bg-blue-800 text-white font-semibold py-3 rounded-2xl text-xs shadow-lg shadow-blue-200 transition">
+                    <i class="fa-solid fa-download mr-1"></i> Unduh File
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         function loadSampleData() {
-            alert('Data contoh kasus PT Hawila Adhi Perkasa berhasil dimuat ke dalam form!');
+            alert('Data contoh kasus PT Hawila Adhi Perkasa berhasil dimuat!');
         }
 
         function generateDocument(event) {
             event.preventDefault();
-            const noLpp = document.getElementById('nomor_lpp').value;
-            const perusahaan = document.getElementById('nama_pelaku').value;
-            
-            // Simulasi proses generation file
-            alert(`Berhasil memproses data untuk LPP No: ${noLpp} (${perusahaan}). File dokumen Word (.docx) siap diunduh!`);
+            const modal = document.getElementById('dashboardModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeDashboardModal() {
+            const modal = document.getElementById('dashboardModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function simulateDownload() {
+            alert('Mengunduh berkas arsip penyidikan Bea Cukai (.zip / .docx)...');
+            closeDashboardModal();
         }
     </script>
 </body>
