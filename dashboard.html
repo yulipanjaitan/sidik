@@ -9,14 +9,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
-            background-color: #f2f2f7; /* Warna latar khas iOS System Background */
+            background-color: #f2f2f7;
             min-height: 100vh;
             position: relative;
-            overflow-x: hidden;
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
-        /* Lapisan Wallpaper khusus background dashboard */
         #dashboardWallpaper {
             position: fixed;
             top: 0;
@@ -26,15 +24,8 @@
             background-image: url('background.jpg');
             background-size: cover;
             background-position: center;
-            background-attachment: fixed;
             z-index: -2;
-            transition: opacity 0.6s ease-in-out;
-            animation: wallpaperZoom 25s infinite alternate ease-in-out;
-        }
-
-        @keyframes wallpaperZoom {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.08); }
+            display: block;
         }
 
         #wallpaperOverlay {
@@ -43,155 +34,117 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(15, 23, 42, 0.25);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
+            background: rgba(15, 23, 42, 0.2);
             z-index: -1;
-            transition: opacity 0.6s ease-in-out;
         }
 
         .soft-card {
-            background: rgba(255, 255, 255, 0.88);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.1);
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }
 
-        /* KELAS KHUSUS GAYA ALA iOS / APPLE HIG */
         .ios-container-group {
-            background: rgba(255, 255, 255, 0.75);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(226, 232, 240, 0.8);
-            border-radius: 24px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-            transition: all 0.3s ease;
-        }
-
-        .ios-container-group:hover {
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
-            border-color: rgba(203, 213, 225, 1);
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
         }
 
         .ios-input-field {
-            background: rgba(241, 245, 249, 0.7);
-            border: 1.5px solid transparent;
-            border-radius: 14px;
-            transition: all 0.25s ease;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
             font-size: 13px;
+            transition: border-color 0.15s ease;
         }
 
         .ios-input-field:focus {
             background: #ffffff;
-            border-color: #007aff; /* Apple Blue Accent */
-            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.12);
+            border-color: #007aff;
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
             outline: none;
         }
 
         .ios-btn-primary {
             background: #007aff;
             color: white;
-            border-radius: 14px;
+            border-radius: 12px;
             font-weight: 600;
-            transition: all 0.25s ease;
-            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+            transition: background 0.15s ease;
         }
 
         .ios-btn-primary:hover {
             background: #0062cc;
-            box-shadow: 0 6px 16px rgba(0, 122, 255, 0.4);
-            transform: translateY(-1px);
         }
 
         .ios-overlay { 
-            background: rgba(0, 0, 0, 0.45); 
-            backdrop-filter: blur(12px); 
+            background: rgba(0, 0, 0, 0.4); 
         }
 
         .ios-alert-box { 
-            animation: iosPop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; 
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(25px);
-            border-radius: 24px;
-        }
-
-        @keyframes iosPop {
-            0% { transform: scale(0.85); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
 
         #sidebar {
-            transition: transform 0.3s ease-in-out, width 0.3s ease-in-out, opacity 0.3s ease-in-out;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border-radius: 28px;
+            background: #ffffff;
+            border-radius: 24px;
+            border-right: 1px solid #e2e8f0;
+            transition: transform 0.2s ease-in-out, width 0.2s ease-in-out;
         }
 
         .sidebar-hidden {
             transform: translateX(-100%);
             width: 0 !important;
-            padding-left: 0 !important;
-            padding-right: 0 !important;
+            padding: 0 !important;
             overflow: hidden;
             opacity: 0;
         }
 
         header {
-            background: rgba(255, 255, 255, 0.82) !important;
-            backdrop-filter: blur(20px) !important;
-            -webkit-backdrop-filter: blur(20px) !important;
-            border-radius: 24px;
-        }
-
-        .tab-content {
-            animation: fadeInContent 0.4s ease-out forwards;
-        }
-
-        @keyframes fadeInContent {
-            0% { opacity: 0; transform: translateY(8px); }
-            100% { opacity: 1; transform: translateY(0); }
+            background: #ffffff !important;
+            border-radius: 20px;
+            border: 1px solid #e2e8f0;
         }
     </style>
 </head>
-<body id="appBody" class="min-h-screen text-slate-800 flex p-3 md:p-6 transition-all duration-300">
+<body id="appBody" class="min-h-screen text-slate-800 flex p-3 md:p-6">
 
-    <!-- Latar Belakang Wallpaper Aktif Hanya di Menu Dashboard -->
     <div id="dashboardWallpaper"></div>
     <div id="wallpaperOverlay"></div>
 
     <!-- SIDEBAR KIRI -->
-    <aside id="sidebar" class="w-64 min-h-[92vh] hidden md:flex flex-col justify-between p-5 shadow-2xl border border-white/50 sticky top-4 z-30">
+    <aside id="sidebar" class="w-64 min-h-[92vh] hidden md:flex flex-col justify-between p-5 shadow-lg sticky top-4 z-30">
         <div>
             <div class="flex items-center space-x-3 px-3 mb-6">
-                <div id="sidebarLogoIcon" class="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center font-bold text-xs shadow-md transition-colors">
+                <div id="sidebarLogoIcon" class="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center font-bold text-xs shadow">
                     <i class="fa-solid fa-cube"></i>
                 </div>
                 <span class="font-bold text-slate-900 text-sm tracking-wide">BC Batam System</span>
             </div>
 
-            <hr class="border-slate-200/60 mb-6">
+            <hr class="border-slate-200 mb-6">
 
-            <!-- Menu Navigasi -->
             <div class="space-y-1.5">
-                <button type="button" onclick="switchTab('dashboard', this)" id="btn-dashboard" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-2xl text-xs font-semibold bg-slate-900 text-white shadow-md transition">
+                <button type="button" onclick="switchTab('dashboard', this)" id="btn-dashboard" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold bg-slate-900 text-white shadow transition">
                     <i class="fa-solid fa-house w-4"></i>
                     <span>Dashboard</span>
                 </button>
-                <button type="button" onclick="switchTab('input', this)" id="btn-input" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-2xl text-xs font-semibold text-slate-600 hover:bg-white/60 transition">
+                <button type="button" onclick="switchTab('input', this)" id="btn-input" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition">
                     <i class="fa-solid fa-pen-to-square w-4"></i>
                     <span>Input Data Perkara</span>
                 </button>
-                <button type="button" onclick="switchTab('cetak', this)" id="btn-cetak" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-2xl text-xs font-semibold text-slate-600 hover:bg-white/60 transition">
+                <button type="button" onclick="switchTab('cetak', this)" id="btn-cetak" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition">
                     <i class="fa-solid fa-print w-4"></i>
-                    <span>Cetak Laporan</span>
+                    <span>Cetak Dokumen & Laporan</span>
                 </button>
-                <button type="button" onclick="switchTab('monitoring', this)" id="btn-monitoring" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-2xl text-xs font-semibold text-slate-600 hover:bg-white/60 transition">
+                <button type="button" onclick="switchTab('monitoring', this)" id="btn-monitoring" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition">
                     <i class="fa-solid fa-chart-pie w-4"></i>
                     <span>Monitoring</span>
                 </button>
-                <button type="button" onclick="switchTab('setting', this)" id="btn-setting" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-2xl text-xs font-semibold text-slate-600 hover:bg-white/60 transition">
+                <button type="button" onclick="switchTab('setting', this)" id="btn-setting" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition">
                     <i class="fa-solid fa-gear w-4"></i>
                     <span>Pengaturan & Akun</span>
                 </button>
@@ -199,7 +152,7 @@
 
             <p class="px-4 text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-8 mb-3">Account Pages</p>
             <div class="space-y-1.5">
-                <a href="index.html" class="w-full flex items-center space-x-3 px-4 py-3 rounded-2xl text-xs font-semibold text-rose-600 hover:bg-rose-50 transition">
+                <a href="index.html" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold text-rose-600 hover:bg-rose-50 transition">
                     <i class="fa-solid fa-power-off w-4"></i>
                     <span>Sign Out</span>
                 </a>
@@ -208,12 +161,11 @@
     </aside>
 
     <!-- KONTEN UTAMA DI KANAN -->
-    <div id="mainContent" class="flex-1 md:ml-6 flex flex-col min-h-screen transition-all duration-300">
+    <div id="mainContent" class="flex-1 md:ml-6 flex flex-col min-h-screen">
         
-        <!-- TOP NAVBAR -->
-        <header class="flex justify-between items-center px-6 py-4 shadow-sm border border-white/50 mb-6">
+        <header class="flex justify-between items-center px-6 py-4 shadow-sm mb-6">
             <div class="flex items-center space-x-4">
-                <button type="button" onclick="toggleSidebar()" class="w-8 h-8 rounded-full bg-white/80 hover:bg-slate-900 hover:text-white text-slate-700 flex items-center justify-center shadow transition text-xs">
+                <button type="button" onclick="toggleSidebar()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-900 hover:text-white text-slate-700 flex items-center justify-center transition text-xs">
                     <i class="fa-solid fa-bars"></i>
                 </button>
                 <div class="text-xs">
@@ -227,65 +179,66 @@
                     <p id="displayProfileName" class="text-xs font-bold text-slate-800">Penyidik Utama</p>
                     <p id="displayProfileNip" class="text-[10px] text-slate-500">NIP. 198006062001121001</p>
                 </div>
-                <img id="headerProfileImg" src="logo-beacukai.png" alt="Avatar" class="w-8 h-8 rounded-full bg-white border object-cover shadow-sm">
+                <img id="headerProfileImg" src="logo-beacukai.png" alt="Avatar" class="w-8 h-8 rounded-full bg-slate-200 border object-cover">
             </div>
         </header>
 
-        <!-- KONTEN UTAMA HALAMAN -->
         <main class="flex-1 space-y-6">
             
-            <!-- ================= TAB 0: DASHBOARD ================= -->
+            <!-- DASHBOARD -->
             <section id="content-dashboard" class="tab-content space-y-6 block">
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="soft-card p-5 rounded-3xl shadow-sm flex justify-between items-center">
+                    <div class="soft-card p-5 rounded-2xl flex justify-between items-center">
                         <div>
                             <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Total Perkara (LPP)</p>
                             <h3 id="dashTotalPerkara" class="text-2xl font-bold text-slate-900 mt-1">1</h3>
-                            <p class="text-[10px] text-emerald-700 font-bold mt-1"><i class="fa-solid fa-circle-check mr-1"></i> Terindeks Aktif</p>
+                            <p class="text-[10px] text-emerald-700 font-bold mt-1">Terindeks Aktif</p>
                         </div>
-                        <div class="theme-accent w-10 h-10 rounded-2xl bg-slate-900 text-white flex items-center justify-center text-sm shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center text-sm shadow">
                             <i class="fa-solid fa-folder-open"></i>
                         </div>
                     </div>
-                    <div class="soft-card p-5 rounded-3xl shadow-sm flex justify-between items-center">
+                    <div class="soft-card p-5 rounded-2xl flex justify-between items-center">
                         <div>
                             <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Status Sistem</p>
                             <h3 class="text-2xl font-bold text-slate-900 mt-1">Online</h3>
-                            <p class="text-[10px] text-emerald-700 font-bold mt-1"><i class="fa-solid fa-shield-halved mr-1"></i> Database Sinkron</p>
+                            <p class="text-[10px] text-emerald-700 font-bold mt-1">Database Sinkron</p>
                         </div>
-                        <div class="theme-accent w-10 h-10 rounded-2xl bg-slate-900 text-white flex items-center justify-center text-sm shadow-md">
+                        <div class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center text-sm shadow">
                             <i class="fa-solid fa-cloud"></i>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- ================= TAB 1: INPUT DATA (GAYA ALA iOS / APPLE HIG) ================= -->
+            <!-- INPUT DATA -->
             <section id="content-input" class="tab-content space-y-6 hidden">
-                <!-- Header Card ala Apple -->
                 <div class="ios-container-group p-6 flex justify-between items-center">
                     <div>
-                        <span class="text-[10px] font-bold tracking-widest text-blue-600 uppercase bg-blue-50 px-2.5 py-1 rounded-full">Apple Style Forms</span>
+                        <span class="text-[10px] font-bold text-blue-600 uppercase bg-blue-50 px-2.5 py-1 rounded-full">Modul Dokumen Lengkap</span>
                         <h3 class="text-sm font-bold text-slate-900 mt-2">Form Input Data Dokumen Perkara Penyidikan</h3>
-                        <p class="text-xs text-slate-500 mt-0.5">Sesuai format dokumen LPP, LPF, SPLIT, SBP, Pencacahan, dan LHP Bea Cukai Batam.</p>
+                        <p class="text-xs text-slate-500 mt-0.5">LPP, LPF, SPLIT, SBP, Pencacahan, dan LHP Bea Cukai Batam.</p>
                     </div>
                     <button type="button" onclick="loadSampleData()" class="ios-btn-primary px-4 py-2.5 text-xs font-semibold flex items-center space-x-2">
                         <i class="fa-solid fa-bolt mr-1"></i> <span>Muat Data Kasus Hawila</span>
                     </button>
                 </div>
 
-                <!-- Form Utama dengan Kartu Grup Berkelompok ala iOS Settings -->
                 <form id="penyidikanForm" onsubmit="saveDataPerkara(event)" class="space-y-6">
-                    
-                    <!-- KELOMPOK 1: LPP & SBP -->
+                    <!-- 1. SBP & LPP -->
                     <div class="ios-container-group p-6 md:p-8 space-y-5">
-                        <div class="flex items-center space-x-3 border-b border-slate-200/60 pb-3">
-                            <div class="w-7 h-7 rounded-lg bg-blue-500 text-white flex items-center justify-center text-xs shadow-sm">
-                                <i class="fa-solid fa-file-lines"></i>
-                            </div>
-                            <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider">I. Lembar Penerimaan Perkara (LPP) & SBP</h4>
-                        </div>
+                        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b pb-3 flex items-center text-blue-900">
+                            <i class="fa-solid fa-file-lines mr-2"></i> I. Surat Bukti Penindakan (SBP) & Lembar Penerimaan Perkara (LPP)
+                        </h4>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-5 text-xs">
+                            <div>
+                                <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor SBP</label>
+                                <input type="text" id="nomor_sbp" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="1659/Mandiri/KPU.2/2025">
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Tanggal SBP</label>
+                                <input type="date" id="tanggal_sbp" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="2025-12-12">
+                            </div>
                             <div>
                                 <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor LPP</label>
                                 <input type="text" id="nomor_lpp" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="1482/KPU.206/2025">
@@ -299,28 +252,38 @@
                                 <input type="text" id="asal_perkara" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="Seksi Penindakan">
                             </div>
                             <div>
-                                <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor SBP (Surat Bukti Penindakan)</label>
-                                <input type="text" id="nomor_sbp" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="1659/Mandiri/KPU.2/2025">
-                            </div>
-                            <div>
-                                <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Tanggal SBP</label>
-                                <input type="date" id="tanggal_sbp" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="2025-12-12">
-                            </div>
-                            <div>
                                 <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Status Penangkapan</label>
                                 <input type="text" id="status_penangkapan" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="Penindakan Biasa">
                             </div>
                         </div>
                     </div>
 
-                    <!-- KELOMPOK 2: IDENTITAS PELAKU -->
+                    <!-- 2. LPF & SPLIT -->
                     <div class="ios-container-group p-6 md:p-8 space-y-5">
-                        <div class="flex items-center space-x-3 border-b border-slate-200/60 pb-3">
-                            <div class="w-7 h-7 rounded-lg bg-indigo-500 text-white flex items-center justify-center text-xs shadow-sm">
-                                <i class="fa-solid fa-building"></i>
+                        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b pb-3 flex items-center text-blue-900">
+                            <i class="fa-solid fa-folder-tree mr-2"></i> II. Laporan Penelitian Tindak Pidana (LPF) & SPLIT Perkara
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 text-xs">
+                            <div>
+                                <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor LPF</label>
+                                <input type="text" id="nomor_lpf" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="LPF-04/KPU.2/2025">
                             </div>
-                            <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider">II. Identitas Pelaku / Perusahaan</h4>
+                            <div>
+                                <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Tanggal LPF</label>
+                                <input type="date" id="tanggal_lpf" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="2025-12-14">
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor SPLIT (Jika Ada)</label>
+                                <input type="text" id="nomor_split" class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="SPLIT-01/KPU.2/2025">
+                            </div>
                         </div>
+                    </div>
+
+                    <!-- 3. IDENTITAS PELAKU -->
+                    <div class="ios-container-group p-6 md:p-8 space-y-5">
+                        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b pb-3 flex items-center text-blue-900">
+                            <i class="fa-solid fa-building mr-2"></i> III. Identitas Pelaku / Perusahaan
+                        </h4>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-5 text-xs">
                             <div>
                                 <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nama Perusahaan / Pelaku</label>
@@ -341,14 +304,11 @@
                         </div>
                     </div>
 
-                    <!-- KELOMPOK 3: LOKASI & URAIAN -->
+                    <!-- 4. LOCUS & TEMPUS -->
                     <div class="ios-container-group p-6 md:p-8 space-y-5">
-                        <div class="flex items-center space-x-3 border-b border-slate-200/60 pb-3">
-                            <div class="w-7 h-7 rounded-lg bg-emerald-500 text-white flex items-center justify-center text-xs shadow-sm">
-                                <i class="fa-solid fa-location-dot"></i>
-                            </div>
-                            <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider">III. Locus, Tempus & Uraian Pelanggaran</h4>
-                        </div>
+                        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b pb-3 flex items-center text-blue-900">
+                            <i class="fa-solid fa-location-dot mr-2"></i> IV. Locus, Tempus & Uraian Pelanggaran
+                        </h4>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-5 text-xs">
                             <div>
                                 <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Tempat Kejadian (Locus)</label>
@@ -373,21 +333,22 @@
                         </div>
                     </div>
 
-                    <!-- KELOMPOK 4: BARANG BUKTI -->
+                    <!-- 5. PENCACAHAN & LHP -->
                     <div class="ios-container-group p-6 md:p-8 space-y-5">
-                        <div class="flex items-center space-x-3 border-b border-slate-200/60 pb-3">
-                            <div class="w-7 h-7 rounded-lg bg-amber-500 text-white flex items-center justify-center text-xs shadow-sm">
-                                <i class="fa-solid fa-boxes-stacked"></i>
-                            </div>
-                            <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider">IV. Barang Hasil Penindakan & Dokumen Asal</h4>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 text-xs">
+                        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b pb-3 flex items-center text-blue-900">
+                            <i class="fa-solid fa-boxes-stacked mr-2"></i> V. Berita Acara Pencacahan & Laporan Hasil Penelitian (LHP)
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 text-xs">
                             <div>
-                                <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Komoditi</label>
-                                <input type="text" id="komoditi" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="Barang lainnya">
+                                <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor / Tanggal Pencacahan</label>
+                                <input type="text" id="pencacahan" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="BAP-Cacah/12/XII/2025 Tgl 13-12-2025">
                             </div>
                             <div>
-                                <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Detail Uraian Barang</label>
+                                <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor LHP (Laporan Hasil Penelitian)</label>
+                                <input type="text" id="lhp" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="LHP-10/KPU.2/2025 Tgl 14-12-2025">
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Komoditi & Uraian Barang</label>
                                 <input type="text" id="uraian_barang" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="2 Pce / M Core B 81A447-2351, ETC">
                             </div>
                             <div>
@@ -397,135 +358,110 @@
                         </div>
                     </div>
 
-                    <!-- Tombol Simpan Aksi Ala Apple -->
                     <div class="flex justify-end pt-2 pb-6">
-                        <button type="submit" class="ios-btn-primary px-8 py-4 text-xs font-bold tracking-wide flex items-center space-x-2 shadow-xl">
+                        <button type="submit" class="ios-btn-primary px-8 py-4 text-xs font-bold tracking-wide flex items-center space-x-2 shadow-md">
                             <i class="fa-solid fa-floppy-disk text-sm mr-1"></i> 
-                            <span>Simpan Perkara Lengkap ke Database</span>
+                            <span>Simpan Perkara & Dokumen Lengkap</span>
                         </button>
                     </div>
                 </form>
             </section>
 
-            <!-- ================= TAB 2: CETAK LAPORAN ================= -->
+            <!-- CETAK & KELOLA DOKUMEN LENGKAP -->
             <section id="content-cetak" class="tab-content space-y-6 hidden">
-                <div class="soft-card p-6 rounded-3xl shadow-sm">
-                    <h3 class="text-sm font-bold text-slate-900">Cetak & Generate Dokumen Perkara</h3>
-                    <p class="text-xs text-slate-500 mt-0.5">Daftar perkara siap di-generate ke Word (.doc) atau PDF.</p>
+                <div class="soft-card p-6 rounded-2xl shadow-sm">
+                    <h3 class="text-sm font-bold text-slate-900">Cetak & Generate Seluruh Dokumen Perkara (LPP, LPF, SPLIT, SBP, Pencacahan, LHP)</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">Pilih dokumen yang ingin di-generate ke format Word (.doc) atau cetak PDF.</p>
                 </div>
-                <div class="soft-card rounded-3xl shadow-sm overflow-hidden">
+                <div class="soft-card rounded-2xl shadow-sm overflow-hidden">
                     <div class="overflow-x-auto">
                         <table class="w-full text-left text-xs">
-                            <thead class="bg-white/60 border-b text-slate-700 uppercase">
+                            <thead class="bg-slate-50 border-b text-slate-700 uppercase">
                                 <tr>
-                                    <th class="p-4">No. LPP</th>
-                                    <th class="p-4">Tanggal</th>
+                                    <th class="p-4">No. Perkara / LPP</th>
                                     <th class="p-4">Perusahaan</th>
-                                    <th class="p-4">Uraian Barang</th>
+                                    <th class="p-4">SBP & LPF</th>
+                                    <th class="p-4">Pencacahan & LHP</th>
                                     <th class="p-4 text-center">Aksi Dokumen</th>
                                 </tr>
                             </thead>
-                            <tbody id="tablePerkaraBody" class="divide-y divide-slate-200/40"></tbody>
+                            <tbody id="tablePerkaraBody" class="divide-y divide-slate-100"></tbody>
                         </table>
                     </div>
                 </div>
             </section>
 
-            <!-- ================= TAB 3: MONITORING ================= -->
+            <!-- MONITORING -->
             <section id="content-monitoring" class="tab-content space-y-6 hidden">
-                <div class="soft-card p-6 rounded-3xl shadow-sm">
+                <div class="soft-card p-6 rounded-2xl shadow-sm">
                     <h3 class="text-sm font-bold text-slate-900">Monitoring & Statistik Penelitian</h3>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="soft-card p-6 rounded-3xl shadow-sm flex items-center space-x-4">
-                        <div class="theme-accent bg-slate-900 text-white p-4 rounded-2xl text-xl"><i class="fa-solid fa-folder-open"></i></div>
+                    <div class="soft-card p-6 rounded-2xl shadow-sm flex items-center space-x-4">
+                        <div class="bg-slate-900 text-white p-4 rounded-xl text-xl"><i class="fa-solid fa-folder-open"></i></div>
                         <div>
-                            <p class="text-xs text-slate-400 font-semibold uppercase">Total Dokumen LPP</p>
+                            <p class="text-xs text-slate-400 font-semibold uppercase">Total Berkas Perkara</p>
                             <h3 id="statTotal" class="text-2xl font-bold text-slate-900 mt-1">1</h3>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- ================= TAB 4: PENGATURAN & AKUN ================= -->
+            <!-- PENGATURAN -->
             <section id="content-setting" class="tab-content space-y-6 hidden">
-                <div class="soft-card p-6 rounded-3xl shadow-sm">
+                <div class="soft-card p-6 rounded-2xl shadow-sm">
                     <h3 class="text-sm font-bold text-slate-900">Pengaturan Akun & Kustomisasi Tampilan</h3>
-                    <p class="text-xs text-slate-500 mt-0.5">Kelola foto profil, background dashboard (bawaan file `background.jpg`), kredensial penyidik, dan tema warna sistem.</p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="soft-card p-8 rounded-3xl shadow-sm space-y-4">
+                    <div class="soft-card p-8 rounded-2xl shadow-sm space-y-4">
                         <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b pb-3">Informasi Profil & Foto</h4>
                         
                         <div class="flex items-center space-x-4 py-2">
-                            <img id="previewProfileImg" src="logo-beacukai.png" alt="Avatar Preview" class="w-16 h-16 rounded-full bg-white border-2 border-slate-300 object-cover shadow-md">
+                            <img id="previewProfileImg" src="logo-beacukai.png" alt="Avatar" class="w-16 h-16 rounded-full bg-slate-200 border object-cover">
                             <div class="space-y-1">
                                 <label class="block font-semibold text-slate-700 text-xs">Unggah Foto Profil Baru</label>
-                                <input type="file" id="uploadAvatarInput" accept="image/*" onchange="previewImageFile(event)" class="text-[11px] text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-slate-900 file:text-white hover:file:bg-slate-800 cursor-pointer">
+                                <input type="file" id="uploadAvatarInput" accept="image/*" onchange="previewImageFile(event)" class="text-[11px] text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-slate-900 file:text-white cursor-pointer">
                             </div>
                         </div>
 
                         <form onsubmit="updateProfileInfo(event)" class="space-y-4 text-xs pt-2">
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Nama / Jabatan Penyidik</label>
-                                <input type="text" id="settingName" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="Penyidik Utama">
+                                <input type="text" id="settingName" required class="w-full p-3 ios-input-field" value="Penyidik Utama">
                             </div>
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Alamat Email Aktif</label>
-                                <input type="email" id="settingEmail" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="penyidik.batam@beacukai.go.id">
+                                <input type="email" id="settingEmail" required class="w-full p-3 ios-input-field" value="penyidik.batam@beacukai.go.id">
                             </div>
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">NIP (Nomor Induk Pegawai)</label>
-                                <input type="text" id="settingNip" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="198006062001121001">
+                                <input type="text" id="settingNip" required class="w-full p-3 ios-input-field" value="198006062001121001">
                             </div>
-                            <button type="submit" class="theme-accent w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl shadow transition">Simpan Perubahan Profil</button>
+                            <button type="submit" class="ios-btn-primary w-full py-3 shadow">Simpan Perubahan Profil</button>
                         </form>
                     </div>
 
-                    <div class="soft-card p-8 rounded-3xl shadow-sm space-y-6">
+                    <div class="soft-card p-8 rounded-2xl shadow-sm space-y-6">
                         <div>
                             <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b pb-3 mb-3">Background Dashboard Sinkron</h4>
                             <div class="space-y-3 text-xs">
-                                <label class="block font-semibold text-slate-700">Unggah Gambar Latar Belakang Kustom</label>
-                                <input type="file" id="uploadBackgroundInput" accept="image/*" onchange="previewBackgroundFile(event)" class="text-[11px] text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-slate-900 file:text-white hover:file:bg-slate-800 cursor-pointer">
-                                <button type="button" onclick="resetDefaultBackground()" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-2.5 rounded-xl shadow-sm transition mt-1">Gunakan Background Bawaan (`background.jpg`)</button>
+                                <label class="block font-semibold text-slate-700">Unggah Wallpaper Kustom</label>
+                                <input type="file" id="uploadBackgroundInput" accept="image/*" onchange="previewBackgroundFile(event)" class="text-[11px] text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-slate-900 file:text-white cursor-pointer">
+                                <button type="button" onclick="resetDefaultBackground()" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-2.5 rounded-xl transition mt-1">Gunakan Background Bawaan</button>
                             </div>
                         </div>
 
-                        <div class="pt-2 border-t border-slate-200/60">
+                        <div class="pt-2 border-t border-slate-200">
                             <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b pb-3 mb-3">Keamanan & Sandi</h4>
                             <form onsubmit="updatePassword(event)" class="space-y-3 text-xs">
                                 <div>
                                     <label class="block font-semibold text-slate-700 mb-1">Password Baru</label>
-                                    <input type="password" id="newPassword" required placeholder="Masukkan password baru" class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none">
+                                    <input type="password" id="newPassword" required placeholder="Masukkan password baru" class="w-full p-3 ios-input-field">
                                 </div>
-                                <button type="submit" class="theme-accent w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl shadow transition">Perbarui Password</button>
+                                <button type="submit" class="ios-btn-primary w-full py-2.5 shadow">Perbarui Password</button>
                             </form>
                         </div>
-
-                        <div class="pt-2 border-t border-slate-200/60">
-                            <h4 class="text-xs font-bold text-rose-600 uppercase tracking-wider mb-2">Zona Bahaya</h4>
-                            <button type="button" onclick="confirmDeleteAccount()" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-2.5 rounded-xl shadow transition text-xs">Hapus Akun & Reset Data</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="soft-card p-8 rounded-3xl shadow-sm space-y-4">
-                    <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b pb-3">Kustomisasi Tema Warna Tampilan</h4>
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2">
-                        <button onclick="setTheme('slate')" class="p-4 rounded-2xl border-2 border-slate-900 bg-slate-900 text-white text-xs font-bold shadow transition flex items-center justify-center space-x-2">
-                            <i class="fa-solid fa-circle text-slate-700"></i> <span>Slate Dark</span>
-                        </button>
-                        <button onclick="setTheme('blue')" class="p-4 rounded-2xl border-2 border-blue-600 bg-blue-600 text-white text-xs font-bold shadow transition flex items-center justify-center space-x-2">
-                            <i class="fa-solid fa-circle text-blue-400"></i> <span>Blue Classic</span>
-                        </button>
-                        <button onclick="setTheme('emerald')" class="p-4 rounded-2xl border-2 border-emerald-600 bg-emerald-600 text-white text-xs font-bold shadow transition flex items-center justify-center space-x-2">
-                            <i class="fa-solid fa-circle text-emerald-400"></i> <span>Emerald Green</span>
-                        </button>
-                        <button onclick="setTheme('indigo')" class="p-4 rounded-2xl border-2 border-indigo-600 bg-indigo-600 text-white text-xs font-bold shadow transition flex items-center justify-center space-x-2">
-                            <i class="fa-solid fa-circle text-indigo-400"></i> <span>Indigo Royal</span>
-                        </button>
                     </div>
                 </div>
             </section>
@@ -533,19 +469,32 @@
         </main>
     </div>
 
-    <!-- POP-UP MODAL -->
+    <!-- MODAL -->
     <div id="dashboardModal" class="fixed inset-0 ios-overlay hidden items-center justify-center z-50 p-4">
-        <div class="w-full max-w-xs rounded-3xl shadow-2xl overflow-hidden text-center ios-alert-box border border-white/50">
+        <div class="w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden text-center ios-alert-box border border-slate-200">
             <div class="pt-6 px-6 pb-4">
                 <div id="modalIconContainer" class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl bg-emerald-50 text-emerald-600">
                     <i class="fa-solid fa-file-circle-check"></i>
                 </div>
-                <h3 id="modalTitle" class="text-base font-bold text-slate-900 mb-1">Informasi Sistem</h3>
-                <p id="dynamicModalMessage" class="text-xs text-slate-600 leading-relaxed px-1"></p>
+                <h3 id="modalTitle" class="text-base font-bold text-slate-900 mb-1">Pilih Jenis Dokumen</h3>
+                <p id="dynamicModalMessage" class="text-xs text-slate-600 leading-relaxed px-1 mb-4"></p>
+                
+                <!-- Pilihan Dokumen Lengkap -->
+                <div id="dokumenSelectorContainer" class="space-y-2 text-left">
+                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider">Format Dokumen Output:</label>
+                    <select id="pilihJenisDokumen" class="w-full p-3 ios-input-field text-xs font-semibold">
+                        <option value="LPP">Lembar Penerimaan Perkara (LPP)</option>
+                        <option value="LPF">Laporan Penelitian Tindak Pidana (LPF)</option>
+                        <option value="SBP">Surat Bukti Penindakan (SBP)</option>
+                        <option value="SPLIT">Surat Perintah SPLIT Perkara</option>
+                        <option value="PENCACAHAN">Berita Acara Pencacahan</option>
+                        <option value="LHP">Laporan Hasil Penelitian (LHP)</option>
+                    </select>
+                </div>
             </div>
-            <div class="border-t border-slate-200/80 flex divide-x divide-slate-200/80">
-                <button type="button" onclick="closeDashboardModal()" class="w-1/2 py-3 text-xs font-medium text-slate-500 hover:bg-white/50">Tutup</button>
-                <button type="button" id="modalActionBtn" onclick="executeModalAction()" class="w-1/2 py-3 text-xs font-semibold text-slate-900 hover:bg-white/50">OK</button>
+            <div class="border-t border-slate-100 flex divide-x divide-slate-100">
+                <button type="button" onclick="closeDashboardModal()" class="w-1/2 py-3 text-xs font-medium text-slate-500 hover:bg-slate-50">Tutup</button>
+                <button type="button" id="modalActionBtn" onclick="executeModalAction()" class="w-1/2 py-3 text-xs font-semibold text-slate-900 hover:bg-slate-50">Unduh Dokumen</button>
             </div>
         </div>
     </div>
@@ -553,12 +502,15 @@
     <script>
         let daftarPerkara = JSON.parse(localStorage.getItem('bc_daftar_perkara')) || [
             {
+                nomor_sbp: "1659/Mandiri/KPU.2/2025",
+                tanggal_sbp: "2025-12-12",
                 nomor_lpp: "1482/KPU.206/2025",
                 tanggal_lpp: "2025-12-13",
                 asal_perkara: "Seksi Penindakan",
-                nomor_sbp: "1659/Mandiri/KPU.2/2025",
-                tanggal_sbp: "2025-12-12",
                 status_penangkapan: "Penindakan Biasa",
+                nomor_lpf: "LPF-04/KPU.2/2025",
+                tanggal_lpf: "2025-12-14",
+                nomor_split: "SPLIT-01/KPU.2/2025",
                 nama_pelaku: "PT HAWILA ADHI PERKASA",
                 npwp_pelaku: "860753292225000",
                 pj_pelaku: "CHANNER SIMBOLON",
@@ -568,6 +520,8 @@
                 jenis_pelanggaran: "Pasal 53 ayat (3) UU No. 17 Tahun 2006 & Pasal 33 ayat (1), Pasal 71 ayat (1) PP No. 41 Tahun 2021",
                 jenis_perkara: "Pengeluaran barang dari KPBPB Batam ke TLDDP tanpa/salah pemberitahuan pabean",
                 modus_operandi: "Mengeluarkan barang dari KPBPB Batam ke TLDDP tanpa/salah pemberitahuan pabean",
+                pencacahan: "BAP-Cacah/12/XII/2025 Tgl 13-12-2025",
+                lhp: "LHP-10/KPU.2/2025 Tgl 14-12-2025",
                 komoditi: "Barang lainnya",
                 uraian_barang: "2 Pce / M Core B 81A447-2351, ETC",
                 dok_pabean: "PPFTZ-01 No. 011407 Tgl 28 November 2025"
@@ -584,7 +538,7 @@
         };
 
         let currentModalActionType = null;
-        let selectedPerkaraUntukDownload = null;
+        let selectedPerkaraIndex = null;
         let tempAvatarBase64 = null;
         let tempBackgroundBase64 = null;
 
@@ -600,7 +554,6 @@
             document.getElementById('previewProfileImg').src = avatarSrc;
 
             applyWallpaper();
-            setTheme(userProfile.theme, false);
         }
 
         function applyWallpaper() {
@@ -629,7 +582,7 @@
                     userProfile.background = tempBackgroundBase64;
                     localStorage.setItem('bc_user_profile', JSON.stringify(userProfile));
                     applyWallpaper();
-                    showModal("Berhasil", "Background dashboard kustom berhasil diunggah dan disinkronkan!", true, null);
+                    showModalInfo("Berhasil", "Background dashboard kustom berhasil diunggah!");
                 }
                 reader.readAsDataURL(file);
             }
@@ -639,7 +592,7 @@
             userProfile.background = "";
             localStorage.setItem('bc_user_profile', JSON.stringify(userProfile));
             applyWallpaper();
-            showModal("Reset Berhasil", "Background dikembalikan ke file bawaan (background.jpg).", true, null);
+            showModalInfo("Reset Berhasil", "Background dikembalikan ke file bawaan.");
         }
 
         function toggleSidebar() {
@@ -653,7 +606,7 @@
             });
 
             document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.className = "nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-2xl text-xs font-semibold text-slate-600 hover:bg-white/60 transition";
+                btn.className = "nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition";
             });
 
             const targetContent = document.getElementById('content-' + targetId);
@@ -665,29 +618,15 @@
             const wallpaperEl = document.getElementById('dashboardWallpaper');
             const overlayEl = document.getElementById('wallpaperOverlay');
             if (targetId === 'dashboard') {
-                wallpaperEl.style.opacity = '1';
-                overlayEl.style.opacity = '1';
                 wallpaperEl.style.display = 'block';
                 overlayEl.style.display = 'block';
             } else {
-                wallpaperEl.style.opacity = '0';
-                overlayEl.style.opacity = '0';
-                setTimeout(() => {
-                    if(document.getElementById('content-dashboard').classList.contains('hidden')) {
-                        wallpaperEl.style.display = 'none';
-                        overlayEl.style.display = 'none';
-                    }
-                }, 400);
+                wallpaperEl.style.display = 'none';
+                overlayEl.style.display = 'none';
             }
 
-            const theme = userProfile.theme || 'slate';
-            let bgClass = "bg-slate-900";
-            if(theme === 'blue') bgClass = "bg-blue-600";
-            else if(theme === 'emerald') bgClass = "bg-emerald-600";
-            else if(theme === 'indigo') bgClass = "bg-indigo-600";
-
             if(btnElement) {
-                btnElement.className = `nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-2xl text-xs font-semibold ${bgClass} text-white shadow-md transition`;
+                btnElement.className = "nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold bg-slate-900 text-white shadow transition";
                 document.getElementById('pageTitle').innerText = btnElement.querySelector('span').innerText;
             }
 
@@ -705,60 +644,36 @@
             }
             localStorage.setItem('bc_user_profile', JSON.stringify(userProfile));
             initProfile();
-            showModal("Berhasil", "Profil dan foto avatar berhasil diperbarui!", true, null);
+            showModalInfo("Berhasil", "Profil berhasil diperbarui!");
         }
 
         function updatePassword(event) {
             event.preventDefault();
             const pass = document.getElementById('newPassword').value;
             if(pass.length < 6) {
-                showModal("Peringatan", "Password minimal harus 6 karakter.", false, null);
+                showModalInfo("Peringatan", "Password minimal harus 6 karakter.");
                 return;
             }
-            showModal("Berhasil", "Password akun berhasil diubah.", true, null);
+            showModalInfo("Berhasil", "Password berhasil diubah.");
             document.getElementById('newPassword').value = '';
         }
 
-        function confirmDeleteAccount() {
-            currentModalActionType = 'delete_account';
-            showModal("Konfirmasi Hapus", "Apakah Anda yakin ingin menghapus akun dan mereset seluruh database perkara?", false, 'delete_account');
-        }
-
-        function setTheme(themeName, save = true) {
-            userProfile.theme = themeName;
-            if(save) localStorage.setItem('bc_user_profile', JSON.stringify(userProfile));
-
-            const rootColorMap = {
-                slate: 'bg-slate-900',
-                blue: 'bg-blue-600',
-                emerald: 'bg-emerald-600',
-                indigo: 'bg-indigo-600'
-            };
-
-            const activeBg = rootColorMap[themeName] || 'bg-slate-900';
-            document.getElementById('sidebarLogoIcon').className = `w-8 h-8 rounded-xl ${activeBg} text-white flex items-center justify-center font-bold text-xs shadow-md transition-colors`;
-            
-            const activeBtn = document.querySelector('.nav-btn.bg-slate-900, .nav-btn.bg-blue-600, .nav-btn.bg-emerald-600, .nav-btn.bg-indigo-600');
-            if(activeBtn) {
-                activeBtn.className = `nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-2xl text-xs font-semibold ${activeBg} text-white shadow-md transition`;
-            }
-
-            if(save) showModal("Tema Diperbarui", `Warna tema berhasil diubah ke ${themeName}.`, true, null);
-        }
-
         function loadSampleData() {
-            showModal("Data Dimuat", "Data contoh kasus resmi (Hawila Adhi Perkasa) berhasil dimuat ke form!", true, null);
+            showModalInfo("Data Dimuat", "Data contoh kasus resmi berhasil dimuat ke form!");
         }
 
         function saveDataPerkara(event) {
             event.preventDefault();
             const baru = {
+                nomor_sbp: document.getElementById('nomor_sbp').value,
+                tanggal_sbp: document.getElementById('tanggal_sbp').value,
                 nomor_lpp: document.getElementById('nomor_lpp').value,
                 tanggal_lpp: document.getElementById('tanggal_lpp').value,
                 asal_perkara: document.getElementById('asal_perkara').value,
-                nomor_sbp: document.getElementById('nomor_sbp').value,
-                tanggal_sbp: document.getElementById('tanggal_sbp').value,
                 status_penangkapan: document.getElementById('status_penangkapan').value,
+                nomor_lpf: document.getElementById('nomor_lpf').value,
+                tanggal_lpf: document.getElementById('tanggal_lpf').value,
+                nomor_split: document.getElementById('nomor_split').value,
                 nama_pelaku: document.getElementById('nama_pelaku').value,
                 npwp_pelaku: document.getElementById('npwp_pelaku').value,
                 pj_pelaku: document.getElementById('pj_pelaku').value,
@@ -768,6 +683,8 @@
                 jenis_pelanggaran: document.getElementById('jenis_pelanggaran').value,
                 jenis_perkara: document.getElementById('jenis_perkara').value,
                 modus_operandi: document.getElementById('modus_operandi').value,
+                pencacahan: document.getElementById('pencacahan').value,
+                lhp: document.getElementById('lhp').value,
                 komoditi: document.getElementById('komoditi').value,
                 uraian_barang: document.getElementById('uraian_barang').value,
                 dok_pabean: document.getElementById('dok_pabean').value
@@ -776,7 +693,7 @@
             daftarPerkara.push(baru);
             localStorage.setItem('bc_daftar_perkara', JSON.stringify(daftarPerkara));
 
-            showModal("Berhasil Disimpan", `Perkara LPP No: ${baru.nomor_lpp} berhasil disimpan ke database lokal.`, true, null);
+            showModalInfo("Berhasil Disimpan", `Berkas perkara LPP No: ${baru.nomor_lpp} berhasil disimpan ke database.`);
             document.getElementById('penyidikanForm').reset();
             updateMonitoringStats();
         }
@@ -784,54 +701,46 @@
         function renderTablePerkara() {
             const tbody = document.getElementById('tablePerkaraBody');
             tbody.innerHTML = '';
-
             if (daftarPerkara.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-400">Belum ada data perkara.</td></tr>`;
                 return;
             }
-
             daftarPerkara.forEach((item, index) => {
                 tbody.innerHTML += `
-                    <tr class="hover:bg-white/40 transition">
-                        <td class="p-4 font-semibold text-slate-900">${item.nomor_lpp}</td>
-                        <td class="p-4 text-slate-600">${item.tanggal_lpp}</td>
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="p-4 font-semibold text-slate-900">${item.nomor_lpp}<br><span class="text-[10px] text-slate-400 font-normal">SBP: ${item.nomor_sbp}</span></td>
                         <td class="p-4 font-medium">${item.nama_pelaku}</td>
-                        <td class="p-4 text-slate-600">${item.uraian_barang}</td>
-                        <td class="p-4 text-center space-x-2">
-                            <button type="button" onclick='triggerGenerate(${index}, "docx")' class="theme-accent bg-slate-900 hover:bg-slate-800 text-white px-3 py-1.5 rounded-xl text-[11px] shadow transition"><i class="fa-solid fa-file-word mr-1"></i> Word</button>
-                            <button type="button" onclick='triggerGenerate(${index}, "pdf")' class="bg-rose-600 hover:bg-rose-700 text-white px-3 py-1.5 rounded-xl text-[11px] shadow transition"><i class="fa-solid fa-file-pdf mr-1"></i> PDF</button>
+                        <td class="p-4 text-slate-600">LPF: ${item.nomor_lpf}<br><span class="text-[10px] text-slate-400">SPLIT: ${item.nomor_split || '-'}</span></td>
+                        <td class="p-4 text-slate-600">LHP: ${item.lhp}<br><span class="text-[10px] text-slate-400">Cacah: ${item.pencacahan}</span></td>
+                        <td class="p-4 text-center">
+                            <button type="button" onclick="triggerPilihDokumen(${index})" class="bg-slate-900 hover:bg-slate-800 text-white px-3.5 py-2 rounded-xl text-xs font-semibold shadow transition flex items-center justify-center mx-auto space-x-1.5">
+                                <i class="fa-solid fa-file-arrow-down"></i> <span>Pilih Dokumen</span>
+                            </button>
                         </td>
                     </tr>
                 `;
             });
         }
 
-        function triggerGenerate(index, format) {
-            selectedPerkaraUntukDownload = { ...daftarPerkara[index], format: format };
-            currentModalActionType = 'download_file';
-            showModal("Dokumen Siap", `Dokumen LPP No: ${selectedPerkaraUntukDownload.nomor_lpp} siap diunduh.`, true, 'download_file');
+        function triggerPilihDokumen(index) {
+            selectedPerkaraIndex = index;
+            currentModalActionType = 'generate_dokumen';
+            document.getElementById('modalTitle').innerText = "Pilih Dokumen Perkara";
+            document.getElementById('dynamicModalMessage').innerText = "Pilih jenis dokumen resmi penyidikan Bea Cukai yang ingin di-generate:";
+            document.getElementById('dokumenSelectorContainer').style.display = 'block';
+            document.getElementById('modalActionBtn').innerText = "Unduh / Cetak";
+            
+            document.getElementById('dashboardModal').classList.remove('hidden');
+            document.getElementById('dashboardModal').classList.add('flex');
         }
 
-        function showModal(title, message, isSuccess = true, actionType = null) {
+        function showModalInfo(title, message) {
             document.getElementById('modalTitle').innerText = title;
             document.getElementById('dynamicModalMessage').innerText = message;
-            currentModalActionType = actionType;
-
-            const iconContainer = document.getElementById('modalIconContainer');
-            const actionBtn = document.getElementById('modalActionBtn');
-
-            if (isSuccess) {
-                iconContainer.className = "w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl bg-emerald-50 text-emerald-600";
-                iconContainer.innerHTML = '<i class="fa-solid fa-file-circle-check"></i>';
-            } else {
-                iconContainer.className = "w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl bg-rose-50 text-rose-600";
-                iconContainer.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
-            }
-
-            if (actionType === 'download_file') actionBtn.innerText = "Unduh File";
-            else if (actionType === 'delete_account') actionBtn.innerText = "Ya, Hapus";
-            else actionBtn.innerText = "OK";
-
+            document.getElementById('dokumenSelectorContainer').style.display = 'none';
+            document.getElementById('modalActionBtn').innerText = "OK";
+            currentModalActionType = 'info_only';
+            
             document.getElementById('dashboardModal').classList.remove('hidden');
             document.getElementById('dashboardModal').classList.add('flex');
         }
@@ -839,47 +748,70 @@
         function closeDashboardModal() {
             document.getElementById('dashboardModal').classList.add('hidden');
             document.getElementById('dashboardModal').classList.remove('flex');
-            currentModalActionType = null;
         }
 
         function executeModalAction() {
-            if (currentModalActionType === 'download_file' && selectedPerkaraUntukDownload) {
-                const item = selectedPerkaraUntukDownload;
+            if (currentModalActionType === 'generate_dokumen' && selectedPerkaraIndex !== null) {
+                const item = daftarPerkara[selectedPerkaraIndex];
+                const jenisDoc = document.getElementById('pilihJenisDokumen').value;
                 const namaFileClean = item.nomor_lpp.replace(/[\/\\:]/g, '_');
 
-                if (item.format === 'docx') {
-                    const kontenHtml = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>Laporan</title></head><body style="font-family: Arial; font-size: 11pt;"><h3>LEMBAR PENERIMAAN PERKARA</h3><p><strong>Nomor:</strong> ${item.nomor_lpp}</p><p><strong>Perusahaan:</strong> ${item.nama_pelaku}</p><p><strong>Uraian:</strong> ${item.uraian_barang}</p></body></html>`;
-                    const blob = new Blob(['\ufeff' + kontenHtml], { type: 'application/msword' });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = `LPP_${namaFileClean}.doc`;
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
-                } else if (item.format === 'pdf') {
-                    const printWindow = window.open('', '_blank');
-                    printWindow.document.write(`<html><head><title>Cetak</title></head><body style="font-family: Arial; padding: 30px;"><h3>LPP: ${item.nomor_lpp}</h3><p>Perusahaan: ${item.nama_pelaku}</p><p>Barang: ${item.uraian_barang}</p><script>window.onload = function() { window.print(); }<\/script></body></html>`);
-                    printWindow.document.close();
-                }
-            } else if (currentModalActionType === 'delete_account') {
-                localStorage.clear();
-                alert("Akun dan database berhasil dihapus. Halaman akan dimuat ulang.");
-                location.reload();
+                // Generate dokumen Word (.doc) spesifik sesuai pilihan
+                const kontenHtml = `
+                    <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+                    <head><meta charset="utf-8"><title>${jenisDoc}</title></head>
+                    <body style="font-family: Arial; font-size: 11pt; line-height: 1.5; padding: 20px;">
+                        <h2 style="text-align: center; text-transform: uppercase;">KANTOR PELAYANAN UTAMA BEA DAN CUKAI TIPE B BATAM</h2>
+                        <h3 style="text-align: center; text-transform: uppercase;">${jenisDoc}</h3>
+                        <hr>
+                        <p><strong>Nomor Dokumen:</strong> ${jenisDoc === 'SBP' ? item.nomor_sbp : jenisDoc === 'LPF' ? item.nomor_lpf : item.nomor_lpp}</p>
+                        <p><strong>Tanggal:</strong> ${item.tanggal_lpp}</p>
+                        <p><strong>Nama Perusahaan / Pelaku:</strong> ${item.nama_pelaku}</p>
+                        <p><strong>NPWP:</strong> ${item.npwp_pelaku}</p>
+                        <p><strong>Penanggung Jawab:</strong> ${item.pj_pelaku}</p>
+                        <p><strong>Alamat:</strong> ${item.alamat_pelaku}</p>
+                        <hr>
+                        <p><strong>Locus (Tempat Kejadian):</strong> ${item.tempat_kejadian}</p>
+                        <p><strong>Tempus (Waktu Kejadian):</strong> ${item.waktu_kejadian}</p>
+                        <p><strong>Uraian Pelanggaran:</strong> ${item.jenis_perkara} (${item.jenis_pelanggaran})</p>
+                        <p><strong>Modus Operandi:</strong> ${item.modus_operandi}</p>
+                        <p><strong>Barang Bukti / Komoditi:</strong> ${item.komoditi} - ${item.uraian_barang}</p>
+                        <p><strong>Dokumen Pabean Asal:</strong> ${item.dok_pabean}</p>
+                        <p><strong>Pencacahan & LHP:</strong> ${item.pencacahan} | ${item.lhp}</p>
+                        <br><br>
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="width: 50%;"></td>
+                                <td style="width: 50%; text-align: center;">
+                                    <p>Penyidik Pegawai Negeri Sipil (PPNS)<br>Bea dan Cukai Batam</p>
+                                    <br><br><br>
+                                    <p><strong><u>${userProfile.name}</u></strong><br>NIP. ${userProfile.nip}</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </body></html>
+                `;
+
+                const blob = new Blob(['\ufeff' + kontenHtml], { type: 'application/msword' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${jenisDoc}_${namaFileClean}.doc`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
             }
             closeDashboardModal();
         }
 
         function updateMonitoringStats() {
             const total = daftarPerkara.length;
-            const statEl = document.getElementById('statTotal');
-            const dashEl = document.getElementById('dashTotalPerkara');
-            if(statEl) statEl.innerText = total;
-            if(dashEl) dashEl.innerText = total;
+            document.getElementById('statTotal').innerText = total;
+            document.getElementById('dashTotalPerkara').innerText = total;
         }
 
-initProfile();
+        initProfile();
         updateMonitoringStats();
     </script>
 </body>
