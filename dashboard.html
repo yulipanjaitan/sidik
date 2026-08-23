@@ -9,13 +9,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
-            background-color: #f8fafc;
+            background-color: #f2f2f7; /* Warna latar khas iOS System Background */
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
-        /* Lapisan Wallpaper khusus background dashboard dengan efek animasi Ken Burns halus */
+        /* Lapisan Wallpaper khusus background dashboard */
         #dashboardWallpaper {
             position: fixed;
             top: 0;
@@ -36,7 +37,6 @@
             100% { transform: scale(1.08); }
         }
 
-        /* Overlay gelap tipis agar kontras teks tetap tajam */
         #wallpaperOverlay {
             position: fixed;
             top: 0;
@@ -56,11 +56,52 @@
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.6);
             box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
         }
 
-        .soft-card:hover {
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+        /* KELAS KHUSUS GAYA ALA iOS / APPLE HIG */
+        .ios-container-group {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            border-radius: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s ease;
+        }
+
+        .ios-container-group:hover {
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+            border-color: rgba(203, 213, 225, 1);
+        }
+
+        .ios-input-field {
+            background: rgba(241, 245, 249, 0.7);
+            border: 1.5px solid transparent;
+            border-radius: 14px;
+            transition: all 0.25s ease;
+            font-size: 13px;
+        }
+
+        .ios-input-field:focus {
+            background: #ffffff;
+            border-color: #007aff; /* Apple Blue Accent */
+            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.12);
+            outline: none;
+        }
+
+        .ios-btn-primary {
+            background: #007aff;
+            color: white;
+            border-radius: 14px;
+            font-weight: 600;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+        }
+
+        .ios-btn-primary:hover {
+            background: #0062cc;
+            box-shadow: 0 6px 16px rgba(0, 122, 255, 0.4);
+            transform: translateY(-1px);
         }
 
         .ios-overlay { 
@@ -72,6 +113,7 @@
             animation: iosPop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; 
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(25px);
+            border-radius: 24px;
         }
 
         @keyframes iosPop {
@@ -84,6 +126,7 @@
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
+            border-radius: 28px;
         }
 
         .sidebar-hidden {
@@ -99,9 +142,9 @@
             background: rgba(255, 255, 255, 0.82) !important;
             backdrop-filter: blur(20px) !important;
             -webkit-backdrop-filter: blur(20px) !important;
+            border-radius: 24px;
         }
 
-        /* Animasi masuk halaman */
         .tab-content {
             animation: fadeInContent 0.4s ease-out forwards;
         }
@@ -112,14 +155,14 @@
         }
     </style>
 </head>
-<body id="appBody" class="min-h-screen font-sans text-slate-800 flex p-3 md:p-6 transition-all duration-300">
+<body id="appBody" class="min-h-screen text-slate-800 flex p-3 md:p-6 transition-all duration-300">
 
     <!-- Latar Belakang Wallpaper Aktif Hanya di Menu Dashboard -->
     <div id="dashboardWallpaper"></div>
     <div id="wallpaperOverlay"></div>
 
     <!-- SIDEBAR KIRI -->
-    <aside id="sidebar" class="w-64 rounded-3xl min-h-[92vh] hidden md:flex flex-col justify-between p-5 shadow-2xl border border-white/50 sticky top-4 z-30">
+    <aside id="sidebar" class="w-64 min-h-[92vh] hidden md:flex flex-col justify-between p-5 shadow-2xl border border-white/50 sticky top-4 z-30">
         <div>
             <div class="flex items-center space-x-3 px-3 mb-6">
                 <div id="sidebarLogoIcon" class="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center font-bold text-xs shadow-md transition-colors">
@@ -168,7 +211,7 @@
     <div id="mainContent" class="flex-1 md:ml-6 flex flex-col min-h-screen transition-all duration-300">
         
         <!-- TOP NAVBAR -->
-        <header class="flex justify-between items-center px-6 py-4 rounded-3xl shadow-sm border border-white/50 mb-6">
+        <header class="flex justify-between items-center px-6 py-4 shadow-sm border border-white/50 mb-6">
             <div class="flex items-center space-x-4">
                 <button type="button" onclick="toggleSidebar()" class="w-8 h-8 rounded-full bg-white/80 hover:bg-slate-900 hover:text-white text-slate-700 flex items-center justify-center shadow transition text-xs">
                     <i class="fa-solid fa-bars"></i>
@@ -196,8 +239,8 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     <div class="soft-card p-5 rounded-3xl shadow-sm flex justify-between items-center">
                         <div>
-                            <p class="text-[10px] font-bold text-slate-500 uppercase">Total Perkara (LPP)</p>
-                            <h3 id="dashTotalPerkara" class="text-xl font-bold text-slate-900 mt-1">1</h3>
+                            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Total Perkara (LPP)</p>
+                            <h3 id="dashTotalPerkara" class="text-2xl font-bold text-slate-900 mt-1">1</h3>
                             <p class="text-[10px] text-emerald-700 font-bold mt-1"><i class="fa-solid fa-circle-check mr-1"></i> Terindeks Aktif</p>
                         </div>
                         <div class="theme-accent w-10 h-10 rounded-2xl bg-slate-900 text-white flex items-center justify-center text-sm shadow-md">
@@ -206,8 +249,8 @@
                     </div>
                     <div class="soft-card p-5 rounded-3xl shadow-sm flex justify-between items-center">
                         <div>
-                            <p class="text-[10px] font-bold text-slate-500 uppercase">Status Sistem</p>
-                            <h3 class="text-xl font-bold text-slate-900 mt-1">Online</h3>
+                            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Status Sistem</p>
+                            <h3 class="text-2xl font-bold text-slate-900 mt-1">Online</h3>
                             <p class="text-[10px] text-emerald-700 font-bold mt-1"><i class="fa-solid fa-shield-halved mr-1"></i> Database Sinkron</p>
                         </div>
                         <div class="theme-accent w-10 h-10 rounded-2xl bg-slate-900 text-white flex items-center justify-center text-sm shadow-md">
@@ -217,126 +260,148 @@
                 </div>
             </section>
 
-            <!-- ================= TAB 1: INPUT DATA ================= -->
+            <!-- ================= TAB 1: INPUT DATA (GAYA ALA iOS / APPLE HIG) ================= -->
             <section id="content-input" class="tab-content space-y-6 hidden">
-                <div class="soft-card p-6 rounded-3xl shadow-sm flex justify-between items-center">
+                <!-- Header Card ala Apple -->
+                <div class="ios-container-group p-6 flex justify-between items-center">
                     <div>
-                        <h3 class="text-sm font-bold text-slate-900">Form Input Data Dokumen Perkara Penyidikan</h3>
+                        <span class="text-[10px] font-bold tracking-widest text-blue-600 uppercase bg-blue-50 px-2.5 py-1 rounded-full">Apple Style Forms</span>
+                        <h3 class="text-sm font-bold text-slate-900 mt-2">Form Input Data Dokumen Perkara Penyidikan</h3>
                         <p class="text-xs text-slate-500 mt-0.5">Sesuai format dokumen LPP, LPF, SPLIT, SBP, Pencacahan, dan LHP Bea Cukai Batam.</p>
                     </div>
-                    <button type="button" onclick="loadSampleData()" class="theme-accent bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow transition">
-                        <i class="fa-solid fa-bolt mr-1"></i> Muat Data Kasus Hawila
+                    <button type="button" onclick="loadSampleData()" class="ios-btn-primary px-4 py-2.5 text-xs font-semibold flex items-center space-x-2">
+                        <i class="fa-solid fa-bolt mr-1"></i> <span>Muat Data Kasus Hawila</span>
                     </button>
                 </div>
 
-                <form id="penyidikanForm" onsubmit="saveDataPerkara(event)" class="soft-card rounded-3xl shadow-sm p-8 space-y-8">
-                    <div class="space-y-4">
-                        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b pb-3 flex items-center text-blue-900">
-                            <i class="fa-solid fa-file-lines mr-2"></i> I. Lembar Penerimaan Perkara (LPP) & SBP
-                        </h4>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
+                <!-- Form Utama dengan Kartu Grup Berkelompok ala iOS Settings -->
+                <form id="penyidikanForm" onsubmit="saveDataPerkara(event)" class="space-y-6">
+                    
+                    <!-- KELOMPOK 1: LPP & SBP -->
+                    <div class="ios-container-group p-6 md:p-8 space-y-5">
+                        <div class="flex items-center space-x-3 border-b border-slate-200/60 pb-3">
+                            <div class="w-7 h-7 rounded-lg bg-blue-500 text-white flex items-center justify-center text-xs shadow-sm">
+                                <i class="fa-solid fa-file-lines"></i>
+                            </div>
+                            <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider">I. Lembar Penerimaan Perkara (LPP) & SBP</h4>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 text-xs">
                             <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Nomor LPP</label>
-                                <input type="text" id="nomor_lpp" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="1482/KPU.206/2025">
+                                <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor LPP</label>
+                                <input type="text" id="nomor_lpp" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="1482/KPU.206/2025">
                             </div>
                             <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Tanggal LPP</label>
-                                <input type="date" id="tanggal_lpp" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="2025-12-13">
+                                <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Tanggal LPP</label>
+                                <input type="date" id="tanggal_lpp" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="2025-12-13">
                             </div>
                             <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Asal Perkara</label>
-                                <input type="text" id="asal_perkara" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="Seksi Penindakan">
+                                <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Asal Perkara</label>
+                                <input type="text" id="asal_perkara" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="Seksi Penindakan">
                             </div>
                             <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Nomor SBP (Surat Bukti Penindakan)</label>
-                                <input type="text" id="nomor_sbp" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="1659/Mandiri/KPU.2/2025">
+                                <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor SBP (Surat Bukti Penindakan)</label>
+                                <input type="text" id="nomor_sbp" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="1659/Mandiri/KPU.2/2025">
                             </div>
                             <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Tanggal SBP</label>
-                                <input type="date" id="tanggal_sbp" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="2025-12-12">
+                                <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Tanggal SBP</label>
+                                <input type="date" id="tanggal_sbp" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="2025-12-12">
                             </div>
                             <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Status Penangkapan</label>
-                                <input type="text" id="status_penangkapan" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="Penindakan Biasa">
+                                <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Status Penangkapan</label>
+                                <input type="text" id="status_penangkapan" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="Penindakan Biasa">
                             </div>
                         </div>
                     </div>
 
-                    <div class="space-y-4 pt-2">
-                        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b pb-3 flex items-center text-blue-900">
-                            <i class="fa-solid fa-building mr-2"></i> II. Identitas Pelaku / Perusahaan
-                        </h4>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
+                    <!-- KELOMPOK 2: IDENTITAS PELAKU -->
+                    <div class="ios-container-group p-6 md:p-8 space-y-5">
+                        <div class="flex items-center space-x-3 border-b border-slate-200/60 pb-3">
+                            <div class="w-7 h-7 rounded-lg bg-indigo-500 text-white flex items-center justify-center text-xs shadow-sm">
+                                <i class="fa-solid fa-building"></i>
+                            </div>
+                            <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider">II. Identitas Pelaku / Perusahaan</h4>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 text-xs">
                             <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Nama Perusahaan / Pelaku</label>
-                                <input type="text" id="nama_pelaku" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="PT HAWILA ADHI PERKASA">
+                                <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nama Perusahaan / Pelaku</label>
+                                <input type="text" id="nama_pelaku" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="PT HAWILA ADHI PERKASA">
                             </div>
                             <div>
-                                <label class="block font-semibold text-slate-700 mb-1">NPWP / Identitas</label>
-                                <input type="text" id="npwp_pelaku" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="860753292225000">
+                                <label class="block font-semibold text-slate-600 mb-1.5 ml-1">NPWP / Identitas</label>
+                                <input type="text" id="npwp_pelaku" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="860753292225000">
                             </div>
                             <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Penanggung Jawab / Pemilik</label>
-                                <input type="text" id="pj_pelaku" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="CHANNER SIMBOLON">
+                                <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Penanggung Jawab / Pemilik</label>
+                                <input type="text" id="pj_pelaku" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="CHANNER SIMBOLON">
                             </div>
                             <div class="md:col-span-3">
-                                <label class="block font-semibold text-slate-700 mb-1">Alamat Lengkap</label>
-                                <input type="text" id="alamat_pelaku" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="Ruko The Capitol Superblok Imperium Blok B No. 41, Batam">
+                                <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Alamat Lengkap</label>
+                                <input type="text" id="alamat_pelaku" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="Ruko The Capitol Superblok Imperium Blok B No. 41, Batam">
                             </div>
                         </div>
                     </div>
 
-                    <div class="space-y-4 pt-2">
-                        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b pb-3 flex items-center text-blue-900">
-                            <i class="fa-solid fa-location-dot mr-2"></i> III. Locus, Tempus & Uraian Pelanggaran
-                        </h4>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs">
+                    <!-- KELOMPOK 3: LOKASI & URAIAN -->
+                    <div class="ios-container-group p-6 md:p-8 space-y-5">
+                        <div class="flex items-center space-x-3 border-b border-slate-200/60 pb-3">
+                            <div class="w-7 h-7 rounded-lg bg-emerald-500 text-white flex items-center justify-center text-xs shadow-sm">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider">III. Locus, Tempus & Uraian Pelanggaran</h4>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 text-xs">
                             <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Tempat Kejadian (Locus)</label>
-                                <input type="text" id="tempat_kejadian" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="TPS Dharma Bandar Mandala (DBM)">
+                                <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Tempat Kejadian (Locus)</label>
+                                <input type="text" id="tempat_kejadian" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="TPS Dharma Bandar Mandala (DBM)">
                             </div>
                             <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Waktu Kejadian (Tempus)</label>
-                                <input type="text" id="waktu_kejadian" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="12 Desember 2025 pukul 13.00 WIB">
+                                <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Waktu Kejadian (Tempus)</label>
+                                <input type="text" id="waktu_kejadian" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="12 Desember 2025 pukul 13.00 WIB">
                             </div>
                             <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Jenis Pelanggaran / Pasal</label>
-                                <input type="text" id="jenis_pelanggaran" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="Pasal 53 ayat (3) UU No. 17 Tahun 2006 & Pasal 33 ayat (1), Pasal 71 ayat (1) PP No. 41 Tahun 2021">
+                                <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Jenis Pelanggaran / Pasal</label>
+                                <input type="text" id="jenis_pelanggaran" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="Pasal 53 ayat (3) UU No. 17 Tahun 2006 & Pasal 33 ayat (1), Pasal 71 ayat (1) PP No. 41 Tahun 2021">
                             </div>
                             <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Jenis Perkara</label>
-                                <input type="text" id="jenis_perkara" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="Pengeluaran barang dari KPBPB Batam ke TLDDP tanpa/salah pemberitahuan pabean">
+                                <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Jenis Perkara</label>
+                                <input type="text" id="jenis_perkara" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="Pengeluaran barang dari KPBPB Batam ke TLDDP tanpa/salah pemberitahuan pabean">
                             </div>
                             <div class="md:col-span-2">
-                                <label class="block font-semibold text-slate-700 mb-1">Modus Operandi</label>
-                                <textarea id="modus_operandi" rows="2" class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none">Mengeluarkan barang dari KPBPB Batam ke TLDDP tanpa/salah pemberitahuan pabean</textarea>
+                                <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Modus Operandi</label>
+                                <textarea id="modus_operandi" rows="2" class="w-full p-3.5 ios-input-field text-slate-800 font-medium">Mengeluarkan barang dari KPBPB Batam ke TLDDP tanpa/salah pemberitahuan pabean</textarea>
                             </div>
                         </div>
                     </div>
 
-                    <div class="space-y-4 pt-2">
-                        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b pb-3 flex items-center text-blue-900">
-                            <i class="fa-solid fa-boxes-stacked mr-2"></i> IV. Barang Hasil Penindakan & Dokumen Asal
-                        </h4>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
+                    <!-- KELOMPOK 4: BARANG BUKTI -->
+                    <div class="ios-container-group p-6 md:p-8 space-y-5">
+                        <div class="flex items-center space-x-3 border-b border-slate-200/60 pb-3">
+                            <div class="w-7 h-7 rounded-lg bg-amber-500 text-white flex items-center justify-center text-xs shadow-sm">
+                                <i class="fa-solid fa-boxes-stacked"></i>
+                            </div>
+                            <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider">IV. Barang Hasil Penindakan & Dokumen Asal</h4>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 text-xs">
                             <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Komoditi</label>
-                                <input type="text" id="komoditi" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="Barang lainnya">
+                                <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Komoditi</label>
+                                <input type="text" id="komoditi" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="Barang lainnya">
                             </div>
                             <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Detail Uraian Barang</label>
-                                <input type="text" id="uraian_barang" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="2 Pce / M Core B 81A447-2351, ETC">
+                                <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Detail Uraian Barang</label>
+                                <input type="text" id="uraian_barang" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="2 Pce / M Core B 81A447-2351, ETC">
                             </div>
                             <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Dokumen Pabean Asal</label>
-                                <input type="text" id="dok_pabean" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="PPFTZ-01 No. 011407 Tgl 28 November 2025">
+                                <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Dokumen Pabean Asal</label>
+                                <input type="text" id="dok_pabean" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="PPFTZ-01 No. 011407 Tgl 28 November 2025">
                             </div>
                         </div>
                     </div>
 
-                    <div class="flex justify-end pt-4">
-                        <button type="submit" class="theme-accent bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-8 py-3.5 rounded-xl shadow transition">
-                            <i class="fa-solid fa-floppy-disk mr-2"></i> Simpan Perkara Lengkap ke Database
+                    <!-- Tombol Simpan Aksi Ala Apple -->
+                    <div class="flex justify-end pt-2 pb-6">
+                        <button type="submit" class="ios-btn-primary px-8 py-4 text-xs font-bold tracking-wide flex items-center space-x-2 shadow-xl">
+                            <i class="fa-solid fa-floppy-disk text-sm mr-1"></i> 
+                            <span>Simpan Perkara Lengkap ke Database</span>
                         </button>
                     </div>
                 </form>
@@ -581,7 +646,6 @@
             document.getElementById('sidebar').classList.toggle('sidebar-hidden');
         }
 
-        // Fungsi kontrol visibilitas wallpaper: HANYA MUNCUL DI MENU DASHBOARD
         function switchTab(targetId, btnElement) {
             document.querySelectorAll('.tab-content').forEach(content => {
                 content.classList.add('hidden');
@@ -598,7 +662,6 @@
                 targetContent.classList.add('block');
             }
 
-            // Kontrol efek wallpaper khusus tab dashboard
             const wallpaperEl = document.getElementById('dashboardWallpaper');
             const overlayEl = document.getElementById('wallpaperOverlay');
             if (targetId === 'dashboard') {
@@ -816,7 +879,7 @@
             if(dashEl) dashEl.innerText = total;
         }
 
-        initProfile();
+initProfile();
         updateMonitoringStats();
     </script>
 </body>
