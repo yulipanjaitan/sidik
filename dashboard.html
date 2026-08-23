@@ -3,21 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atlantis Dashboard - Bea Cukai Batam</title>
+    <title>Soft UI Dashboard - Bea Cukai Batam</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        body {
+            background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=2000&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .soft-card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
         .ios-overlay { 
             background: rgba(0, 0, 0, 0.4); 
             backdrop-filter: blur(12px); 
-            -webkit-backdrop-filter: blur(12px);
         }
         .ios-alert-box { 
             animation: iosPop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; 
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
         }
         @keyframes iosPop {
             0% { transform: scale(0.85); opacity: 0; }
@@ -25,192 +34,159 @@
         }
     </style>
 </head>
-<body class="bg-slate-100 min-h-screen font-sans text-slate-800 flex">
+<body class="min-h-screen font-sans text-slate-800 flex p-3 md:p-6">
 
-    <!-- SIDEBAR KIRI (Gaya Atlantis) -->
-    <aside class="w-64 bg-white border-r border-slate-200 min-h-screen hidden md:flex flex-col fixed inset-y-0 left-0 z-20 shadow-sm">
-        
-        <!-- Logo Brand Atlantis -->
-        <div class="h-16 flex items-center px-6 border-b border-slate-100 space-x-3 bg-blue-600 text-white">
-            <div class="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center font-bold">
-                <i class="fa-solid fa-layer-group"></i>
+    <!-- SIDEBAR KIRI (Gaya Soft UI Minimalis) -->
+    <aside class="w-64 bg-white/80 backdrop-blur-md rounded-3xl min-h-[92vh] hidden md:flex flex-col justify-between p-5 shadow-xl border border-white/40 sticky top-4">
+        <div>
+            <!-- Logo Brand -->
+            <div class="flex items-center space-x-3 px-3 mb-6">
+                <div class="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center font-bold text-xs shadow-md">
+                    <i class="fa-solid fa-cube"></i>
+                </div>
+                <span class="font-bold text-slate-900 text-sm tracking-wide">BC Batam System</span>
             </div>
-            <span class="font-bold text-base tracking-wide">Atlantis</span>
-        </div>
 
-        <!-- Profil Pengguna di Sidebar -->
-        <div class="p-6 border-b border-slate-100 flex items-center space-x-3 bg-slate-50/50">
-            <img src="logo-beacukai.png" alt="Profile" class="w-10 h-10 rounded-full object-cover border border-slate-200 bg-white p-1">
-            <div class="overflow-hidden">
-                <h4 class="text-xs font-bold text-slate-800 truncate">Penyidik Utama</h4>
-                <p class="text-[10px] text-slate-400 truncate">Administrator BC</p>
+            <hr class="border-slate-200/60 mb-6">
+
+            <!-- Menu Navigasi -->
+            <div class="space-y-1.5">
+                <button type="button" data-target="dashboard" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-2xl text-xs font-semibold bg-slate-900 text-white shadow-md transition">
+                    <i class="fa-solid fa-house w-4"></i>
+                    <span>Dashboard</span>
+                </button>
+                <button type="button" data-target="input" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-2xl text-xs font-semibold text-slate-600 hover:bg-white/60 transition">
+                    <i class="fa-solid fa-pen-to-square w-4"></i>
+                    <span>Input Data</span>
+                </button>
+                <button type="button" data-target="cetak" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-2xl text-xs font-semibold text-slate-600 hover:bg-white/60 transition">
+                    <i class="fa-solid fa-print w-4"></i>
+                    <span>Cetak Laporan</span>
+                </button>
+                <button type="button" data-target="monitoring" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-2xl text-xs font-semibold text-slate-600 hover:bg-white/60 transition">
+                    <i class="fa-solid fa-chart-pie w-4"></i>
+                    <span>Monitoring</span>
+                </button>
+                <button type="button" data-target="setting" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-2xl text-xs font-semibold text-slate-600 hover:bg-white/60 transition">
+                    <i class="fa-solid fa-gear w-4"></i>
+                    <span>Pengaturan</span>
+                </button>
             </div>
-        </div>
 
-        <!-- Menu Navigasi Samping -->
-        <div class="flex-1 overflow-y-auto py-4 px-3 space-y-1">
-            <p class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Components</p>
-            
-            <button type="button" data-target="dashboard" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-xs font-semibold bg-blue-600 text-white shadow-md shadow-blue-200 transition">
-                <i class="fa-solid fa-house w-4"></i>
-                <span>Dashboard</span>
-            </button>
-            <button type="button" data-target="input" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition">
-                <i class="fa-solid fa-pen-to-square w-4"></i>
-                <span>Input Data Form</span>
-            </button>
-            <button type="button" data-target="cetak" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition">
-                <i class="fa-solid fa-print w-4"></i>
-                <span>Cetak Laporan</span>
-            </button>
-            <button type="button" data-target="monitoring" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition">
-                <i class="fa-solid fa-chart-pie w-4"></i>
-                <span>Monitoring Penelitian</span>
-            </button>
-            <button type="button" data-target="setting" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition">
-                <i class="fa-solid fa-gear w-4"></i>
-                <span>Pengaturan Akun</span>
-            </button>
-        </div>
-
-        <!-- Logout di Bawah Sidebar -->
-        <div class="p-4 border-t border-slate-100">
-            <a href="index.html" class="flex items-center space-x-3 px-3 py-2 rounded-xl text-xs font-semibold text-rose-600 hover:bg-rose-50 transition">
-                <i class="fa-solid fa-power-off w-4"></i>
-                <span>Keluar Sistem</span>
-            </a>
+            <p class="px-4 text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-8 mb-3">Account Pages</p>
+            <div class="space-y-1.5">
+                <a href="index.html" class="w-full flex items-center space-x-3 px-4 py-3 rounded-2xl text-xs font-semibold text-rose-600 hover:bg-rose-50 transition">
+                    <i class="fa-solid fa-power-off w-4"></i>
+                    <span>Sign Out</span>
+                </a>
+            </div>
         </div>
     </aside>
 
     <!-- KONTEN UTAMA DI KANAN -->
-    <div class="flex-1 md:ml-64 flex flex-col min-h-screen">
+    <div class="flex-1 md:ml-6 flex flex-col min-h-screen">
         
-        <!-- HEADER TOP BAR (Gaya Atlantis Biru Penuh) -->
-        <header class="bg-blue-600 h-16 px-6 flex items-center justify-between sticky top-0 z-10 shadow-md">
-            <div class="flex items-center space-x-4 w-96">
-                <div class="relative w-full">
-                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-blue-300">
+        <!-- TOP NAVBAR (Search & Profile Icons) -->
+        <header class="flex justify-between items-center bg-white/70 backdrop-blur-md px-6 py-4 rounded-3xl shadow-sm border border-white/40 mb-6">
+            <div class="text-xs">
+                <span class="text-slate-400">Pages / </span>
+                <span id="pageTitle" class="font-bold text-slate-800">Dashboard</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
                         <i class="fa-solid fa-magnifying-glass text-xs"></i>
                     </span>
-                    <input type="text" placeholder="Search ..." class="w-full pl-9 pr-4 py-1.5 bg-blue-700/50 text-white placeholder-blue-200 text-xs rounded-full border border-blue-500/50 focus:outline-none focus:bg-blue-700 transition">
+                    <input type="text" placeholder="Type here..." class="pl-9 pr-4 py-1.5 bg-white/80 border border-slate-200 rounded-full text-xs outline-none focus:ring-2 focus:ring-slate-900 transition w-48">
                 </div>
-            </div>
-
-            <div class="flex items-center space-x-4 text-white">
-                <button class="relative hover:text-blue-200 transition"><i class="fa-solid fa-envelope text-sm"></i></button>
-                <button class="relative hover:text-blue-200 transition">
+                <button class="text-slate-600 hover:text-slate-900"><i class="fa-solid fa-gear text-sm"></i></button>
+                <button class="text-slate-600 hover:text-slate-900 relative">
                     <i class="fa-solid fa-bell text-sm"></i>
-                    <span class="absolute -top-1 -right-1 bg-emerald-500 text-white text-[9px] font-bold px-1 rounded-full">4</span>
                 </button>
-                <button class="hover:text-blue-200 transition"><i class="fa-solid fa-grid-2 text-sm"></i></button>
-                <div class="flex items-center space-x-2 border-l border-blue-500 pl-4">
-                    <img src="logo-beacukai.png" alt="Avatar" class="w-8 h-8 rounded-full bg-white p-0.5 object-cover">
-                </div>
+                <img src="logo-beacukai.png" alt="Avatar" class="w-7 h-7 rounded-full bg-white border object-cover">
             </div>
         </header>
 
-        <!-- HEADER BANNER BAWAH (Judul Halaman & Tombol Aksi) -->
-        <div class="bg-blue-600 text-white px-8 pt-6 pb-16 flex flex-col md:flex-row justify-between items-start md:items-center shadow-lg">
-            <div>
-                <h2 class="text-xl font-bold tracking-tight">Dashboard</h2>
-                <p class="text-xs text-blue-200 mt-0.5">Sistem Pengolahan Data Perkara & Penyidikan Bea Cukai Batam</p>
-            </div>
-            <div class="flex items-center space-x-3 mt-4 md:mt-0">
-                <button onclick="switchTab('input')" class="bg-transparent hover:bg-white/10 border border-white/40 text-white text-xs font-semibold px-4 py-2 rounded-xl transition">Manage</button>
-                <button onclick="switchTab('input')" class="bg-white text-blue-900 hover:bg-blue-50 text-xs font-bold px-4 py-2 rounded-xl shadow transition">Add Customer</button>
-            </div>
-        </div>
-
-        <!-- CONTAINER UTAMA (Card Melayang ke Atas) -->
-        <main class="max-w-7xl mx-auto px-6 -mt-10 pb-12 flex-1 w-full space-y-6">
+        <!-- KONTEN UTAMA HALAMAN -->
+        <main class="flex-1 space-y-6">
             
-            <!-- ================= TAB 0: DASHBOARD (INFOGRAFIS) ================= -->
+            <!-- ================= TAB 0: DASHBOARD ================= -->
             <section id="content-dashboard" class="tab-content space-y-6 block">
-                <!-- Baris 1: Overall Statistics & Total Income -->
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                    <!-- Overall Statistics -->
-                    <div class="lg:col-span-5 bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+                <!-- 4 Top Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="soft-card p-5 rounded-3xl shadow-sm border border-white/60 flex justify-between items-center">
                         <div>
-                            <h3 class="text-sm font-bold text-slate-900">Overall statistics</h3>
-                            <p class="text-[11px] text-slate-400">Daily information about statistics in system</p>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase">Today's Money</p>
+                            <h3 class="text-lg font-bold text-slate-900 mt-1">$53k</h3>
+                            <p class="text-[10px] text-emerald-600 font-bold mt-1">+55% <span class="text-slate-500 font-normal">than last week</span></p>
                         </div>
-                        <div class="grid grid-cols-3 gap-2 pt-4 text-center">
-                            <div>
-                                <div class="w-16 h-16 rounded-full border-4 border-amber-400 flex items-center justify-center mx-auto text-sm font-bold text-slate-800">5</div>
-                                <p class="text-[11px] font-semibold text-slate-500 mt-2">New Users</p>
-                            </div>
-                            <div>
-                                <div class="w-16 h-16 rounded-full border-4 border-emerald-500 flex items-center justify-center mx-auto text-sm font-bold text-slate-800">36</div>
-                                <p class="text-[11px] font-semibold text-slate-500 mt-2">Sales</p>
-                            </div>
-                            <div>
-                                <div class="w-16 h-16 rounded-full border-4 border-rose-500 flex items-center justify-center mx-auto text-sm font-bold text-slate-800">12</div>
-                                <p class="text-[11px] font-semibold text-slate-500 mt-2">Subscribers</p>
-                            </div>
+                        <div class="w-10 h-10 rounded-2xl bg-slate-900 text-white flex items-center justify-center text-sm shadow-md">
+                            <i class="fa-solid fa-wallet"></i>
                         </div>
                     </div>
 
-                    <!-- Total Income & Spend Statistics -->
-                    <div class="lg:col-span-7 bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
+                    <div class="soft-card p-5 rounded-3xl shadow-sm border border-white/60 flex justify-between items-center">
                         <div>
-                            <h3 class="text-sm font-bold text-slate-900">Total income & spend statistics</h3>
-                            <div class="flex gap-6 mt-2 text-xs">
-                                <div>
-                                    <p class="text-[10px] font-bold text-emerald-600 uppercase">Total Income</p>
-                                    <p class="text-base font-bold text-slate-800">$9.782</p>
-                                </div>
-                                <div>
-                                    <p class="text-[10px] font-bold text-rose-500 uppercase">Total Spend</p>
-                                    <p class="text-base font-bold text-slate-800">$1,248</p>
-                                </div>
-                            </div>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase">Today's Users</p>
+                            <h3 class="text-lg font-bold text-slate-900 mt-1">2,300</h3>
+                            <p class="text-[10px] text-emerald-600 font-bold mt-1">+3% <span class="text-slate-500 font-normal">than last month</span></p>
                         </div>
-                        <!-- Bar Chart Ilustrasi Sederhana -->
-                        <div class="flex items-end justify-between h-28 pt-4 border-t border-slate-100 px-2">
-                            <div class="w-6 bg-amber-400 rounded-t h-12"></div>
-                            <div class="w-6 bg-amber-400 rounded-t h-8"></div>
-                            <div class="w-6 bg-amber-400 rounded-t h-20"></div>
-                            <div class="w-6 bg-amber-400 rounded-t h-10"></div>
-                            <div class="w-6 bg-amber-400 rounded-t h-14"></div>
-                            <div class="w-6 bg-amber-400 rounded-t h-10"></div>
-                            <div class="w-6 bg-amber-400 rounded-t h-6"></div>
-                            <div class="w-6 bg-amber-400 rounded-t h-16"></div>
-                            <div class="w-6 bg-amber-400 rounded-t h-24"></div>
+                        <div class="w-10 h-10 rounded-2xl bg-slate-900 text-white flex items-center justify-center text-sm shadow-md">
+                            <i class="fa-solid fa-users"></i>
                         </div>
-                        <div class="flex justify-between text-[10px] text-slate-400 px-1 pt-1">
-                            <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span><span>M</span>
+                    </div>
+
+                    <div class="soft-card p-5 rounded-3xl shadow-sm border border-white/60 flex justify-between items-center">
+                        <div>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase">New Clients</p>
+                            <h3 class="text-lg font-bold text-slate-900 mt-1">+3,462</h3>
+                            <p class="text-[10px] text-rose-500 font-bold mt-1">-2% <span class="text-slate-500 font-normal">than yesterday</span></p>
+                        </div>
+                        <div class="w-10 h-10 rounded-2xl bg-slate-900 text-white flex items-center justify-center text-sm shadow-md">
+                            <i class="fa-solid fa-user-plus"></i>
+                        </div>
+                    </div>
+
+                    <div class="soft-card p-5 rounded-3xl shadow-sm border border-white/60 flex justify-between items-center">
+                        <div>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase">Total Sales</p>
+                            <h3 class="text-lg font-bold text-slate-900 mt-1">$103,430</h3>
+                            <p class="text-[10px] text-emerald-600 font-bold mt-1">+5% <span class="text-slate-500 font-normal">than yesterday</span></p>
+                        </div>
+                        <div class="w-10 h-10 rounded-2xl bg-slate-900 text-white flex items-center justify-center text-sm shadow-md">
+                            <i class="fa-solid fa-cart-shopping"></i>
                         </div>
                     </div>
                 </div>
 
-                <!-- Baris 2: User Statistics & Daily Sales Card -->
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                    <!-- User Statistics Line -->
-                    <div class="lg:col-span-8 bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
-                        <div class="flex justify-between items-center">
-                            <h3 class="text-sm font-bold text-slate-900">User Statistics</h3>
-                            <div class="space-x-2">
-                                <button class="px-3 py-1 text-[11px] font-semibold border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50">Export</button>
-                                <button class="px-3 py-1 text-[11px] font-semibold border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50">Print</button>
-                            </div>
-                        </div>
-                        <div class="h-40 flex items-end relative border-b border-l border-slate-200 p-2">
-                            <div class="absolute inset-x-0 bottom-0 bg-blue-500/20 h-24 rounded-t-full"></div>
-                            <p class="text-xs text-slate-400 w-full text-center z-10 font-medium">Grafik Aktivitas Perkara & Pengguna Aktif</p>
+                <!-- Middle Charts -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="soft-card p-6 rounded-3xl shadow-sm border border-white/60 space-y-4">
+                        <h3 class="text-sm font-bold text-slate-900">Website Views</h3>
+                        <p class="text-xs text-slate-500">Last Campaign Performance</p>
+                        <div class="flex items-end justify-between h-36 pt-6 border-t border-slate-200/60 px-2">
+                            <div class="w-6 bg-slate-900 rounded-t-lg h-16"></div>
+                            <div class="w-6 bg-slate-900 rounded-t-lg h-12"></div>
+                            <div class="w-6 bg-slate-900 rounded-t-lg h-8"></div>
+                            <div class="w-6 bg-slate-900 rounded-t-lg h-10"></div>
+                            <div class="w-6 bg-slate-900 rounded-t-lg h-16"></div>
+                            <div class="w-6 bg-slate-900 rounded-t-lg h-24"></div>
                         </div>
                     </div>
 
-                    <!-- Daily Sales Card (Biru) -->
-                    <div class="lg:col-span-4 bg-blue-600 text-white p-6 rounded-2xl shadow-md flex flex-col justify-between">
-                        <div>
-                            <h3 class="text-sm font-bold">Daily Sales</h3>
-                            <p class="text-[11px] text-blue-200">March 25 - April 02</p>
+                    <div class="soft-card p-6 rounded-3xl shadow-sm border border-white/60 space-y-4">
+                        <h3 class="text-sm font-bold text-slate-900">Daily Sales</h3>
+                        <p class="text-xs text-slate-500">(+15%) increase in today sales.</p>
+                        <div class="h-36 flex items-center justify-center border-t border-slate-200/60 text-slate-400 text-xs font-semibold">
+                            [ Grafik Garis Aktivitas ]
                         </div>
-                        <div class="my-6">
-                            <h2 class="text-3xl font-bold">$4,578.58</h2>
-                        </div>
-                        <div class="h-10 bg-blue-500/40 rounded-xl flex items-center justify-center text-xs font-semibold">
-                            Lihat Detail Laporan
+                    </div>
+
+                    <div class="soft-card p-6 rounded-3xl shadow-sm border border-white/60 space-y-4">
+                        <h3 class="text-sm font-bold text-slate-900">Completed Tasks</h3>
+                        <p class="text-xs text-slate-500">Last Campaign Performance</p>
+                        <div class="h-36 flex items-center justify-center border-t border-slate-200/60 text-slate-400 text-xs font-semibold">
+                            [ Grafik Progress Selesai ]
                         </div>
                     </div>
                 </div>
@@ -218,127 +194,92 @@
 
             <!-- ================= TAB 1: INPUT DATA ================= -->
             <section id="content-input" class="tab-content space-y-6 hidden">
-                <div class="flex justify-between items-center bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <div class="soft-card p-6 rounded-3xl shadow-sm border border-white/60 flex justify-between items-center">
                     <div>
                         <h3 class="text-sm font-bold text-slate-900">Form Input Data Perkara Penyidikan</h3>
-                        <p class="text-xs text-slate-500 mt-0.5">Masukkan data penindakan baru untuk diproses ke database lokal & Google Sheets.</p>
+                        <p class="text-xs text-slate-500 mt-0.5">Masukkan data penindakan baru untuk diproses ke database.</p>
                     </div>
-                    <button type="button" onclick="loadSampleData()" class="bg-amber-400 hover:bg-amber-500 text-slate-900 text-xs font-bold px-4 py-2 rounded-xl shadow transition">
+                    <button type="button" onclick="loadSampleData()" class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow transition">
                         <i class="fa-solid fa-bolt mr-1"></i> Muat Contoh Kasus
                     </button>
                 </div>
 
-                <form id="penyidikanForm" onsubmit="saveDataPerkara(event)" class="space-y-6">
-                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 space-y-6">
-                        <h4 class="text-xs font-bold text-blue-900 uppercase tracking-wider border-b pb-3 flex items-center">
-                            <i class="fa-solid fa-file-lines mr-2 text-blue-600"></i> I. Informasi Dasar & Nomor Surat
-                        </h4>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
-                            <div>
-                                <label class="block font-semibold text-slate-700 mb-1.5">Nomor LPP / LPF / SPLIT</label>
-                                <input type="text" id="nomor_lpp" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none" value="1482/KPU.206/2025">
-                            </div>
-                            <div>
-                                <label class="block font-semibold text-slate-700 mb-1.5">Tanggal LPP</label>
-                                <input type="date" id="tanggal_lpp" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none" value="2025-12-13">
-                            </div>
-                            <div>
-                                <label class="block font-semibold text-slate-700 mb-1.5">Asal Perkara</label>
-                                <input type="text" id="asal_perkara" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none" value="Seksi Penindakan">
-                            </div>
+                <form id="penyidikanForm" onsubmit="saveDataPerkara(event)" class="soft-card rounded-3xl shadow-sm border border-white/60 p-8 space-y-6">
+                    <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b pb-3">I. Informasi Dasar</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1.5">Nomor LPP</label>
+                            <input type="text" id="nomor_lpp" required class="w-full p-3 bg-white/80 border border-slate-200 rounded-xl outline-none" value="1482/KPU.206/2025">
                         </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1.5">Tanggal LPP</label>
+                            <input type="date" id="tanggal_lpp" required class="w-full p-3 bg-white/80 border border-slate-200 rounded-xl outline-none" value="2025-12-13">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1.5">Asal Perkara</label>
+                            <input type="text" id="asal_perkara" required class="w-full p-3 bg-white/80 border border-slate-200 rounded-xl outline-none" value="Seksi Penindakan">
+                        </div>
+                    </div>
 
-                        <h4 class="text-xs font-bold text-blue-900 uppercase tracking-wider border-b pb-3 pt-4 flex items-center">
-                            <i class="fa-solid fa-building mr-2 text-blue-600"></i> II. Identitas Pelaku / Perusahaan
-                        </h4>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
-                            <div>
-                                <label class="block font-semibold text-slate-700 mb-1.5">Nama Perusahaan / Pelaku</label>
-                                <input type="text" id="nama_pelaku" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none" value="PT HAWILA ADHI PERKASA">
-                            </div>
-                            <div>
-                                <label class="block font-semibold text-slate-700 mb-1.5">NPWP</label>
-                                <input type="text" id="npwp_pelaku" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none" value="860753292225000">
-                            </div>
-                            <div>
-                                <label class="block font-semibold text-slate-700 mb-1.5">Penanggung Jawab</label>
-                                <input type="text" id="pj_pelaku" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none" value="CHANNER SIMBOLON">
-                            </div>
+                    <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b pb-3 pt-4">II. Identitas Pelaku</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1.5">Nama Perusahaan</label>
+                            <input type="text" id="nama_pelaku" required class="w-full p-3 bg-white/80 border border-slate-200 rounded-xl outline-none" value="PT HAWILA ADHI PERKASA">
                         </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1.5">NPWP</label>
+                            <input type="text" id="npwp_pelaku" required class="w-full p-3 bg-white/80 border border-slate-200 rounded-xl outline-none" value="860753292225000">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1.5">Penanggung Jawab</label>
+                            <input type="text" id="pj_pelaku" required class="w-full p-3 bg-white/80 border border-slate-200 rounded-xl outline-none" value="CHANNER SIMBOLON">
+                        </div>
+                    </div>
 
-                        <h4 class="text-xs font-bold text-blue-900 uppercase tracking-wider border-b pb-3 pt-4 flex items-center">
-                            <i class="fa-solid fa-boxes-stacked mr-2 text-blue-600"></i> III. Barang & Uraian Perkara
-                        </h4>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs">
-                            <div>
-                                <label class="block font-semibold text-slate-700 mb-1.5">Uraian Barang</label>
-                                <input type="text" id="uraian_barang" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none" value="2 Pce / M Core B 81A447-2351, ETC">
-                            </div>
-                            <div>
-                                <label class="block font-semibold text-slate-700 mb-1.5">Jenis Perkara / Pelanggaran</label>
-                                <input type="text" id="jenis_perkara" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none" value="Pengeluaran barang dari KPBPB Batam ke TLDDP tanpa/salah pemberitahuan pabean">
-                            </div>
-                        </div>
-
-                        <div class="flex justify-end pt-4">
-                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-8 py-3 rounded-xl shadow transition">
-                                <i class="fa-solid fa-floppy-disk mr-2"></i> Simpan ke Database & Google Sheets
-                            </button>
-                        </div>
+                    <div class="flex justify-end pt-4">
+                        <button type="submit" class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-8 py-3 rounded-xl shadow transition">
+                            <i class="fa-solid fa-floppy-disk mr-2"></i> Simpan ke Database
+                        </button>
                     </div>
                 </form>
             </section>
 
             <!-- ================= TAB 2: CETAK LAPORAN ================= -->
             <section id="content-cetak" class="tab-content space-y-6 hidden">
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <div class="soft-card p-6 rounded-3xl shadow-sm border border-white/60">
                     <h3 class="text-sm font-bold text-slate-900">Cetak & Generate Dokumen Perkara</h3>
-                    <p class="text-xs text-slate-500 mt-0.5">Daftar perkara yang telah selesai diinput dan siap di-generate ke bentuk Word (.docx) atau PDF.</p>
+                    <p class="text-xs text-slate-500 mt-0.5">Daftar perkara siap di-generate ke Word atau PDF.</p>
                 </div>
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="soft-card rounded-3xl shadow-sm border border-white/60 overflow-hidden">
                     <div class="overflow-x-auto">
                         <table class="w-full text-left text-xs">
-                            <thead class="bg-slate-50 border-b text-slate-700 uppercase tracking-wider">
+                            <thead class="bg-white/50 border-b text-slate-700 uppercase">
                                 <tr>
                                     <th class="p-4">No. LPP</th>
                                     <th class="p-4">Tanggal</th>
-                                    <th class="p-4">Perusahaan / Pelaku</th>
+                                    <th class="p-4">Perusahaan</th>
                                     <th class="p-4">Uraian Barang</th>
-                                    <th class="p-4 text-center">Aksi Generator Dokumen</th>
+                                    <th class="p-4 text-center">Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody id="tablePerkaraBody" class="divide-y divide-slate-100"></tbody>
+                            <tbody id="tablePerkaraBody" class="divide-y divide-slate-200/40"></tbody>
                         </table>
                     </div>
                 </div>
             </section>
 
-            <!-- ================= TAB 3: MONITORING PENELITIAN ================= -->
+            <!-- ================= TAB 3: MONITORING ================= -->
             <section id="content-monitoring" class="tab-content space-y-6 hidden">
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <div class="soft-card p-6 rounded-3xl shadow-sm border border-white/60">
                     <h3 class="text-sm font-bold text-slate-900">Monitoring & Statistik Penelitian</h3>
-                    <p class="text-xs text-slate-500 mt-0.5">Rekapitulasi jumlah dokumen, jenis pelanggaran, dan progres penindakan.</p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex items-center space-x-4">
-                        <div class="bg-blue-50 text-blue-600 p-4 rounded-2xl text-xl"><i class="fa-solid fa-folder-open"></i></div>
+                    <div class="soft-card p-6 rounded-3xl shadow-sm border border-white/60 flex items-center space-x-4">
+                        <div class="bg-slate-900 text-white p-4 rounded-2xl text-xl"><i class="fa-solid fa-folder-open"></i></div>
                         <div>
                             <p class="text-xs text-slate-400 font-semibold uppercase">Total Dokumen</p>
                             <h3 id="statTotal" class="text-2xl font-bold text-slate-900 mt-1">1</h3>
-                        </div>
-                    </div>
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex items-center space-x-4">
-                        <div class="bg-amber-50 text-amber-600 p-4 rounded-2xl text-xl"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                        <div>
-                            <p class="text-xs text-slate-400 font-semibold uppercase">Pelanggaran Pabean</p>
-                            <h3 class="text-2xl font-bold text-slate-900 mt-1">100%</h3>
-                        </div>
-                    </div>
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex items-center space-x-4">
-                        <div class="bg-emerald-50 text-emerald-600 p-4 rounded-2xl text-xl"><i class="fa-solid fa-circle-check"></i></div>
-                        <div>
-                            <p class="text-xs text-slate-400 font-semibold uppercase">Status Penelitian</p>
-                            <h3 class="text-2xl font-bold text-slate-900 mt-1">Aktif</h3>
                         </div>
                     </div>
                 </div>
@@ -346,12 +287,10 @@
 
             <!-- ================= TAB 4: SETTING ================= -->
             <section id="content-setting" class="tab-content space-y-6 hidden">
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                    <h3 class="text-sm font-bold text-slate-900">Pengaturan Akun & Tampilan Sistem</h3>
-                    <p class="text-xs text-slate-500 mt-0.5">Kelola preferensi akun penyidik dan kustomisasi tema antarmuka aplikasi.</p>
+                <div class="soft-card p-6 rounded-3xl shadow-sm border border-white/60">
+                    <h3 class="text-sm font-bold text-slate-900">Pengaturan Akun & Tampilan</h3>
                 </div>
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 space-y-6">
-                    <h4 class="text-xs font-bold text-blue-900 uppercase tracking-wider border-b pb-3">Profil Pengguna</h4>
+                <div class="soft-card p-8 rounded-3xl shadow-sm border border-white/60">
                     <p class="text-xs text-slate-600">Penyidik Pegawai Negeri Sipil / KPU BC Batam</p>
                 </div>
             </section>
@@ -359,26 +298,24 @@
         </main>
     </div>
 
-    <!-- POP-UP ALERT GAYA iOS -->
+    <!-- POP-UP MODAL -->
     <div id="dashboardModal" class="fixed inset-0 ios-overlay hidden items-center justify-center z-50 p-4">
         <div class="w-full max-w-xs rounded-3xl shadow-2xl overflow-hidden text-center ios-alert-box border border-white/40">
             <div class="pt-6 px-6 pb-4">
                 <div id="modalIconContainer" class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl bg-emerald-50 text-emerald-600">
                     <i class="fa-solid fa-file-circle-check"></i>
                 </div>
-                <h3 id="modalTitle" class="text-base font-bold text-slate-900 mb-1 tracking-tight">Informasi Sistem</h3>
+                <h3 id="modalTitle" class="text-base font-bold text-slate-900 mb-1">Informasi Sistem</h3>
                 <p id="dynamicModalMessage" class="text-xs text-slate-600 leading-relaxed px-1"></p>
             </div>
             <div class="border-t border-slate-200/80 flex divide-x divide-slate-200/80">
-                <button type="button" onclick="closeDashboardModal()" class="w-1/2 py-3 text-xs font-medium text-slate-500 hover:bg-slate-100/50 transition">Tutup</button>
-                <button type="button" id="modalActionBtn" onclick="executeDownload()" class="w-1/2 py-3 text-xs font-semibold text-blue-600 hover:bg-slate-100/50 transition">Unduh</button>
+                <button type="button" onclick="closeDashboardModal()" class="w-1/2 py-3 text-xs font-medium text-slate-500 hover:bg-white/50">Tutup</button>
+                <button type="button" id="modalActionBtn" onclick="executeDownload()" class="w-1/2 py-3 text-xs font-semibold text-slate-900 hover:bg-white/50">OK</button>
             </div>
         </div>
     </div>
 
     <script>
-        const GOOGLE_SCRIPT_URL = ""; 
-
         let daftarPerkara = JSON.parse(localStorage.getItem('bc_daftar_perkara')) || [
             {
                 nomor_lpp: "1482/KPU.206/2025",
@@ -388,14 +325,13 @@
                 asal_perkara: "Seksi Penindakan",
                 npwp_pelaku: "860753292225000",
                 pj_pelaku: "CHANNER SIMBOLON",
-                jenis_perkara: "Pengeluaran barang dari KPBPB Batam ke TLDDP tanpa/salah pemberitahuan pabean"
+                jenis_perkara: "Pengeluaran barang tanpa pemberitahuan pabean"
             }
         ];
 
         let selectedPerkaraUntukDownload = null;
         let isDownloadMode = false;
 
-        // Event Listener Navigasi Menu Sidebar Atlantis
         document.querySelectorAll('.nav-btn').forEach(button => {
             button.addEventListener('click', function() {
                 const target = this.getAttribute('data-target');
@@ -406,7 +342,7 @@
                 });
 
                 document.querySelectorAll('.nav-btn').forEach(btn => {
-                    btn.className = "nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition";
+                    btn.className = "nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-2xl text-xs font-semibold text-slate-600 hover:bg-white/60 transition";
                 });
 
                 const targetContent = document.getElementById('content-' + target);
@@ -415,39 +351,36 @@
                     targetContent.classList.add('block');
                 }
 
-                this.className = "nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-xs font-semibold bg-blue-600 text-white shadow-md shadow-blue-200 transition";
+                this.className = "nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-2xl text-xs font-semibold bg-slate-900 text-white shadow-md transition";
+                
+                document.getElementById('pageTitle').innerText = this.querySelector('span').innerText;
 
                 if (target === 'cetak') renderTablePerkara();
                 else if (target === 'monitoring' || target === 'dashboard') updateMonitoringStats();
             });
         });
 
-        function switchTab(tabId) {
-            const btn = document.querySelector(`[data-target="${tabId}"]`);
-            if(btn) btn.click();
-        }
-
         function loadSampleData() {
-            showModal("Contoh Dimuat", "Data contoh kasus PT Hawila Adhi Perkasa berhasil dimuat ke form!", true, false);
+            showModal("Contoh Dimuat", "Data contoh kasus berhasil dimuat ke form!", true, false);
         }
 
-        async function saveDataPerkara(event) {
+        function saveDataPerkara(event) {
             event.preventDefault();
             const baru = {
                 nomor_lpp: document.getElementById('nomor_lpp').value,
                 tanggal_lpp: document.getElementById('tanggal_lpp').value,
                 nama_pelaku: document.getElementById('nama_pelaku').value,
-                uraian_barang: document.getElementById('uraian_barang').value,
+                uraian_barang: "Barang Bukti Perkara",
                 asal_perkara: document.getElementById('asal_perkara').value,
                 npwp_pelaku: document.getElementById('npwp_pelaku').value,
                 pj_pelaku: document.getElementById('pj_pelaku').value,
-                jenis_perkara: document.getElementById('jenis_perkara').value
+                jenis_perkara: "Pelanggaran Pabean"
             };
 
             daftarPerkara.push(baru);
             localStorage.setItem('bc_daftar_perkara', JSON.stringify(daftarPerkara));
 
-            showModal("Berhasil Disimpan", `Perkara LPP No: ${baru.nomor_lpp} berhasil disimpan ke database.`, true, false);
+            showModal("Berhasil Disimpan", `Perkara LPP No: ${baru.nomor_lpp} berhasil disimpan.`, true, false);
             document.getElementById('penyidikanForm').reset();
             updateMonitoringStats();
         }
@@ -463,14 +396,14 @@
 
             daftarPerkara.forEach((item, index) => {
                 tbody.innerHTML += `
-                    <tr class="hover:bg-slate-50 transition">
-                        <td class="p-4 font-semibold text-blue-900">${item.nomor_lpp}</td>
+                    <tr class="hover:bg-white/40 transition">
+                        <td class="p-4 font-semibold text-slate-900">${item.nomor_lpp}</td>
                         <td class="p-4 text-slate-600">${item.tanggal_lpp}</td>
                         <td class="p-4 font-medium">${item.nama_pelaku}</td>
                         <td class="p-4 text-slate-600">${item.uraian_barang}</td>
                         <td class="p-4 text-center space-x-2">
-                            <button type="button" onclick='triggerGenerate(${index}, "docx")' class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-[11px] shadow transition"><i class="fa-solid fa-file-word mr-1"></i> Word</button>
-                            <button type="button" onclick='triggerGenerate(${index}, "pdf")' class="bg-rose-600 hover:bg-rose-700 text-white px-3 py-1.5 rounded-lg text-[11px] shadow transition"><i class="fa-solid fa-file-pdf mr-1"></i> PDF</button>
+                            <button type="button" onclick='triggerGenerate(${index}, "docx")' class="bg-slate-900 hover:bg-slate-800 text-white px-3 py-1.5 rounded-xl text-[11px] shadow transition"><i class="fa-solid fa-file-word mr-1"></i> Word</button>
+                            <button type="button" onclick='triggerGenerate(${index}, "pdf")' class="bg-rose-600 hover:bg-rose-700 text-white px-3 py-1.5 rounded-xl text-[11px] shadow transition"><i class="fa-solid fa-file-pdf mr-1"></i> PDF</button>
                         </td>
                     </tr>
                 `;
@@ -479,7 +412,7 @@
 
         function triggerGenerate(index, format) {
             selectedPerkaraUntukDownload = { ...daftarPerkara[index], format: format };
-            showModal("Dokumen Siap", `Dokumen LPP No: ${selectedPerkaraUntukDownload.nomor_lpp} (${selectedPerkaraUntukDownload.nama_pelaku}) format .${format.toUpperCase()} siap diunduh.`, true, true);
+            showModal("Dokumen Siap", `Dokumen LPP No: ${selectedPerkaraUntukDownload.nomor_lpp} siap diunduh.`, true, true);
         }
 
         function showModal(title, message, isSuccess = true, isDownload = false) {
@@ -514,30 +447,7 @@
                 const namaFileClean = item.nomor_lpp.replace(/[\/\\:]/g, '_');
 
                 if (item.format === 'docx') {
-                    const kontenHtml = `
-                        <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
-                        <head><meta charset="utf-8"><title>Laporan Perkara</title></head>
-                        <body style="font-family: Arial; line-height: 1.5; font-size: 12pt;">
-                            <h2 style="text-align: center; color: #1e3a8a;">KEMENTERIAN KEUANGAN REPUBLIK INDONESIA</h2>
-                            <h3 style="text-align: center; color: #1e3a8a;">DIREKTORAT JENDERAL BEA DAN CUKAI</h3>
-                            <h4 style="text-align: center;">KANTOR PELAYANAN UTAMA BEA DAN CUKAI TIPE B BATAM</h4>
-                            <hr style="border: 1px solid black;">
-                            <h3 style="text-align: center; margin-top: 20px;">LEMBAR PENERIMAAN PERKARA (LPP)</h3>
-                            <p><strong>Nomor LPP:</strong> ${item.nomor_lpp}</p>
-                            <p><strong>Tanggal LPP:</strong> ${item.tanggal_lpp}</p>
-                            <p><strong>Asal Perkara:</strong> ${item.asal_perkara || 'Seksi Penindakan'}</p>
-                            <br>
-                            <h4>II. IDENTITAS PELAKU / PERUSAHAAN</h4>
-                            <p><strong>Nama Perusahaan:</strong> ${item.nama_pelaku}</p>
-                            <p><strong>NPWP:</strong> ${item.npwp_pelaku || '-'}</p>
-                            <p><strong>Penanggung Jawab:</strong> ${item.pj_pelaku || '-'}</p>
-                            <br>
-                            <h4>III. URAIAN PELANGGARAN & BARANG</h4>
-                            <p><strong>Jenis Perkara:</strong> ${item.jenis_perkara}</p>
-                            <p><strong>Uraian Barang:</strong> ${item.uraian_barang}</p>
-                        </body>
-                        </html>
-                    `;
+                    const kontenHtml = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>Laporan</title></head><body style="font-family: Arial; font-size: 12pt;"><h3>LEMBAR PENERIMAAN PERKARA</h3><p><strong>Nomor:</strong> ${item.nomor_lpp}</p><p><strong>Perusahaan:</strong> ${item.nama_pelaku}</p><p><strong>Uraian:</strong> ${item.uraian_barang}</p></body></html>`;
                     const blob = new Blob(['\ufeff' + kontenHtml], { type: 'application/msword' });
                     const url = URL.createObjectURL(blob);
                     const a = document.createElement('a');
@@ -549,21 +459,7 @@
                     URL.revokeObjectURL(url);
                 } else if (item.format === 'pdf') {
                     const printWindow = window.open('', '_blank');
-                    printWindow.document.write(`
-                        <html>
-                        <head><title>Cetak Laporan - LPP ${item.nomor_lpp}</title></head>
-                        <body style="font-family: Arial; padding: 40px;">
-                            <h2>KEMENTERIAN KEUANGAN REPUBLIK INDONESIA</h2>
-                            <h3>DIREKTORAT JENDERAL BEA DAN CUKAI</h3>
-                            <hr>
-                            <h3>LEMBAR PENERIMAAN PERKARA (LPP)</h3>
-                            <p><strong>Nomor LPP:</strong> ${item.nomor_lpp}</p>
-                            <p><strong>Perusahaan:</strong> ${item.nama_pelaku}</p>
-                            <p><strong>Uraian Barang:</strong> ${item.uraian_barang}</p>
-                            <script>window.onload = function() { window.print(); }</script>
-                        </body>
-                        </html>
-                    `);
+                    printWindow.document.write(`<html><head><title>Cetak</title></head><body style="font-family: Arial; padding: 30px;"><h3>LPP: ${item.nomor_lpp}</h3><p>Perusahaan: ${item.nama_pelaku}</p><p>Barang: ${item.uraian_barang}</p><script>window.onload = function() { window.print(); }<\/script></body></html>`);
                     printWindow.document.close();
                 }
             }
@@ -573,9 +469,7 @@
         function updateMonitoringStats() {
             const total = daftarPerkara.length;
             const statEl = document.getElementById('statTotal');
-            const dashEl = document.getElementById('dashTotalPerkara');
             if(statEl) statEl.innerText = total;
-            if(dashEl) dashEl.innerText = total;
         }
 
         updateMonitoringStats();
