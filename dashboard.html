@@ -8,7 +8,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Gaya Backdrop & Pop-up Khas iOS Apple */
         .ios-overlay { 
             background: rgba(0, 0, 0, 0.4); 
             backdrop-filter: blur(12px); 
@@ -74,7 +73,7 @@
             <div class="flex justify-between items-center">
                 <div>
                     <h2 class="text-2xl font-bold text-slate-900">Form Input Data Perkara Penyidikan</h2>
-                    <p class="text-xs text-slate-500 mt-1">Masukkan data penindakan baru untuk diproses ke dalam arsip sistem.</p>
+                    <p class="text-xs text-slate-500 mt-1">Masukkan data penindakan baru untuk diproses ke database lokal & Google Sheets.</p>
                 </div>
                 <button type="button" onclick="loadSampleData()" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold px-4 py-2.5 rounded-xl shadow-md transition flex items-center">
                     <i class="fa-solid fa-bolt mr-1.5"></i> Muat Contoh Kasus (PT Hawila)
@@ -98,18 +97,6 @@
                         <div>
                             <label class="block font-semibold text-slate-700 mb-1">Asal Perkara</label>
                             <input type="text" id="asal_perkara" required class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-600 outline-none" value="Seksi Penindakan">
-                        </div>
-                        <div>
-                            <label class="block font-semibold text-slate-700 mb-1">Nomor SBP</label>
-                            <input type="text" id="nomor_sbp" required class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-600 outline-none" value="SBP-1659/Mandiri/KPU.2/2025">
-                        </div>
-                        <div>
-                            <label class="block font-semibold text-slate-700 mb-1">Tanggal SBP</label>
-                            <input type="date" id="tanggal_sbp" required class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-600 outline-none" value="2025-12-12">
-                        </div>
-                        <div>
-                            <label class="block font-semibold text-slate-700 mb-1">Jenis Penindakan</label>
-                            <input type="text" id="jenis_penindakan" required class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-blue-600 outline-none" value="Pemeriksaan, penegahan, dan penyegelan barang">
                         </div>
                     </div>
                 </div>
@@ -152,7 +139,7 @@
 
                 <div class="flex justify-end">
                     <button type="submit" class="bg-blue-900 hover:bg-blue-800 text-white text-xs font-bold px-8 py-3.5 rounded-xl shadow-lg transition flex items-center">
-                        <i class="fa-solid fa-floppy-disk mr-2"></i> Simpan & Daftarkan Perkara
+                        <i class="fa-solid fa-floppy-disk mr-2"></i> Simpan ke Database & Google Sheets
                     </button>
                 </div>
             </form>
@@ -177,9 +164,7 @@
                                 <th class="p-4 text-center">Aksi Generator Dokumen</th>
                             </tr>
                         </thead>
-                        <tbody id="tablePerkaraBody" class="divide-y divide-slate-100">
-                            <!-- Data dimuat secara dinamis via JS -->
-                        </tbody>
+                        <tbody id="tablePerkaraBody" class="divide-y divide-slate-100"></tbody>
                     </table>
                 </div>
             </div>
@@ -194,9 +179,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex items-center space-x-4">
-                    <div class="bg-blue-100 text-blue-600 p-4 rounded-2xl text-2xl">
-                        <i class="fa-solid fa-folder-open"></i>
-                    </div>
+                    <div class="bg-blue-100 text-blue-600 p-4 rounded-2xl text-2xl"><i class="fa-solid fa-folder-open"></i></div>
                     <div>
                         <p class="text-xs text-slate-500 font-semibold uppercase">Total Dokumen Perkara</p>
                         <h3 id="statTotal" class="text-2xl font-bold text-slate-900 mt-1">1</h3>
@@ -204,9 +187,7 @@
                 </div>
 
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex items-center space-x-4">
-                    <div class="bg-amber-100 text-amber-600 p-4 rounded-2xl text-2xl">
-                        <i class="fa-solid fa-triangle-exclamation"></i>
-                    </div>
+                    <div class="bg-amber-100 text-amber-600 p-4 rounded-2xl text-2xl"><i class="fa-solid fa-triangle-exclamation"></i></div>
                     <div>
                         <p class="text-xs text-slate-500 font-semibold uppercase">Pelanggaran Kepabeanan</p>
                         <h3 class="text-2xl font-bold text-slate-900 mt-1">100%</h3>
@@ -214,9 +195,7 @@
                 </div>
 
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex items-center space-x-4">
-                    <div class="bg-emerald-100 text-emerald-600 p-4 rounded-2xl text-2xl">
-                        <i class="fa-solid fa-circle-check"></i>
-                    </div>
+                    <div class="bg-emerald-100 text-emerald-600 p-4 rounded-2xl text-2xl"><i class="fa-solid fa-circle-check"></i></div>
                     <div>
                         <p class="text-xs text-slate-500 font-semibold uppercase">Status Penelitian</p>
                         <h3 class="text-2xl font-bold text-slate-900 mt-1">Aktif</h3>
@@ -254,27 +233,31 @@
                 <h3 id="modalTitle" class="text-base font-bold text-slate-900 mb-1 tracking-tight">Informasi Sistem</h3>
                 <p id="dynamicModalMessage" class="text-xs text-slate-600 leading-relaxed px-1"></p>
             </div>
-            
             <div class="border-t border-slate-200/80 flex divide-x divide-slate-200/80">
-                <button onclick="closeDashboardModal()" class="w-1/2 py-3 text-xs font-medium text-slate-500 hover:bg-slate-100/50 transition">
-                    Tutup
-                </button>
-                <button onclick="executeDownload()" class="w-1/2 py-3 text-xs font-semibold text-blue-600 hover:bg-slate-100/50 transition">
-                    Unduh File
-                </button>
+                <button onclick="closeDashboardModal()" class="w-1/2 py-3 text-xs font-medium text-slate-500 hover:bg-slate-100/50 transition">Tutup</button>
+                <button id="modalActionBtn" onclick="executeDownload()" class="w-1/2 py-3 text-xs font-semibold text-blue-600 hover:bg-slate-100/50 transition">Unduh</button>
             </div>
         </div>
     </div>
 
     <script>
+        const GOOGLE_SCRIPT_URL = ""; 
+
         let daftarPerkara = JSON.parse(localStorage.getItem('bc_daftar_perkara')) || [
             {
                 nomor_lpp: "1482/KPU.206/2025",
                 tanggal_lpp: "2025-12-13",
                 nama_pelaku: "PT HAWILA ADHI PERKASA",
-                uraian_barang: "2 Pce / M Core B 81A447-2351, ETC"
+                uraian_barang: "2 Pce / M Core B 81A447-2351, ETC",
+                asal_perkara: "Seksi Penindakan",
+                npwp_pelaku: "860753292225000",
+                pj_pelaku: "CHANNER SIMBOLON",
+                jenis_perkara: "Pengeluaran barang dari KPBPB Batam ke TLDDP tanpa/salah pemberitahuan pabean"
             }
         ];
+
+        let selectedPerkaraUntukDownload = null;
+        let isDownloadMode = false;
 
         function switchTab(tabId) {
             document.getElementById('tab-input').classList.add('hidden');
@@ -288,30 +271,44 @@
             document.getElementById('tab-' + tabId).classList.remove('hidden');
             document.getElementById('nav-' + tabId).className = "py-4 px-2 text-xs font-bold uppercase tracking-wider border-b-2 border-blue-900 text-blue-900 flex items-center transition";
 
-            if (tabId === 'cetak') {
-                renderTablePerkara();
-            } else if (tabId === 'monitoring') {
-                updateMonitoringStats();
-            }
+            if (tabId === 'cetak') renderTablePerkara();
+            else if (tabId === 'monitoring') updateMonitoringStats();
         }
 
         function loadSampleData() {
-            showModal("Contoh Dimuat", "Data contoh kasus PT Hawila Adhi Perkasa berhasil dimuat ke dalam form input!", true);
+            showModal("Contoh Dimuat", "Data contoh kasus PT Hawila Adhi Perkasa berhasil dimuat ke form!", true, false);
         }
 
-        function saveDataPerkara(event) {
+        async function saveDataPerkara(event) {
             event.preventDefault();
             const baru = {
                 nomor_lpp: document.getElementById('nomor_lpp').value,
                 tanggal_lpp: document.getElementById('tanggal_lpp').value,
                 nama_pelaku: document.getElementById('nama_pelaku').value,
-                uraian_barang: document.getElementById('uraian_barang').value
+                uraian_barang: document.getElementById('uraian_barang').value,
+                asal_perkara: document.getElementById('asal_perkara').value,
+                npwp_pelaku: document.getElementById('npwp_pelaku').value,
+                pj_pelaku: document.getElementById('pj_pelaku').value,
+                jenis_perkara: document.getElementById('jenis_perkara').value
             };
 
             daftarPerkara.push(baru);
             localStorage.setItem('bc_daftar_perkara', JSON.stringify(daftarPerkara));
 
-            showModal("Berhasil Disimpan", `Perkara LPP No: ${baru.nomor_lpp} berhasil disimpan ke database lokal dan siap dicetak.`, true);
+            if (GOOGLE_SCRIPT_URL !== "") {
+                try {
+                    await fetch(GOOGLE_SCRIPT_URL, {
+                        method: "POST",
+                        mode: "no-cors",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(baru)
+                    });
+                } catch (e) {
+                    console.error("Gagal sinkronisasi ke Google Sheets:", e);
+                }
+            }
+
+            showModal("Berhasil Disimpan", `Perkara LPP No: ${baru.nomor_lpp} berhasil disimpan & disinkronkan.`, true, false);
             document.getElementById('penyidikanForm').reset();
         }
 
@@ -320,11 +317,11 @@
             tbody.innerHTML = '';
 
             if (daftarPerkara.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-400">Belum ada data perkara yang diinput.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-400">Belum ada data perkara.</td></tr>`;
                 return;
             }
 
-            daftarPerkara.forEach((item) => {
+            daftarPerkara.forEach((item, index) => {
                 tbody.innerHTML += `
                     <tr class="hover:bg-slate-50 transition">
                         <td class="p-4 font-semibold text-blue-900">${item.nomor_lpp}</td>
@@ -332,27 +329,27 @@
                         <td class="p-4 font-medium">${item.nama_pelaku}</td>
                         <td class="p-4 text-slate-600">${item.uraian_barang}</td>
                         <td class="p-4 text-center space-x-2">
-                            <button onclick="triggerGenerate('${item.nomor_lpp}', '${item.nama_pelaku}', 'docx')" class="bg-blue-900 hover:bg-blue-800 text-white px-3 py-1.5 rounded-lg text-[11px] shadow transition">
-                                <i class="fa-solid fa-file-word mr-1"></i> Word
-                            </button>
-                            <button onclick="triggerGenerate('${item.nomor_lpp}', '${item.nama_pelaku}', 'pdf')" class="bg-rose-600 hover:bg-rose-700 text-white px-3 py-1.5 rounded-lg text-[11px] shadow transition">
-                                <i class="fa-solid fa-file-pdf mr-1"></i> PDF
-                            </button>
+                            <button onclick='triggerGenerate(${index}, "docx")' class="bg-blue-900 hover:bg-blue-800 text-white px-3 py-1.5 rounded-lg text-[11px] shadow transition"><i class="fa-solid fa-file-word mr-1"></i> Word</button>
+                            <button onclick='triggerGenerate(${index}, "pdf")' class="bg-rose-600 hover:bg-rose-700 text-white px-3 py-1.5 rounded-lg text-[11px] shadow transition"><i class="fa-solid fa-file-pdf mr-1"></i> PDF</button>
                         </td>
                     </tr>
                 `;
             });
         }
 
-        function triggerGenerate(noLpp, namaPelaku, format) {
-            showModal("Dokumen Siap", `Berhasil memproses data untuk LPP No: ${noLpp} (${namaPelaku}). File dokumen format .${format.toUpperCase()} siap diunduh.`, true);
+        function triggerGenerate(index, format) {
+            selectedPerkaraUntukDownload = { ...daftarPerkara[index], format: format };
+            showModal("Dokumen Siap", `Dokumen LPP No: ${selectedPerkaraUntukDownload.nomor_lpp} (${selectedPerkaraUntukDownload.nama_pelaku}) format .${format.toUpperCase()} siap diunduh.`, true, true);
         }
 
-        function showModal(title, message, isSuccess = true) {
+        function showModal(title, message, isSuccess = true, isDownload = false) {
             document.getElementById('modalTitle').innerText = title;
             document.getElementById('dynamicModalMessage').innerText = message;
-            
+            isDownloadMode = isDownload;
+
             const iconContainer = document.getElementById('modalIconContainer');
+            const actionBtn = document.getElementById('modalActionBtn');
+
             if (isSuccess) {
                 iconContainer.className = "w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl bg-emerald-50 text-emerald-600";
                 iconContainer.innerHTML = '<i class="fa-solid fa-file-circle-check"></i>';
@@ -361,19 +358,126 @@
                 iconContainer.innerHTML = '<i class="fa-solid fa-circle-info"></i>';
             }
 
-            const modal = document.getElementById('dashboardModal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
+            if (isDownload) {
+                actionBtn.innerText = "Unduh File";
+            } else {
+                actionBtn.innerText = "OK";
+            }
+
+            document.getElementById('dashboardModal').classList.remove('hidden');
+            document.getElementById('dashboardModal').classList.add('flex');
         }
 
         function closeDashboardModal() {
-            const modal = document.getElementById('dashboardModal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
+            document.getElementById('dashboardModal').classList.add('hidden');
+            document.getElementById('dashboardModal').classList.remove('flex');
         }
 
         function executeDownload() {
-            alert('Mengunduh berkas laporan resmi Bea Cukai...');
+            if (isDownloadMode && selectedPerkaraUntukDownload) {
+                const item = selectedPerkaraUntukDownload;
+                const namaFileClean = item.nomor_lpp.replace(/[\/\\:]/g, '_');
+
+                if (item.format === 'docx') {
+                    const kontenHtml = `
+                        <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+                        <head><meta charset="utf-8"><title>Laporan Perkara</title></head>
+                        <body style="font-family: Arial; line-height: 1.5; font-size: 12pt;">
+                            <h2 style="text-align: center; color: #1e3a8a;">KEMENTERIAN KEUANGAN REPUBLIK INDONESIA</h2>
+                            <h3 style="text-align: center; color: #1e3a8a;">DIREKTORAT JENDERAL BEA DAN CUKAI</h3>
+                            <h4 style="text-align: center;">KANTOR PELAYANAN UTAMA BEA DAN CUKAI TIPE B BATAM</h4>
+                            <hr style="border: 1px solid black;">
+                            <h3 style="text-align: center; margin-top: 20px;">LEMBAR PENERIMAAN PERKARA (LPP)</h3>
+                            <p><strong>Nomor LPP:</strong> ${item.nomor_lpp}</p>
+                            <p><strong>Tanggal LPP:</strong> ${item.tanggal_lpp}</p>
+                            <p><strong>Asal Perkara:</strong> ${item.asal_perkara || 'Seksi Penindakan'}</p>
+                            <br>
+                            <h4>II. IDENTITAS PELAKU / PERUSAHAAN</h4>
+                            <p><strong>Nama Perusahaan:</strong> ${item.nama_pelaku}</p>
+                            <p><strong>NPWP:</strong> ${item.npwp_pelaku || '-'}</p>
+                            <p><strong>Penanggung Jawab:</strong> ${item.pj_pelaku || '-'}</p>
+                            <br>
+                            <h4>III. URAIAN PELANGGARAN & BARANG</h4>
+                            <p><strong>Jenis Perkara:</strong> ${item.jenis_perkara}</p>
+                            <p><strong>Uraian Barang:</strong> ${item.uraian_barang}</p>
+                            <br><br>
+                            <table style="width: 100%; border: none;">
+                                <tr>
+                                    <td style="width: 50%;"></td>
+                                    <td style="width: 50%; text-align: center;">
+                                        <p>Batam, ${item.tanggal_lpp}</p>
+                                        <p><strong>Kepala Seksi Penyidikan</strong></p>
+                                        <br><br><br>
+                                        <p><strong><u>Johan Kunaefi</u></strong></p>
+                                        <p>NIP. 198006062001121001</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </body>
+                        </html>
+                    `;
+
+                    const blob = new Blob(['\ufeff' + kontenHtml], { type: 'application/msword' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `LPP_${namaFileClean}.doc`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                } else if (item.format === 'pdf') {
+                    const printWindow = window.open('', '_blank');
+                    printWindow.document.write(`
+                        <html>
+                        <head>
+                            <title>Cetak Laporan - LPP ${item.nomor_lpp}</title>
+                            <style>
+                                body { font-family: Arial, sans-serif; padding: 40px; color: #333; line-height: 1.6; }
+                                h2, h3, h4 { text-align: center; margin: 2px 0; color: #1e3a8a; }
+                                hr { border: 1px solid #333; margin: 20px 0; }
+                                table { width: 100%; margin-top: 40px; border-collapse: collapse; }
+                                td { vertical-align: top; }
+                            </style>
+                        </head>
+                        <body>
+                            <h2>KEMENTERIAN KEUANGAN REPUBLIK INDONESIA</h2>
+                            <h3>DIREKTORAT JENDERAL BEA DAN CUKAI</h3>
+                            <h4>KANTOR PELAYANAN UTAMA BEA DAN CUKAI TIPE B BATAM</h4>
+                            <hr>
+                            <h3 style="margin-top: 30px; text-decoration: underline;">LEMBAR PENERIMAAN PERKARA (LPP)</h3>
+                            <p style="margin-top: 20px;"><strong>Nomor LPP:</strong> ${item.nomor_lpp}</p>
+                            <p><strong>Tanggal LPP:</strong> ${item.tanggal_lpp}</p>
+                            <p><strong>Asal Perkara:</strong> ${item.asal_perkara || 'Seksi Penindakan'}</p>
+                            
+                            <h4 style="text-align: left; margin-top: 25px; color: #1e3a8a;">II. IDENTITAS PELAKU / PERUSAHAAN</h4>
+                            <p><strong>Nama Perusahaan:</strong> ${item.nama_pelaku}</p>
+                            <p><strong>NPWP:</strong> ${item.npwp_pelaku || '-'}</p>
+                            <p><strong>Penanggung Jawab:</strong> ${item.pj_pelaku || '-'}</p>
+                            
+                            <h4 style="text-align: left; margin-top: 25px; color: #1e3a8a;">III. URAIAN PELANGGARAN & BARANG</h4>
+                            <p><strong>Jenis Perkara:</strong> ${item.jenis_perkara}</p>
+                            <p><strong>Uraian Barang:</strong> ${item.uraian_barang}</p>
+                            
+                            <table>
+                                <tr>
+                                    <td style="width: 50%;"></td>
+                                    <td style="width: 50%; text-align: center;">
+                                        <p>Batam, ${item.tanggal_lpp}</p>
+                                        <p><strong>Kepala Seksi Penyidikan</strong></p>
+                                        <br><br><br>
+                                        <p><strong><u>Johan Kunaefi</u></strong></p>
+                                        <p>NIP. 198006062001121001</p>
+                                    </td>
+                                </tr>
+                            </table>
+                            <script>window.onload = function() { window.print(); }</script>
+                        </body>
+                        </html>
+                    `);
+                    printWindow.document.close();
+                }
+            }
             closeDashboardModal();
         }
 
