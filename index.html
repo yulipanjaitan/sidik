@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login & Registrasi - Sistem Penyidikan Bea Cukai</title>
-    <!-- Menggunakan Tailwind CSS -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -13,7 +13,7 @@
         }
     </style>
 </head>
-<body class="bg-slate-100 min-h-screen flex items-center justify-center p-4">
+<body class="bg-slate-100 min-h-screen flex items-center justify-center p-4 relative">
 
     <!-- Card Utama (Split Screen) -->
     <div class="bg-white w-full max-w-5xl rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2 border border-slate-200">
@@ -48,28 +48,26 @@
         <!-- KOLOM KANAN: Panel Form (Dinamis: Login / Register) -->
         <div class="bg-indigo-600 p-8 md:p-12 text-white flex flex-col justify-center relative">
             
-            <!-- HEADER FORM -->
             <div class="mb-6">
                 <h1 id="formTitle" class="text-3xl font-bold tracking-tight">Welcome!</h1>
                 <p id="formSubtitle" class="text-indigo-200 text-sm mt-1">Silakan masukkan kredensial akun Anda.</p>
             </div>
 
-            <!-- FORM UTAMA -->
             <form id="authForm" class="space-y-4" onsubmit="handleAuth(event)">
                 
-                <!-- Input Nama / NIP (Tampil saat Register & Login) -->
+                <!-- Input NIP / Username -->
                 <div>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-indigo-300">
-                            <i class="fa-solid fa-user"></i>
+                            <i class="fa-solid fa-id-badge"></i>
                         </span>
                         <input type="text" id="username" required 
                             class="w-full pl-11 pr-5 py-3.5 bg-white text-slate-800 input-pill text-sm focus:outline-none focus:ring-4 focus:ring-indigo-400/50 shadow-inner placeholder-slate-400 font-medium"
-                            placeholder="NIP / Username">
+                            placeholder="Nomor Induk Pegawai (NIP) - Angka">
                     </div>
                 </div>
 
-                <!-- Input Email (Hanya Tampil saat Register) -->
+                <!-- Input Email Kedinasan (Hanya saat Register) -->
                 <div id="emailField" class="hidden">
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-indigo-300">
@@ -77,7 +75,7 @@
                         </span>
                         <input type="email" id="email" 
                             class="w-full pl-11 pr-5 py-3.5 bg-white text-slate-800 input-pill text-sm focus:outline-none focus:ring-4 focus:ring-indigo-400/50 shadow-inner placeholder-slate-400 font-medium"
-                            placeholder="Alamat E-mail Kedinasan">
+                            placeholder="Email Kedinasan (contoh: nama@kemenkeu.go.id)">
                     </div>
                 </div>
 
@@ -89,11 +87,11 @@
                         </span>
                         <input type="password" id="password" required 
                             class="w-full pl-11 pr-5 py-3.5 bg-white text-slate-800 input-pill text-sm focus:outline-none focus:ring-4 focus:ring-indigo-400/50 shadow-inner placeholder-slate-400 font-medium"
-                            placeholder="Kata Sandi (Password)">
+                            placeholder="Kata Sandi (Min. 1 Huruf Besar & Kecil)">
                     </div>
                 </div>
 
-                <!-- TOMBOL AKSI -->
+                <!-- Tombol Aksi -->
                 <div class="flex items-center gap-4 pt-2">
                     <button type="button" id="switchBtn" onclick="toggleMode()"
                         class="flex-1 bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold py-3.5 px-4 input-pill shadow-md transition duration-200 text-xs uppercase tracking-wider text-center">
@@ -106,16 +104,61 @@
                 </div>
             </form>
 
-            <!-- Keterangan Status Mode -->
             <div class="mt-6 text-center text-xs text-indigo-200">
-                <span id="modeText">Belum punya akun? Klik "Daftar Akun Baru" di sebelah kiri.</span>
+                <span id="modeText">Belum punya akun? Klik "Daftar Akun Baru".</span>
             </div>
         </div>
+    </div>
 
+    <!-- MODAL POP-UP KUSTOM YANG ELEGAN -->
+    <div id="customModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4 transition-all">
+        <div class="bg-white w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden p-6 text-center transform scale-95 transition-transform duration-300" id="modalContainer">
+            <div id="modalIconContainer" class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
+                <!-- Icon dinamis -->
+            </div>
+            <h3 id="modalTitle" class="text-lg font-bold text-slate-900 mb-2"></h3>
+            <p id="modalMessage" class="text-xs text-slate-600 mb-6 leading-relaxed"></p>
+            <button onclick="closeModal()" class="w-full bg-blue-900 hover:bg-blue-800 text-white font-semibold py-2.5 rounded-xl text-xs transition">
+                Mengerti / Lanjutkan
+            </button>
+        </div>
     </div>
 
     <script>
         let isRegisterMode = false;
+        let isSuccessAction = false;
+
+        function showModal(title, message, isSuccess = true) {
+            const modal = document.getElementById('customModal');
+            const container = document.getElementById('modalContainer');
+            const iconContainer = document.getElementById('modalIconContainer');
+            
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalMessage').innerText = message;
+            isSuccessAction = isSuccess;
+
+            if (isSuccess) {
+                iconContainer.className = "w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl bg-emerald-100 text-emerald-600";
+                iconContainer.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
+            } else {
+                iconContainer.className = "w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl bg-rose-100 text-rose-600";
+                iconContainer.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i>';
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => container.classList.remove('scale-95'), 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('customModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            
+            if (isSuccessAction && !isRegisterMode && (document.getElementById('username').value !== "" || localStorage.getItem('isLoggedIn'))) {
+                window.location.href = 'dashboard.html';
+            }
+        }
 
         function toggleMode() {
             isRegisterMode = !isRegisterMode;
@@ -128,7 +171,7 @@
 
             if (isRegisterMode) {
                 formTitle.innerText = "Register!";
-                formSubtitle.innerText = "Buat akun penyidik baru untuk akses sistem.";
+                formSubtitle.innerText = "Pendaftaran khusus pegawai terverifikasi.";
                 emailField.classList.remove('hidden');
                 document.getElementById('email').required = true;
                 submitBtn.innerText = "Sign Up";
@@ -141,31 +184,51 @@
                 document.getElementById('email').required = false;
                 submitBtn.innerText = "Sign In";
                 switchBtn.innerText = "Daftar Akun Baru";
-                modeText.innerText = "Belum punya akun? Klik 'Daftar Akun Baru' di sebelah kiri.";
+                modeText.innerText = "Belum punya akun? Klik 'Daftar Akun Baru'.";
             }
         }
 
         function handleAuth(event) {
             event.preventDefault();
-            const username = document.getElementById('username').value;
+            const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value;
 
             if (isRegisterMode) {
-                // Proses Registrasi (Simpan ke localStorage browser)
-                const email = document.getElementById('email').value;
+                const email = document.getElementById('email').value.trim();
+
+                // 1. Validasi NIP harus berupa angka
+                if (!/^\d+$/.test(username)) {
+                    showModal("Registrasi Gagal", "Nomor Induk Pegawai (NIP) harus berupa angka valid!", false);
+                    return;
+                }
+
+                // 2. Validasi Email wajib berakhiran @kemenkeu.go.id
+                if (!email.toLowerCase().endsWith('@kemenkeu.go.id')) {
+                    showModal("Registrasi Gagal", "Email registrasi wajib menggunakan email kedinasan berakhiran @kemenkeu.go.id!", false);
+                    return;
+                }
+
+                // 3. Validasi Password minimal ada huruf besar dan kecil
+                const hasUpperCase = /[A-Z]/.test(password);
+                const hasLowerCase = /[a-z]/.test(password);
+                if (!hasUpperCase || !hasLowerCase || password.length < 6) {
+                    showModal("Registrasi Gagal", "Kata sandi minimal 6 karakter serta wajib mengandung kombinasi huruf besar dan huruf kecil!", false);
+                    return;
+                }
+
+                // Simpan ke localStorage
                 localStorage.setItem('bc_user_' + username, JSON.stringify({ username, email, password }));
-                alert('Registrasi akun berhasil! Silakan login menggunakan NIP dan password Anda.');
-                toggleMode(); // Kembali ke mode login
+                showModal("Registrasi Berhasil!", "Akun kedinasan Anda berhasil didaftarkan. Silakan masuk menggunakan NIP dan sandi Anda.", true);
+                toggleMode();
             } else {
                 // Proses Login
                 const savedData = localStorage.getItem('bc_user_' + username);
                 
-                // Bypass khusus contoh default jika belum pernah register
-                if ((username === "admin" && password === "admin") || (savedData && JSON.parse(savedData).password === password)) {
-                    alert('Login berhasil! Selamat datang, ' + username + '. Menuju halaman dashboard...');
-                    window.location.href = 'dashboard.html'; // Pindah ke halaman form input
+                // Akun Master / Cek dari Database Lokal
+                if ((username === "admin" && password === "Admin123") || (savedData && JSON.parse(savedData).password === password)) {
+                    showModal("Login Berhasil", "Selamat datang kembali di Sistem Penyidikan Bea Cukai. Memuat halaman utama...", true);
                 } else {
-                    alert('Login gagal! NIP/Username atau password salah, atau silakan daftar akun baru terlebih dahulu.');
+                    showModal("Login Gagal", "NIP/Username atau kata sandi tidak valid. Pastikan data yang Anda masukkan benar.", false);
                 }
             }
         }
