@@ -8,9 +8,19 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .modal-overlay { background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(6px); }
-        .modal-box { animation: modalPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
-        @keyframes modalPop {
+        /* Gaya Backdrop & Pop-up Khas iOS Apple */
+        .ios-overlay { 
+            background: rgba(0, 0, 0, 0.4); 
+            backdrop-filter: blur(12px); 
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .ios-alert-box { 
+            animation: iosPop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; 
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        @keyframes iosPop {
             0% { transform: scale(0.85); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
         }
@@ -168,7 +178,7 @@
                             </tr>
                         </thead>
                         <tbody id="tablePerkaraBody" class="divide-y divide-slate-100">
-                            <!-- Data akan dimuat secara dinamis via JavaScript -->
+                            <!-- Data dimuat secara dinamis via JS -->
                         </tbody>
                     </table>
                 </div>
@@ -182,7 +192,6 @@
                 <p class="text-xs text-slate-500 mt-1">Rekapitulasi jumlah dokumen, jenis pelanggaran, dan progres penindakan.</p>
             </div>
 
-            <!-- Cards Statistik -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex items-center space-x-4">
                     <div class="bg-blue-100 text-blue-600 p-4 rounded-2xl text-2xl">
@@ -215,7 +224,6 @@
                 </div>
             </div>
 
-            <!-- Rincian Grafik / Detail Pelanggaran -->
             <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
                 <h3 class="text-sm font-bold text-blue-900 uppercase tracking-wider border-b pb-2">
                     <i class="fa-solid fa-chart-bar mr-2 text-blue-600"></i> Rekapitulasi Jenis Pelanggaran & Komoditi
@@ -236,27 +244,29 @@
 
     </main>
 
-    <!-- MODERN MODAL POP-UP -->
-    <div id="dashboardModal" class="fixed inset-0 modal-overlay hidden items-center justify-center z-50 p-4">
-        <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden p-6 text-center modal-box border border-slate-100">
-            <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl bg-emerald-100 text-emerald-600 shadow-md">
-                <i class="fa-solid fa-file-circle-check"></i>
+    <!-- POP-UP ALERT GAYA iOS APPLE (DASHBOARD) -->
+    <div id="dashboardModal" class="fixed inset-0 ios-overlay hidden items-center justify-center z-50 p-4">
+        <div class="w-full max-w-xs rounded-3xl shadow-2xl overflow-hidden text-center ios-alert-box border border-white/40">
+            <div class="pt-6 px-6 pb-4">
+                <div id="modalIconContainer" class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl bg-emerald-50 text-emerald-600">
+                    <i class="fa-solid fa-file-circle-check"></i>
+                </div>
+                <h3 id="modalTitle" class="text-base font-bold text-slate-900 mb-1 tracking-tight">Informasi Sistem</h3>
+                <p id="dynamicModalMessage" class="text-xs text-slate-600 leading-relaxed px-1"></p>
             </div>
-            <h3 class="text-lg font-bold text-slate-900 mb-1" id="modalTitle">Berhasil</h3>
-            <p id="dynamicModalMessage" class="text-xs text-slate-600 mb-6 leading-relaxed px-2"></p>
-            <div class="flex gap-3">
-                <button onclick="closeDashboardModal()" class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-800 font-semibold py-3 rounded-2xl text-xs transition">
+            
+            <div class="border-t border-slate-200/80 flex divide-x divide-slate-200/80">
+                <button onclick="closeDashboardModal()" class="w-1/2 py-3 text-xs font-medium text-slate-500 hover:bg-slate-100/50 transition">
                     Tutup
                 </button>
-                <button onclick="executeDownload()" class="flex-1 bg-blue-900 hover:bg-blue-800 text-white font-semibold py-3 rounded-2xl text-xs shadow-lg shadow-blue-200 transition">
-                    <i class="fa-solid fa-download mr-1"></i> Unduh File
+                <button onclick="executeDownload()" class="w-1/2 py-3 text-xs font-semibold text-blue-600 hover:bg-slate-100/50 transition">
+                    Unduh File
                 </button>
             </div>
         </div>
     </div>
 
     <script>
-        // Inisialisasi Data Default (Contoh Kasus PT Hawila)
         let daftarPerkara = JSON.parse(localStorage.getItem('bc_daftar_perkara')) || [
             {
                 nomor_lpp: "1482/KPU.206/2025",
@@ -267,17 +277,14 @@
         ];
 
         function switchTab(tabId) {
-            // Sembunyikan semua section
             document.getElementById('tab-input').classList.add('hidden');
             document.getElementById('tab-cetak').classList.add('hidden');
             document.getElementById('tab-monitoring').classList.add('hidden');
 
-            // Reset style nav
             document.getElementById('nav-input').className = "py-4 px-2 text-xs font-bold uppercase tracking-wider border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center transition";
             document.getElementById('nav-cetak').className = "py-4 px-2 text-xs font-bold uppercase tracking-wider border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center transition";
             document.getElementById('nav-monitoring').className = "py-4 px-2 text-xs font-bold uppercase tracking-wider border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center transition";
 
-            // Tampilkan tab yang dipilih
             document.getElementById('tab-' + tabId).classList.remove('hidden');
             document.getElementById('nav-' + tabId).className = "py-4 px-2 text-xs font-bold uppercase tracking-wider border-b-2 border-blue-900 text-blue-900 flex items-center transition";
 
@@ -289,7 +296,7 @@
         }
 
         function loadSampleData() {
-            alert('Data contoh kasus PT Hawila Adhi Perkasa berhasil dimuat ke form!');
+            showModal("Contoh Dimuat", "Data contoh kasus PT Hawila Adhi Perkasa berhasil dimuat ke dalam form input!", true);
         }
 
         function saveDataPerkara(event) {
@@ -304,7 +311,7 @@
             daftarPerkara.push(baru);
             localStorage.setItem('bc_daftar_perkara', JSON.stringify(daftarPerkara));
 
-            showModal("Data Berhasil Disimpan", `Perkara LPP No: ${baru.nomor_lpp} berhasil disimpan. Anda dapat melihatnya di menu 'Cetak Laporan'.`, false);
+            showModal("Berhasil Disimpan", `Perkara LPP No: ${baru.nomor_lpp} berhasil disimpan ke database lokal dan siap dicetak.`, true);
             document.getElementById('penyidikanForm').reset();
         }
 
@@ -317,7 +324,7 @@
                 return;
             }
 
-            daftarPerkara.forEach((item, index) => {
+            daftarPerkara.forEach((item) => {
                 tbody.innerHTML += `
                     <tr class="hover:bg-slate-50 transition">
                         <td class="p-4 font-semibold text-blue-900">${item.nomor_lpp}</td>
@@ -338,10 +345,22 @@
         }
 
         function triggerGenerate(noLpp, namaPelaku, format) {
-            document.getElementById('modalTitle').innerText = "Dokumen Siap Diunduh";
-            const messageEl = document.getElementById('dynamicModalMessage');
-            messageEl.innerText = `Berhasil memproses data untuk LPP No: ${noLpp} (${namaPelaku}). File dokumen format .${format.toUpperCase()} siap diunduh!`;
+            showModal("Dokumen Siap", `Berhasil memproses data untuk LPP No: ${noLpp} (${namaPelaku}). File dokumen format .${format.toUpperCase()} siap diunduh.`, true);
+        }
+
+        function showModal(title, message, isSuccess = true) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('dynamicModalMessage').innerText = message;
             
+            const iconContainer = document.getElementById('modalIconContainer');
+            if (isSuccess) {
+                iconContainer.className = "w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl bg-emerald-50 text-emerald-600";
+                iconContainer.innerHTML = '<i class="fa-solid fa-file-circle-check"></i>';
+            } else {
+                iconContainer.className = "w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl bg-amber-50 text-amber-600";
+                iconContainer.innerHTML = '<i class="fa-solid fa-circle-info"></i>';
+            }
+
             const modal = document.getElementById('dashboardModal');
             modal.classList.remove('hidden');
             modal.classList.add('flex');
@@ -360,14 +379,6 @@
 
         function updateMonitoringStats() {
             document.getElementById('statTotal').innerText = daftarPerkara.length;
-        }
-
-        function showModal(title, message, isSuccess = true) {
-            document.getElementById('modalTitle').innerText = title;
-            document.getElementById('dynamicModalMessage').innerText = message;
-            const modal = document.getElementById('dashboardModal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
         }
     </script>
 </body>
