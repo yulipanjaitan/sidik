@@ -9,34 +9,83 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
-            /* Background bawaan menggunakan file lokal 'background.jpg' yang Anda upload ke folder proyek */
+            background-color: #f8fafc;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Lapisan Wallpaper khusus background dashboard dengan efek animasi Ken Burns halus */
+        #dashboardWallpaper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
             background-image: url('background.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            transition: background-image 0.5s ease-in-out;
+            z-index: -2;
+            transition: opacity 0.6s ease-in-out;
+            animation: wallpaperZoom 25s infinite alternate ease-in-out;
         }
+
+        @keyframes wallpaperZoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.08); }
+        }
+
+        /* Overlay gelap tipis agar kontras teks tetap tajam */
+        #wallpaperOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.25);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: -1;
+            transition: opacity 0.6s ease-in-out;
+        }
+
         .soft-card {
-            background: rgba(255, 255, 255, 0.92);
+            background: rgba(255, 255, 255, 0.88);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
         }
+
+        .soft-card:hover {
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+        }
+
         .ios-overlay { 
-            background: rgba(0, 0, 0, 0.4); 
+            background: rgba(0, 0, 0, 0.45); 
             backdrop-filter: blur(12px); 
         }
+
         .ios-alert-box { 
             animation: iosPop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; 
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(25px);
         }
+
         @keyframes iosPop {
             0% { transform: scale(0.85); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
         }
+
         #sidebar {
             transition: transform 0.3s ease-in-out, width 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
         }
+
         .sidebar-hidden {
             transform: translateX(-100%);
             width: 0 !important;
@@ -45,12 +94,32 @@
             overflow: hidden;
             opacity: 0;
         }
+
+        header {
+            background: rgba(255, 255, 255, 0.82) !important;
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
+        }
+
+        /* Animasi masuk halaman */
+        .tab-content {
+            animation: fadeInContent 0.4s ease-out forwards;
+        }
+
+        @keyframes fadeInContent {
+            0% { opacity: 0; transform: translateY(8px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body id="appBody" class="min-h-screen font-sans text-slate-800 flex p-3 md:p-6 transition-all duration-300">
 
+    <!-- Latar Belakang Wallpaper Aktif Hanya di Menu Dashboard -->
+    <div id="dashboardWallpaper"></div>
+    <div id="wallpaperOverlay"></div>
+
     <!-- SIDEBAR KIRI -->
-    <aside id="sidebar" class="w-64 bg-white/80 backdrop-blur-md rounded-3xl min-h-[92vh] hidden md:flex flex-col justify-between p-5 shadow-xl border border-white/40 sticky top-4 z-30">
+    <aside id="sidebar" class="w-64 rounded-3xl min-h-[92vh] hidden md:flex flex-col justify-between p-5 shadow-2xl border border-white/50 sticky top-4 z-30">
         <div>
             <div class="flex items-center space-x-3 px-3 mb-6">
                 <div id="sidebarLogoIcon" class="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center font-bold text-xs shadow-md transition-colors">
@@ -99,7 +168,7 @@
     <div id="mainContent" class="flex-1 md:ml-6 flex flex-col min-h-screen transition-all duration-300">
         
         <!-- TOP NAVBAR -->
-        <header class="flex justify-between items-center bg-white/70 backdrop-blur-md px-6 py-4 rounded-3xl shadow-sm border border-white/40 mb-6">
+        <header class="flex justify-between items-center px-6 py-4 rounded-3xl shadow-sm border border-white/50 mb-6">
             <div class="flex items-center space-x-4">
                 <button type="button" onclick="toggleSidebar()" class="w-8 h-8 rounded-full bg-white/80 hover:bg-slate-900 hover:text-white text-slate-700 flex items-center justify-center shadow transition text-xs">
                     <i class="fa-solid fa-bars"></i>
@@ -125,21 +194,21 @@
             <!-- ================= TAB 0: DASHBOARD ================= -->
             <section id="content-dashboard" class="tab-content space-y-6 block">
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="soft-card p-5 rounded-3xl shadow-sm border border-white/60 flex justify-between items-center">
+                    <div class="soft-card p-5 rounded-3xl shadow-sm flex justify-between items-center">
                         <div>
-                            <p class="text-[10px] font-bold text-slate-400 uppercase">Total Perkara (LPP)</p>
+                            <p class="text-[10px] font-bold text-slate-500 uppercase">Total Perkara (LPP)</p>
                             <h3 id="dashTotalPerkara" class="text-xl font-bold text-slate-900 mt-1">1</h3>
-                            <p class="text-[10px] text-emerald-600 font-bold mt-1">Terindeks Aktif</p>
+                            <p class="text-[10px] text-emerald-700 font-bold mt-1"><i class="fa-solid fa-circle-check mr-1"></i> Terindeks Aktif</p>
                         </div>
                         <div class="theme-accent w-10 h-10 rounded-2xl bg-slate-900 text-white flex items-center justify-center text-sm shadow-md">
                             <i class="fa-solid fa-folder-open"></i>
                         </div>
                     </div>
-                    <div class="soft-card p-5 rounded-3xl shadow-sm border border-white/60 flex justify-between items-center">
+                    <div class="soft-card p-5 rounded-3xl shadow-sm flex justify-between items-center">
                         <div>
-                            <p class="text-[10px] font-bold text-slate-400 uppercase">Status Sistem</p>
+                            <p class="text-[10px] font-bold text-slate-500 uppercase">Status Sistem</p>
                             <h3 class="text-xl font-bold text-slate-900 mt-1">Online</h3>
-                            <p class="text-[10px] text-emerald-600 font-bold mt-1">Database Sinkron</p>
+                            <p class="text-[10px] text-emerald-700 font-bold mt-1"><i class="fa-solid fa-shield-halved mr-1"></i> Database Sinkron</p>
                         </div>
                         <div class="theme-accent w-10 h-10 rounded-2xl bg-slate-900 text-white flex items-center justify-center text-sm shadow-md">
                             <i class="fa-solid fa-cloud"></i>
@@ -150,7 +219,7 @@
 
             <!-- ================= TAB 1: INPUT DATA ================= -->
             <section id="content-input" class="tab-content space-y-6 hidden">
-                <div class="soft-card p-6 rounded-3xl shadow-sm border border-white/60 flex justify-between items-center">
+                <div class="soft-card p-6 rounded-3xl shadow-sm flex justify-between items-center">
                     <div>
                         <h3 class="text-sm font-bold text-slate-900">Form Input Data Dokumen Perkara Penyidikan</h3>
                         <p class="text-xs text-slate-500 mt-0.5">Sesuai format dokumen LPP, LPF, SPLIT, SBP, Pencacahan, dan LHP Bea Cukai Batam.</p>
@@ -160,7 +229,7 @@
                     </button>
                 </div>
 
-                <form id="penyidikanForm" onsubmit="saveDataPerkara(event)" class="soft-card rounded-3xl shadow-sm border border-white/60 p-8 space-y-8">
+                <form id="penyidikanForm" onsubmit="saveDataPerkara(event)" class="soft-card rounded-3xl shadow-sm p-8 space-y-8">
                     <div class="space-y-4">
                         <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b pb-3 flex items-center text-blue-900">
                             <i class="fa-solid fa-file-lines mr-2"></i> I. Lembar Penerimaan Perkara (LPP) & SBP
@@ -168,27 +237,27 @@
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Nomor LPP</label>
-                                <input type="text" id="nomor_lpp" required class="w-full p-3 bg-white/80 border border-slate-200 rounded-xl outline-none" value="1482/KPU.206/2025">
+                                <input type="text" id="nomor_lpp" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="1482/KPU.206/2025">
                             </div>
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Tanggal LPP</label>
-                                <input type="date" id="tanggal_lpp" required class="w-full p-3 bg-white/80 border border-slate-200 rounded-xl outline-none" value="2025-12-13">
+                                <input type="date" id="tanggal_lpp" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="2025-12-13">
                             </div>
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Asal Perkara</label>
-                                <input type="text" id="asal_perkara" required class="w-full p-3 bg-white/80 border border-slate-200 rounded-xl outline-none" value="Seksi Penindakan">
+                                <input type="text" id="asal_perkara" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="Seksi Penindakan">
                             </div>
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Nomor SBP (Surat Bukti Penindakan)</label>
-                                <input type="text" id="nomor_sbp" required class="w-full p-3 bg-white/80 border border-slate-200 rounded-xl outline-none" value="1659/Mandiri/KPU.2/2025">
+                                <input type="text" id="nomor_sbp" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="1659/Mandiri/KPU.2/2025">
                             </div>
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Tanggal SBP</label>
-                                <input type="date" id="tanggal_sbp" required class="w-full p-3 bg-white/80 border border-slate-200 rounded-xl outline-none" value="2025-12-12">
+                                <input type="date" id="tanggal_sbp" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="2025-12-12">
                             </div>
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Status Penangkapan</label>
-                                <input type="text" id="status_penangkapan" required class="w-full p-3 bg-white/80 border border-slate-200 rounded-xl outline-none" value="Penindakan Biasa">
+                                <input type="text" id="status_penangkapan" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="Penindakan Biasa">
                             </div>
                         </div>
                     </div>
@@ -200,19 +269,19 @@
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Nama Perusahaan / Pelaku</label>
-                                <input type="text" id="nama_pelaku" required class="w-full p-3 bg-white/80 border border-slate-200 rounded-xl outline-none" value="PT HAWILA ADHI PERKASA">
+                                <input type="text" id="nama_pelaku" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="PT HAWILA ADHI PERKASA">
                             </div>
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">NPWP / Identitas</label>
-                                <input type="text" id="npwp_pelaku" required class="w-full p-3 bg-white/80 border border-slate-200 rounded-xl outline-none" value="860753292225000">
+                                <input type="text" id="npwp_pelaku" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="860753292225000">
                             </div>
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Penanggung Jawab / Pemilik</label>
-                                <input type="text" id="pj_pelaku" required class="w-full p-3 bg-white/80 border border-slate-200 rounded-xl outline-none" value="CHANNER SIMBOLON">
+                                <input type="text" id="pj_pelaku" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="CHANNER SIMBOLON">
                             </div>
                             <div class="md:col-span-3">
                                 <label class="block font-semibold text-slate-700 mb-1">Alamat Lengkap</label>
-                                <input type="text" id="alamat_pelaku" required class="w-full p-3 bg-white/80 border border-slate-200 rounded-xl outline-none" value="Ruko The Capitol Superblok Imperium Blok B No. 41, Batam">
+                                <input type="text" id="alamat_pelaku" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="Ruko The Capitol Superblok Imperium Blok B No. 41, Batam">
                             </div>
                         </div>
                     </div>
@@ -224,23 +293,23 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs">
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Tempat Kejadian (Locus)</label>
-                                <input type="text" id="tempat_kejadian" required class="w-full p-3 bg-white/80 border border-slate-200 rounded-xl outline-none" value="TPS Dharma Bandar Mandala (DBM)">
+                                <input type="text" id="tempat_kejadian" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="TPS Dharma Bandar Mandala (DBM)">
                             </div>
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Waktu Kejadian (Tempus)</label>
-                                <input type="text" id="waktu_kejadian" required class="w-full p-3 bg-white/80 border border-slate-200 rounded-xl outline-none" value="12 Desember 2025 pukul 13.00 WIB">
+                                <input type="text" id="waktu_kejadian" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="12 Desember 2025 pukul 13.00 WIB">
                             </div>
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Jenis Pelanggaran / Pasal</label>
-                                <input type="text" id="jenis_pelanggaran" required class="w-full p-3 bg-white/80 border border-slate-200 rounded-xl outline-none" value="Pasal 53 ayat (3) UU No. 17 Tahun 2006 & Pasal 33 ayat (1), Pasal 71 ayat (1) PP No. 41 Tahun 2021">
+                                <input type="text" id="jenis_pelanggaran" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="Pasal 53 ayat (3) UU No. 17 Tahun 2006 & Pasal 33 ayat (1), Pasal 71 ayat (1) PP No. 41 Tahun 2021">
                             </div>
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Jenis Perkara</label>
-                                <input type="text" id="jenis_perkara" required class="w-full p-3 bg-white/80 border border-slate-200 rounded-xl outline-none" value="Pengeluaran barang dari KPBPB Batam ke TLDDP tanpa/salah pemberitahuan pabean">
+                                <input type="text" id="jenis_perkara" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="Pengeluaran barang dari KPBPB Batam ke TLDDP tanpa/salah pemberitahuan pabean">
                             </div>
                             <div class="md:col-span-2">
                                 <label class="block font-semibold text-slate-700 mb-1">Modus Operandi</label>
-                                <textarea id="modus_operandi" rows="2" class="w-full p-3 bg-white/80 border border-slate-200 rounded-xl outline-none">Mengeluarkan barang dari KPBPB Batam ke TLDDP tanpa/salah pemberitahuan pabean</textarea>
+                                <textarea id="modus_operandi" rows="2" class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none">Mengeluarkan barang dari KPBPB Batam ke TLDDP tanpa/salah pemberitahuan pabean</textarea>
                             </div>
                         </div>
                     </div>
@@ -252,15 +321,15 @@
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Komoditi</label>
-                                <input type="text" id="komoditi" required class="w-full p-3 bg-white/80 border border-slate-200 rounded-xl outline-none" value="Barang lainnya">
+                                <input type="text" id="komoditi" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="Barang lainnya">
                             </div>
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Detail Uraian Barang</label>
-                                <input type="text" id="uraian_barang" required class="w-full p-3 bg-white/80 border border-slate-200 rounded-xl outline-none" value="2 Pce / M Core B 81A447-2351, ETC">
+                                <input type="text" id="uraian_barang" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="2 Pce / M Core B 81A447-2351, ETC">
                             </div>
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Dokumen Pabean Asal</label>
-                                <input type="text" id="dok_pabean" required class="w-full p-3 bg-white/80 border border-slate-200 rounded-xl outline-none" value="PPFTZ-01 No. 011407 Tgl 28 November 2025">
+                                <input type="text" id="dok_pabean" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="PPFTZ-01 No. 011407 Tgl 28 November 2025">
                             </div>
                         </div>
                     </div>
@@ -275,14 +344,14 @@
 
             <!-- ================= TAB 2: CETAK LAPORAN ================= -->
             <section id="content-cetak" class="tab-content space-y-6 hidden">
-                <div class="soft-card p-6 rounded-3xl shadow-sm border border-white/60">
+                <div class="soft-card p-6 rounded-3xl shadow-sm">
                     <h3 class="text-sm font-bold text-slate-900">Cetak & Generate Dokumen Perkara</h3>
                     <p class="text-xs text-slate-500 mt-0.5">Daftar perkara siap di-generate ke Word (.doc) atau PDF.</p>
                 </div>
-                <div class="soft-card rounded-3xl shadow-sm border border-white/60 overflow-hidden">
+                <div class="soft-card rounded-3xl shadow-sm overflow-hidden">
                     <div class="overflow-x-auto">
                         <table class="w-full text-left text-xs">
-                            <thead class="bg-white/50 border-b text-slate-700 uppercase">
+                            <thead class="bg-white/60 border-b text-slate-700 uppercase">
                                 <tr>
                                     <th class="p-4">No. LPP</th>
                                     <th class="p-4">Tanggal</th>
@@ -299,11 +368,11 @@
 
             <!-- ================= TAB 3: MONITORING ================= -->
             <section id="content-monitoring" class="tab-content space-y-6 hidden">
-                <div class="soft-card p-6 rounded-3xl shadow-sm border border-white/60">
+                <div class="soft-card p-6 rounded-3xl shadow-sm">
                     <h3 class="text-sm font-bold text-slate-900">Monitoring & Statistik Penelitian</h3>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="soft-card p-6 rounded-3xl shadow-sm border border-white/60 flex items-center space-x-4">
+                    <div class="soft-card p-6 rounded-3xl shadow-sm flex items-center space-x-4">
                         <div class="theme-accent bg-slate-900 text-white p-4 rounded-2xl text-xl"><i class="fa-solid fa-folder-open"></i></div>
                         <div>
                             <p class="text-xs text-slate-400 font-semibold uppercase">Total Dokumen LPP</p>
@@ -315,14 +384,13 @@
 
             <!-- ================= TAB 4: PENGATURAN & AKUN ================= -->
             <section id="content-setting" class="tab-content space-y-6 hidden">
-                <div class="soft-card p-6 rounded-3xl shadow-sm border border-white/60">
+                <div class="soft-card p-6 rounded-3xl shadow-sm">
                     <h3 class="text-sm font-bold text-slate-900">Pengaturan Akun & Kustomisasi Tampilan</h3>
                     <p class="text-xs text-slate-500 mt-0.5">Kelola foto profil, background dashboard (bawaan file `background.jpg`), kredensial penyidik, dan tema warna sistem.</p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Card 1: Profil & Avatar -->
-                    <div class="soft-card p-8 rounded-3xl shadow-sm border border-white/60 space-y-4">
+                    <div class="soft-card p-8 rounded-3xl shadow-sm space-y-4">
                         <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b pb-3">Informasi Profil & Foto</h4>
                         
                         <div class="flex items-center space-x-4 py-2">
@@ -336,23 +404,21 @@
                         <form onsubmit="updateProfileInfo(event)" class="space-y-4 text-xs pt-2">
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Nama / Jabatan Penyidik</label>
-                                <input type="text" id="settingName" required class="w-full p-3 bg-white/80 border border-slate-200 rounded-xl outline-none" value="Penyidik Utama">
+                                <input type="text" id="settingName" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="Penyidik Utama">
                             </div>
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Alamat Email Aktif</label>
-                                <input type="email" id="settingEmail" required class="w-full p-3 bg-white/80 border border-slate-200 rounded-xl outline-none" value="penyidik.batam@beacukai.go.id">
+                                <input type="email" id="settingEmail" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="penyidik.batam@beacukai.go.id">
                             </div>
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">NIP (Nomor Induk Pegawai)</label>
-                                <input type="text" id="settingNip" required class="w-full p-3 bg-white/80 border border-slate-200 rounded-xl outline-none" value="198006062001121001">
+                                <input type="text" id="settingNip" required class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none" value="198006062001121001">
                             </div>
                             <button type="submit" class="theme-accent w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl shadow transition">Simpan Perubahan Profil</button>
                         </form>
                     </div>
 
-                    <!-- Card 2: Pengaturan Background Dashboard & Sandi -->
-                    <div class="soft-card p-8 rounded-3xl shadow-sm border border-white/60 space-y-6">
-                        <!-- Fitur Ganti Background Dashboard -->
+                    <div class="soft-card p-8 rounded-3xl shadow-sm space-y-6">
                         <div>
                             <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b pb-3 mb-3">Background Dashboard Sinkron</h4>
                             <div class="space-y-3 text-xs">
@@ -367,7 +433,7 @@
                             <form onsubmit="updatePassword(event)" class="space-y-3 text-xs">
                                 <div>
                                     <label class="block font-semibold text-slate-700 mb-1">Password Baru</label>
-                                    <input type="password" id="newPassword" required placeholder="Masukkan password baru" class="w-full p-3 bg-white/80 border border-slate-200 rounded-xl outline-none">
+                                    <input type="password" id="newPassword" required placeholder="Masukkan password baru" class="w-full p-3 bg-white/90 border border-slate-200 rounded-xl outline-none">
                                 </div>
                                 <button type="submit" class="theme-accent w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl shadow transition">Perbarui Password</button>
                             </form>
@@ -380,8 +446,7 @@
                     </div>
                 </div>
 
-                <!-- Card 3: Ubah Tema Warna Design -->
-                <div class="soft-card p-8 rounded-3xl shadow-sm border border-white/60 space-y-4">
+                <div class="soft-card p-8 rounded-3xl shadow-sm space-y-4">
                     <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b pb-3">Kustomisasi Tema Warna Tampilan</h4>
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2">
                         <button onclick="setTheme('slate')" class="p-4 rounded-2xl border-2 border-slate-900 bg-slate-900 text-white text-xs font-bold shadow transition flex items-center justify-center space-x-2">
@@ -405,7 +470,7 @@
 
     <!-- POP-UP MODAL -->
     <div id="dashboardModal" class="fixed inset-0 ios-overlay hidden items-center justify-center z-50 p-4">
-        <div class="w-full max-w-xs rounded-3xl shadow-2xl overflow-hidden text-center ios-alert-box border border-white/40">
+        <div class="w-full max-w-xs rounded-3xl shadow-2xl overflow-hidden text-center ios-alert-box border border-white/50">
             <div class="pt-6 px-6 pb-4">
                 <div id="modalIconContainer" class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl bg-emerald-50 text-emerald-600">
                     <i class="fa-solid fa-file-circle-check"></i>
@@ -469,14 +534,13 @@
             document.getElementById('headerProfileImg').src = avatarSrc;
             document.getElementById('previewProfileImg').src = avatarSrc;
 
-            // Sinkronisasi Background: jika user set background kustom, gunakan kustom. Jika kosong, gunakan 'background.jpg' bawaan.
-            if (userProfile.background && userProfile.background.trim() !== "") {
-                document.body.style.backgroundImage = `url('${userProfile.background}')`;
-            } else {
-                document.body.style.backgroundImage = "url('background.jpg')";
-            }
-
+            applyWallpaper();
             setTheme(userProfile.theme, false);
+        }
+
+        function applyWallpaper() {
+            const bgImg = (userProfile.background && userProfile.background.trim() !== "") ? userProfile.background : 'background.jpg';
+            document.getElementById('dashboardWallpaper').style.backgroundImage = `url('${bgImg}')`;
         }
 
         function previewImageFile(event) {
@@ -491,7 +555,6 @@
             }
         }
 
-        // Fungsi Upload dan Sinkronisasi Background Kustom
         function previewBackgroundFile(event) {
             const file = event.target.files[0];
             if (file) {
@@ -500,8 +563,7 @@
                     tempBackgroundBase64 = e.target.result;
                     userProfile.background = tempBackgroundBase64;
                     localStorage.setItem('bc_user_profile', JSON.stringify(userProfile));
-                    
-                    document.body.style.backgroundImage = `url('${tempBackgroundBase64}')`;
+                    applyWallpaper();
                     showModal("Berhasil", "Background dashboard kustom berhasil diunggah dan disinkronkan!", true, null);
                 }
                 reader.readAsDataURL(file);
@@ -511,7 +573,7 @@
         function resetDefaultBackground() {
             userProfile.background = "";
             localStorage.setItem('bc_user_profile', JSON.stringify(userProfile));
-            document.body.style.backgroundImage = "url('background.jpg')";
+            applyWallpaper();
             showModal("Reset Berhasil", "Background dikembalikan ke file bawaan (background.jpg).", true, null);
         }
 
@@ -519,6 +581,7 @@
             document.getElementById('sidebar').classList.toggle('sidebar-hidden');
         }
 
+        // Fungsi kontrol visibilitas wallpaper: HANYA MUNCUL DI MENU DASHBOARD
         function switchTab(targetId, btnElement) {
             document.querySelectorAll('.tab-content').forEach(content => {
                 content.classList.add('hidden');
@@ -533,6 +596,25 @@
             if (targetContent) {
                 targetContent.classList.remove('hidden');
                 targetContent.classList.add('block');
+            }
+
+            // Kontrol efek wallpaper khusus tab dashboard
+            const wallpaperEl = document.getElementById('dashboardWallpaper');
+            const overlayEl = document.getElementById('wallpaperOverlay');
+            if (targetId === 'dashboard') {
+                wallpaperEl.style.opacity = '1';
+                overlayEl.style.opacity = '1';
+                wallpaperEl.style.display = 'block';
+                overlayEl.style.display = 'block';
+            } else {
+                wallpaperEl.style.opacity = '0';
+                overlayEl.style.opacity = '0';
+                setTimeout(() => {
+                    if(document.getElementById('content-dashboard').classList.contains('hidden')) {
+                        wallpaperEl.style.display = 'none';
+                        overlayEl.style.display = 'none';
+                    }
+                }, 400);
             }
 
             const theme = userProfile.theme || 'slate';
