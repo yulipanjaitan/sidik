@@ -25,9 +25,9 @@
         }
     </style>
 </head>
-<body class="bg-slate-100 min-h-screen font-sans text-slate-800 flex overflow-x-hidden">
+<body class="bg-slate-100 min-h-screen font-sans text-slate-800 flex">
 
-    <!-- SIDEBAR MENU DI KIRI (Fixed Desktop) -->
+    <!-- SIDEBAR MENU DI KIRI -->
     <aside class="w-72 bg-white border-r border-slate-200 min-h-screen hidden md:flex flex-col justify-between p-6 fixed inset-y-0 left-0 z-20 shadow-sm">
         <div>
             <!-- Logo Brand Bea Cukai -->
@@ -44,6 +44,10 @@
                 <div>
                     <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-3 px-2">Menu Utama</p>
                     <nav class="space-y-1.5">
+                        <button type="button" onclick="switchTab('dashboard')" id="sidebar-dashboard" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-50 transition">
+                            <i class="fa-solid fa-house w-4"></i>
+                            <span>Dashboard (Infografis)</span>
+                        </button>
                         <button type="button" onclick="switchTab('input')" id="sidebar-input" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold bg-blue-900 text-white shadow-lg shadow-blue-200 transition">
                             <i class="fa-solid fa-pen-to-square w-4"></i>
                             <span>Input Data</span>
@@ -55,6 +59,10 @@
                         <button type="button" onclick="switchTab('monitoring')" id="sidebar-monitoring" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-50 transition">
                             <i class="fa-solid fa-chart-pie w-4"></i>
                             <span>Monitoring Penelitian</span>
+                        </button>
+                        <button type="button" onclick="switchTab('setting')" id="sidebar-setting" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-50 transition">
+                            <i class="fa-solid fa-gear w-4"></i>
+                            <span>Pengaturan & Akun</span>
                         </button>
                     </nav>
                 </div>
@@ -70,8 +78,8 @@
         </div>
     </aside>
 
-    <!-- KONTEN UTAMA DI KANAN (Responsive Margin Left) -->
-    <div class="flex-1 md:ml-72 flex flex-col min-h-screen w-full">
+    <!-- KONTEN UTAMA DI KANAN -->
+    <div class="flex-1 md:ml-72 flex flex-col min-h-screen">
         
         <!-- HEADER BANNER BERGRADASI -->
         <div class="bg-gradient-to-r from-blue-900 via-indigo-800 to-purple-800 text-white p-8 md:p-10 relative overflow-hidden shadow-lg">
@@ -79,8 +87,8 @@
             
             <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center relative z-10 gap-4">
                 <div>
-                    <h2 class="text-2xl md:text-3xl font-bold tracking-tight">Dashboard Penyidikan</h2>
-                    <p class="text-xs text-blue-100 mt-1">Platform pengolahan LPP, LPF, SPLIT, Berita Acara, dan LHP KPU BC Tipe B Batam.</p>
+                    <h2 class="text-2xl md:text-3xl font-bold tracking-tight">Sistem Penyidikan Bea Cukai</h2>
+                    <p class="text-xs text-blue-100 mt-1">Platform terintegrasi pengolahan LPP, LPF, SPLIT, Berita Acara, dan LHP KPU BC Tipe B Batam.</p>
                 </div>
                 <div class="bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 rounded-2xl flex items-center space-x-3">
                     <div class="w-8 h-8 rounded-full bg-amber-400 flex items-center justify-center text-slate-900 font-bold text-xs">
@@ -97,6 +105,37 @@
         <!-- CONTAINER UTAMA KONTEN -->
         <main class="max-w-6xl mx-auto px-6 py-8 flex-1 w-full">
             
+            <!-- ================= TAB 0: DASHBOARD (INFOGRAFIS & GRAFIK) ================= -->
+            <section id="tab-dashboard" class="space-y-6 hidden">
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                    <h3 class="text-base font-bold text-slate-900">Infografis & Ringkasan Perkara</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">Analisis visual data penindakan dan status penyidikan terkini.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                        <p class="text-[11px] font-bold text-slate-400 uppercase">Total Perkara</p>
+                        <h3 id="dashTotalPerkara" class="text-3xl font-bold text-blue-900 mt-2">1</h3>
+                        <p class="text-[10px] text-emerald-600 mt-1"><i class="fa-solid fa-arrow-up mr-1"></i> Terindeks Aktif</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                        <p class="text-[11px] font-bold text-slate-400 uppercase">Dokumen LPP/LPF</p>
+                        <h3 class="text-3xl font-bold text-indigo-900 mt-2">100%</h3>
+                        <p class="text-[10px] text-slate-500 mt-1">Siap Generate</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                        <p class="text-[11px] font-bold text-slate-400 uppercase">Status Penelitian</p>
+                        <h3 class="text-3xl font-bold text-amber-600 mt-2">Proses</h3>
+                        <p class="text-[10px] text-amber-600 mt-1">Verifikasi Seksi</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                        <p class="text-[11px] font-bold text-slate-400 uppercase">Sistem Cloud</p>
+                        <h3 class="text-3xl font-bold text-emerald-600 mt-2">Online</h3>
+                        <p class="text-[10px] text-emerald-600 mt-1">Google Sheets Sinkron</p>
+                    </div>
+                </div>
+            </section>
+
             <!-- ================= TAB 1: INPUT DATA ================= -->
             <section id="tab-input" class="space-y-6 block">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center bg-white p-6 rounded-3xl shadow-sm border border-slate-200 gap-4">
@@ -210,7 +249,6 @@
                             <h3 id="statTotal" class="text-2xl font-bold text-slate-900 mt-1">1</h3>
                         </div>
                     </div>
-
                     <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 flex items-center space-x-4">
                         <div class="bg-amber-50 text-amber-600 p-4 rounded-2xl text-2xl"><i class="fa-solid fa-triangle-exclamation"></i></div>
                         <div>
@@ -218,7 +256,6 @@
                             <h3 class="text-2xl font-bold text-slate-900 mt-1">100%</h3>
                         </div>
                     </div>
-
                     <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 flex items-center space-x-4">
                         <div class="bg-emerald-50 text-emerald-600 p-4 rounded-2xl text-2xl"><i class="fa-solid fa-circle-check"></i></div>
                         <div>
@@ -227,22 +264,17 @@
                         </div>
                     </div>
                 </div>
+            </section>
 
-                <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 space-y-4">
-                    <h4 class="text-xs font-bold text-blue-900 uppercase tracking-wider border-b pb-3">
-                        <i class="fa-solid fa-chart-bar mr-2 text-blue-600"></i> Rekapitulasi Jenis Pelanggaran & Komoditi
-                    </h4>
-                    <div class="space-y-3 text-xs">
-                        <div>
-                            <div class="flex justify-between font-semibold mb-1">
-                                <span>Pengeluaran Barang dari KPBPB Batam ke TLDDP Tanpa/Salah Pemberitahuan Pabean</span>
-                                <span>100%</span>
-                            </div>
-                            <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
-                                <div class="bg-blue-600 h-2.5 rounded-full" style="width: 100%"></div>
-                            </div>
-                        </div>
-                    </div>
+            <!-- ================= TAB 4: SETTING ================= -->
+            <section id="tab-setting" class="space-y-6 hidden">
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                    <h3 class="text-base font-bold text-slate-900">Pengaturan Akun & Tampilan Sistem</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">Kelola preferensi akun penyidik dan kustomisasi tema antarmuka aplikasi.</p>
+                </div>
+                <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-8 space-y-6">
+                    <h4 class="text-xs font-bold text-blue-900 uppercase tracking-wider border-b pb-3">Profil Pengguna</h4>
+                    <p class="text-xs text-slate-600">Penyidik Pegawai Negeri Sipil / KPU BC Batam</p>
                 </div>
             </section>
 
@@ -286,27 +318,32 @@
         let isDownloadMode = false;
 
         function switchTab(tabId) {
-            // Sembunyikan semua section tab
-            document.getElementById('tab-input').classList.add('hidden');
-            document.getElementById('tab-cetak').classList.add('hidden');
-            document.getElementById('tab-monitoring').classList.add('hidden');
+            const tabs = ['dashboard', 'input', 'cetak', 'monitoring', 'setting'];
+            tabs.forEach(t => {
+                const el = document.getElementById('tab-' + t);
+                if(el) {
+                    el.classList.add('hidden');
+                    el.classList.remove('block');
+                }
+                const sidebarEl = document.getElementById('sidebar-' + t);
+                if(sidebarEl) {
+                    sidebarEl.className = "w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-50 transition";
+                }
+            });
 
-            document.getElementById('tab-input').classList.remove('block');
-            document.getElementById('tab-cetak').classList.remove('block');
-            document.getElementById('tab-monitoring').classList.remove('block');
+            const activeTab = document.getElementById('tab-' + tabId);
+            if(activeTab) {
+                activeTab.classList.remove('hidden');
+                activeTab.classList.add('block');
+            }
 
-            // Reset style semua tombol sidebar
-            document.getElementById('sidebar-input').className = "w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-50 transition";
-            document.getElementById('sidebar-cetak').className = "w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-50 transition";
-            document.getElementById('sidebar-monitoring').className = "w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-50 transition";
-
-            // Tampilkan tab yang dipilih dan beri gaya aktif pada sidebar
-            document.getElementById('tab-' + tabId).classList.remove('hidden');
-            document.getElementById('tab-' + tabId).classList.add('block');
-            document.getElementById('sidebar-' + tabId).className = "w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold bg-blue-900 text-white shadow-lg shadow-blue-200 transition";
+            const activeSidebar = document.getElementById('sidebar-' + tabId);
+            if(activeSidebar) {
+                activeSidebar.className = "w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold bg-blue-900 text-white shadow-lg shadow-blue-200 transition";
+            }
 
             if (tabId === 'cetak') renderTablePerkara();
-            else if (tabId === 'monitoring') updateMonitoringStats();
+            else if (tabId === 'monitoring' || tabId === 'dashboard') updateMonitoringStats();
         }
 
         function loadSampleData() {
@@ -344,6 +381,7 @@
 
             showModal("Berhasil Disimpan", `Perkara LPP No: ${baru.nomor_lpp} berhasil disimpan & disinkronkan.`, true, false);
             document.getElementById('penyidikanForm').reset();
+            updateMonitoringStats();
         }
 
         function renderTablePerkara() {
@@ -516,8 +554,14 @@
         }
 
         function updateMonitoringStats() {
-            document.getElementById('statTotal').innerText = daftarPerkara.length;
+            const total = daftarPerkara.length;
+            const statEl = document.getElementById('statTotal');
+            const dashEl = document.getElementById('dashTotalPerkara');
+            if(statEl) statEl.innerText = total;
+            if(dashEl) dashEl.innerText = total;
         }
+
+        updateMonitoringStats();
     </script>
 </body>
 </html>
