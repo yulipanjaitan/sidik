@@ -21,7 +21,6 @@
         .sidebar-hidden { transform: translateX(-100%); width: 0 !important; padding: 0 !important; overflow: hidden; opacity: 0; }
         header { background: #ffffff !important; border-radius: 20px; border: 1px solid #e2e8f0; }
 
-        /* CSS KHUSUS CETAK PDF / PRINT AGAR RAPI */
         @media print {
             body * { visibility: hidden; }
             #printArea, #printArea * { visibility: visible; }
@@ -68,7 +67,6 @@
             </div>
         </header>
         <main class="flex-1 space-y-6">
-            <!-- DASHBOARD DENGAN STATISTIK KLASIFIKASI & KERUGIAN -->
             <section id="content-dashboard" class="tab-content space-y-6 block">
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     <div class="soft-card p-5 rounded-2xl flex justify-between items-center"><div><p class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Total Berkas Perkara</p><h3 id="dashTotalPerkara" class="text-2xl font-bold text-slate-900 mt-1">1</h3><p class="text-[10px] text-emerald-700 font-bold mt-1">Sinkron & Aktif</p></div><div class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center text-sm shadow"><i class="fa-solid fa-folder-open"></i></div></div>
@@ -77,7 +75,6 @@
                     <div class="soft-card p-5 rounded-2xl flex justify-between items-center"><div><p class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Estimasi Kerugian Negara</p><h3 id="dashTotalKerugian" class="text-lg font-bold text-rose-600 mt-1">Rp 0</h3><p class="text-[10px] text-rose-700 font-bold mt-1">Potensi Bea & Cukai</p></div><div class="w-10 h-10 rounded-xl bg-rose-600 text-white flex items-center justify-center text-sm shadow"><i class="fa-solid fa-triangle-exclamation"></i></div></div>
                 </div>
             </section>
-            <!-- INPUT DATA -->
             <section id="content-input" class="tab-content space-y-6 hidden">
                 <div class="ios-container-group p-6 flex justify-between items-center">
                     <div><span class="text-[10px] font-bold text-blue-600 uppercase bg-blue-50 px-2.5 py-1 rounded-full">Database Penyidikan</span><h3 class="text-sm font-bold text-slate-900 mt-2">Form Input Data Perkara</h3><p class="text-xs text-slate-500 mt-0.5">Input data utama perkara, klasifikasi jenis perkara, komoditi, hingga kerugian negara.</p></div>
@@ -305,7 +302,6 @@
         </div>
     </div>
 
-    <!-- CONTAINER TERSEMBUNYI UNTUK CETAK PDF SESUAI FORMAT RESMI -->
     <div id="printArea" class="hidden"></div>
 
     <script>
@@ -583,21 +579,21 @@
                             <tr><td>Status Penangkapan</td><td>:</td><td>${item.status_penangkapan || '-'}</td></tr>
                         </table>
 
-                        <p><strong>A. URAIAN PELANGGARAN</strong></p>
+                        <p><strong>E. URAIAN PELANGGARAN</strong></p>
                         <p>1. Jenis Pelanggaran / Pasal : ${item.jenis_pelanggaran || '-'}</p>
                         <p>2. Modus Operandi : ${item.modus_operandi || '-'}</p>
 
-                        <p style="margin-top: 10px;"><strong>B. LOKASI KEJADIAN</strong></p>
+                        <p style="margin-top: 10px;"><strong>3. Lokasi Kejadian</strong></p>
                         <p>a. Tempat : ${item.tempat_kejadian || '-'}</p>
-                        <p>b. Waktu : ${item.tanggal_sbp || '-'} 13.00 WIB</p>
+                        <p>b. Tanggal dan Waktu : ${item.tanggal_sbp || '-'} / 13.00 WIB</p>
 
-                        <p style="margin-top: 10px;"><strong>C. PELAKU PELANGGARAN</strong></p>
+                        <p style="margin-top: 10px;"><strong>4. Pelaku Pelanggaran</strong></p>
                         <p>a. Nama Perusahaan : ${item.nama_pelaku || '-'}</p>
                         <p>b. Alamat : ${item.alamat_pelaku || '-'}</p>
 
-                        <p style="margin-top: 10px;"><strong>D. BARANG HASIL PENINDAKAN</strong></p>
+                        <p style="margin-top: 10px;"><strong>F. BARANG HASIL PENINDAKAN</strong></p>
                         <p>1. Komoditi : ${item.komoditi_utama || 'Barang lainnya'}</p>
-                        <p>2. Detail Uraian : ${item.daftar_barang && item.daftar_barang[0] ? item.daftar_barang[0].uraian : '-'}</p>
+                        <p>2. Detail Uraian Barang : ${item.daftar_barang && item.daftar_barang[0] ? item.daftar_barang[0].uraian : '-'}</p>
                         <p>3. Dokumen Barang : ${item.dok_pabean || '-'}</p>
 
                         <br><br>
@@ -605,13 +601,15 @@
                             <tr>
                                 <td style="width: 50%; vertical-align: top;">
                                     Catatan atasan pembuat LPP<br>
-                                    Kepala Seksi Penyidikan<br><br><br>
+                                    Kepala Seksi Penyidikan<br>
+                                    Ditandatangani secara elektronik<br><br>
                                     <strong>${p.kasi}</strong><br>
                                     NIP. ${p.nip_kasi}
                                 </td>
                                 <td style="width: 50%; vertical-align: top; text-align: right;">
                                     Batam, ${item.tanggal_lpp || '-'}<br>
-                                    Yang membuat LPP,<br><br><br>
+                                    Yang membuat LPP,<br>
+                                    Ditandatangani secara elektronik<br><br>
                                     <strong>${p.pembuat}</strong><br>
                                     NIP. ${p.nip_pembuat}
                                 </td>
@@ -619,7 +617,8 @@
                             <tr>
                                 <td colspan="2" style="text-align: center; padding-top: 30px;">
                                     Mengetahui,<br>
-                                    Kepala Bidang Penindakan dan Penyidikan<br><br><br>
+                                    Kepala Bidang Penindakan dan Penyidikan<br>
+                                    Ditandatangani secara elektronik<br><br>
                                     <strong>${p.kabid}</strong><br>
                                     NIP. ${p.nip_kabid}
                                 </td>
@@ -641,7 +640,7 @@
                         <p>1. Jenis Pelanggaran / Pasal : Kepabeanan - ${item.jenis_pelanggaran || '-'}</p>
                         <p>2. Tempat (Locus) : ${item.tempat_kejadian || '-'}</p>
                         <p>3. Waktu (Tempus) : ${item.tanggal_lpp || '-'} 13.00 WIB</p>
-                        <p>4. Pelaku : ${item.nama_pelaku || '-'} (${item.alamat_pelaku || '-'})</p>
+                        <p>4. Pelaku : ${item.nama_pelaku || '-'} (${item.alamat_pelaku || '-'}</p>
                         <p>5. Status Penangkapan : ${item.status_penangkapan || '-'}</p>
 
                         <p style="margin-top: 10px;"><strong>B. KELENGKAPAN DOKUMEN PENINDAKAN</strong></p>
@@ -659,20 +658,23 @@
                         <table style="width: 100%; margin-top: 30px;">
                             <tr>
                                 <td style="width: 50%; vertical-align: top;">
-                                    Kepala Seksi Penyidikan<br><br><br>
+                                    Kepala Seksi Penyidikan,<br>
+                                    Ditandatangani secara elektronik<br><br>
                                     <strong>${p.kasi}</strong><br>
                                     NIP. ${p.nip_kasi}
                                 </td>
                                 <td style="width: 50%; vertical-align: top; text-align: right;">
                                     Batam, ${item.tanggal_lpp || '-'}<br>
-                                    Tim Peneliti,<br><br><br>
+                                    Tim Peneliti,<br>
+                                    Ditandatangani secara elektronik<br><br>
                                     <strong>${p.penyidik}</strong>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2" style="text-align: center; padding-top: 30px;">
                                     Mengetahui,<br>
-                                    Kepala Bidang Penindakan dan Penyidikan<br><br><br>
+                                    Kepala Bidang Penindakan dan Penyidikan<br>
+                                    Ditandatangani secara elektronik<br><br>
                                     <strong>${p.kabid}</strong><br>
                                     NIP. ${p.nip_kabid}
                                 </td>
@@ -707,7 +709,8 @@
                                 <td style="width: 50%; text-align: right;">
                                     Dikeluarkan di : Batam<br>
                                     Pada tanggal : ${item.tanggal_lpp || '-'}<br>
-                                    Kepala Bidang Penindakan dan Penyidikan<br><br><br>
+                                    Kepala Bidang Penindakan dan Penyidikan,<br>
+                                    Ditandatangani secara elektronik<br><br>
                                     <strong>${p.kabid}</strong><br>
                                     NIP. ${p.nip_kabid}
                                 </td>
@@ -741,7 +744,8 @@
                                 <td style="width: 50%; text-align: right;">
                                     Dikeluarkan di : Batam<br>
                                     Pada tanggal : ${item.tanggal_lpp || '-'}<br>
-                                    Kepala Bidang Penindakan dan Penyidikan<br><br><br>
+                                    Kepala Bidang Penindakan dan Penyidikan,<br>
+                                    Ditandatangani secara elektronik<br><br>
                                     <strong>${p.kabid}</strong><br>
                                     NIP. ${p.nip_kabid}
                                 </td>
@@ -780,7 +784,8 @@
                             <tr>
                                 <td style="width: 50%;"></td>
                                 <td style="width: 50%; text-align: right;">
-                                    Yang Melakukan Pencacahan,<br><br><br>
+                                    Yang Melakukan Pencacahan,<br>
+                                    Ditandatangani secara elektronik<br><br>
                                     <strong>${p.penyidik} & ${p.pembuat}</strong>
                                 </td>
                             </tr>
@@ -825,14 +830,15 @@
                         <table style="width: 100%; margin-top: 30px;">
                             <tr>
                                 <td style="width: 50%; vertical-align: top;">
-                                    Ketua Tim Peneliti<br><br><br>
-                                    <strong>${p.penyidik}</strong><br><br>
-                                    Kepala Seksi Penyidikan<br><br><br>
-                                    <strong>${p.kasi}</strong>
+                                    Ketua Tim Peneliti<br>
+                                    Ditandatangani secara elektronik<br><strong>${p.penyidik}</strong><br><br>
+                                    Kepala Seksi Penyidikan,<br>
+                                    Ditandatangani secara elektronik<br><strong>${p.kasi}</strong>
                                 </td>
                                 <td style="width: 50%; vertical-align: top; text-align: right;">
                                     Mengetahui,<br>
-                                    Kepala Bidang Penindakan dan Penyidikan<br><br><br><br>
+                                    Kepala Bidang Penindakan dan Penyidikan,<br>
+                                    Ditandatangani secara elektronik<br><br><br>
                                     <strong>${p.kabid}</strong><br>
                                     NIP. ${p.nip_kabid}
                                 </td>
@@ -843,13 +849,11 @@
                 kontenHtml += `</div>`;
 
                 if (formatUnduh === 'PDF') {
-                    // Cetak / Simpan sebagai PDF via Browser Print
                     const printArea = document.getElementById('printArea');
                     printArea.innerHTML = kontenHtml;
                     closeDashboardModal();
                     window.print();
                 } else {
-                    // Unduh sebagai Word (.doc) yang bersih tanpa tag mailmerge
                     const fullDocHtml = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>${jenisDoc}</title></head><body>${kontenHtml}</body></html>`;
                     const blob = new Blob(['\ufeff' + fullDocHtml], { type: 'application/msword' });
                     const url = URL.createObjectURL(blob), a = document.createElement('a');
