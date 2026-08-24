@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Sistem Penyidikan Bea Cukai Batam</title>
+    <title>Login / Sign Up - Sistem Penyidikan Bea Cukai Batam</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -30,15 +30,11 @@
     <!-- KONTAINER KARTU UTAMA (CARD SPLIT LAYOUT) -->
     <div class="w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-2 relative border border-slate-100">
 
-        <!-- SISI KIRI: WALLPAPER / ILUSTRASI (POSISI KIRI SESUAI PERMINTAAN) -->
+        <!-- SISI KIRI: WALLPAPER / ILUSTRASI -->
         <div class="relative hidden lg:flex flex-col justify-between p-12 bg-slate-50 overflow-hidden items-center justify-center">
-            <!-- Wallpaper Background Image -->
             <div class="absolute inset-0 bg-cover bg-center transition-all duration-700" style="background-image: url('background.jpg');"></div>
-            
-            <!-- Gradient Overlay tipis agar teks/elemen tetap kontras jika ada -->
             <div class="absolute inset-0 bg-gradient-to-tr from-blue-950/40 via-transparent to-blue-900/20"></div>
 
-            <!-- Konten Pelengkap di Sisi Kiri Wallpaper -->
             <div class="relative z-10 w-full text-left">
                 <div class="inline-flex items-center space-x-2 bg-white/80 backdrop-blur-md px-3 py-1.5 rounded-full shadow-sm">
                     <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
@@ -54,51 +50,56 @@
             </div>
         </div>
 
-        <!-- SISI KANAN: FORM LOGIN DENGAN BACKGROUND BIRU PENUH (PERSIS GAMBAR REFERENSI) -->
+        <!-- SISI KANAN: FORM LOGIN / SIGN UP DENGAN BACKGROUND BIRU PENUH -->
         <div class="bg-blue-600 p-8 sm:p-12 flex flex-col justify-between text-white relative">
             
-            <!-- Header Kartu Kanan -->
+            <!-- Header Kartu Kanan (Logo Bea Cukai & Judul) -->
             <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-2">
-                    <div class="w-8 h-8 rounded-xl bg-white/10 backdrop-blur flex items-center justify-center text-white font-bold text-xs">
-                        <i class="fa-solid fa-cube"></i>
-                    </div>
+                <div class="flex items-center space-x-3">
+                    <img src="logo-beacukai.png" alt="Logo Bea Cukai" class="w-8 h-8 rounded-lg bg-white p-0.5 object-contain shadow">
                     <span class="font-bold text-xs tracking-wider uppercase text-blue-100">BC Batam</span>
                 </div>
-                <span class="text-[11px] text-blue-200 font-medium">Portal Penyidik</span>
+                <span id="headerModeLabel" class="text-[11px] text-blue-200 font-medium">Portal Penyidik</span>
             </div>
 
-            <!-- Form Body -->
+            <!-- Form Body (Dinamis: Sign In / Create Account) -->
             <div class="w-full max-w-sm mx-auto space-y-6 my-8">
                 <div class="space-y-1">
-                    <h1 class="text-3xl font-bold tracking-tight text-white">Welcome!</h1>
-                    <p class="text-xs text-blue-100">Silakan masuk menggunakan NIP atau akun penyidik Anda.</p>
+                    <h1 id="formTitle" class="text-3xl font-bold tracking-tight text-white">Welcome!</h1>
+                    <p id="formSubtitle" class="text-xs text-blue-100">Silakan masuk menggunakan NIP atau akun penyidik Anda.</p>
                 </div>
 
-                <form onsubmit="handleLogin(event)" class="space-y-4 text-xs">
+                <!-- FORM UTAMA -->
+                <form id="authForm" onsubmit="handleAuthSubmit(event)" class="space-y-4 text-xs">
+                    <!-- Field Nama (Hanya muncul saat Sign Up) -->
+                    <div id="fieldNamaContainer" class="relative hidden">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-blue-300"><i class="fa-solid fa-id-card"></i></span>
+                        <input type="text" id="inputNama" class="w-full pl-11 pr-4 py-3.5 input-custom text-slate-800 font-semibold placeholder:text-slate-400 shadow-sm" placeholder="Nama Lengkap & Gelar">
+                    </div>
+
                     <!-- Username / NIP -->
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-blue-300"><i class="fa-solid fa-user"></i></span>
-                        <input type="text" id="loginUsername" required class="w-full pl-11 pr-4 py-3.5 input-custom text-slate-800 font-semibold placeholder:text-slate-400 shadow-sm" placeholder="Youre name / NIP">
+                        <input type="text" id="loginUsername" required class="w-full pl-11 pr-4 py-3.5 input-custom text-slate-800 font-semibold placeholder:text-slate-400 shadow-sm" placeholder="Username / NIP">
                     </div>
 
-                    <!-- Email / Username Alternatif -->
+                    <!-- Email -->
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-blue-300"><i class="fa-solid fa-envelope"></i></span>
-                        <input type="text" id="loginEmail" required class="w-full pl-11 pr-4 py-3.5 input-custom text-slate-800 font-semibold placeholder:text-slate-400 shadow-sm" placeholder="Youre e-mail / Username">
+                        <input type="email" id="loginEmail" required class="w-full pl-11 pr-4 py-3.5 input-custom text-slate-800 font-semibold placeholder:text-slate-400 shadow-sm" placeholder="Alamat Email Aktif">
                     </div>
 
                     <!-- Password -->
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-blue-300"><i class="fa-solid fa-lock"></i></span>
-                        <input type="password" id="loginPassword" required class="w-full pl-11 pr-4 py-3.5 input-custom text-slate-800 font-semibold placeholder:text-slate-400 shadow-sm" placeholder="Create password">
+                        <input type="password" id="loginPassword" required class="w-full pl-11 pr-4 py-3.5 input-custom text-slate-800 font-semibold placeholder:text-slate-400 shadow-sm" placeholder="Password">
                     </div>
 
-                    <!-- Indikator Kekuatan Password (Gaya Referensi) -->
+                    <!-- Indikator Kekuatan Password -->
                     <div class="space-y-1 pt-1">
                         <div class="flex justify-between text-[10px] text-blue-200 font-medium">
                             <span>Password strength</span>
-                            <span>Secure</span>
+                            <span id="strengthText">Secure</span>
                         </div>
                         <div class="grid grid-cols-4 gap-1.5 h-1">
                             <div class="bg-amber-400 rounded-full"></div>
@@ -108,19 +109,19 @@
                         </div>
                     </div>
 
-                    <!-- Tombol Aksi -->
+                    <!-- Tombol Aksi (Toggle / Submit) -->
                     <div class="grid grid-cols-2 gap-3 pt-3">
-                        <button type="button" onclick="alert('Silakan hubungi administrator untuk pembuatan akun baru.')" class="w-full py-3.5 bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold rounded-full transition shadow-md text-center">
-                            Create account
+                        <button type="button" id="toggleModeBtn" onclick="toggleAuthMode()" class="w-full py-3.5 bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold rounded-full transition shadow-md text-center">
+                            Register Akun
                         </button>
-                        <button type="submit" class="w-full py-3.5 bg-transparent hover:bg-white/10 text-white font-bold rounded-full transition border border-white/40 text-center flex items-center justify-center space-x-1.5">
-                            <span>Sign in</span>
+                        <button type="submit" id="submitBtn" class="w-full py-3.5 bg-transparent hover:bg-white/10 text-white font-bold rounded-full transition border border-white/40 text-center flex items-center justify-center space-x-1.5">
+                            <span id="submitBtnText">Sign in</span>
                             <i class="fa-solid fa-arrow-right text-[10px]"></i>
                         </button>
                     </div>
                 </form>
 
-                <!-- Error Message Box -->
+                <!-- Pesan Error / Sukses -->
                 <div id="loginErrorMsg" class="hidden p-3 rounded-2xl bg-rose-500/20 text-white text-center font-semibold text-xs border border-rose-400/40 backdrop-blur"></div>
             </div>
 
@@ -133,26 +134,76 @@
     </div>
 
     <script>
-        function handleLogin(event) {
+        let isRegisterMode = false;
+
+        function toggleAuthMode() {
+            isRegisterMode = !isRegisterMode;
+            const title = document.getElementById('formTitle');
+            const subtitle = document.getElementById('formSubtitle');
+            const fieldNama = document.getElementById('fieldNamaContainer');
+            const toggleBtn = document.getElementById('toggleModeBtn');
+            const submitBtnText = document.getElementById('submitBtnText');
+            const errBox = document.getElementById('loginErrorMsg');
+            
+            errBox.classList.add('hidden');
+
+            if (isRegisterMode) {
+                title.innerText = "Register Account";
+                subtitle.innerText = "Daftarkan akun baru penyidik atau administrator.";
+                fieldNama.classList.remove('hidden');
+                document.getElementById('inputNama').required = true;
+                toggleBtn.innerText = "Sudah punya akun?";
+                submitBtnText.innerText = "Sign Up";
+            } else {
+                title.innerText = "Welcome!";
+                subtitle.innerText = "Silakan masuk menggunakan NIP atau akun penyidik Anda.";
+                fieldNama.classList.add('hidden');
+                document.getElementById('inputNama').required = false;
+                toggleBtn.innerText = "Register Akun";
+                submitBtnText.innerText = "Sign in";
+            }
+        }
+
+        function handleAuthSubmit(event) {
             event.preventDefault();
             const u = document.getElementById('loginUsername').value.trim();
             const emailInput = document.getElementById('loginEmail').value.trim();
             const p = document.getElementById('loginPassword').value.trim();
             const errBox = document.getElementById('loginErrorMsg');
 
-            // Ambil profil lokal yang tersimpan
             let userProfile = JSON.parse(localStorage.getItem('bc_user_profile')) || { name: "Penyidik Utama", nip: "198006062001121001", password: "" };
 
-            const validNip = userProfile.nip || "198006062001121001";
-            const validPass = userProfile.password || "";
+            if (isRegisterMode) {
+                // Proses Pendaftaran Akun Baru
+                const namaBaru = document.getElementById('inputNama').value.trim();
+                userProfile.name = namaBaru !== "" ? namaBaru : "Penyidik Batam";
+                userProfile.nip = u;
+                userProfile.email = emailInput;
+                userProfile.password = p;
+                
+                localStorage.setItem('bc_user_profile', JSON.stringify(userProfile));
 
-            if ((u === validNip || u.toLowerCase() === "admin" || u.toLowerCase() === "penyidik" || emailInput.includes("@")) && (validPass === "" || p === validPass || p.length > 0)) {
-                errBox.classList.add('hidden');
-                // Alihkan ke dashboard utama
-                window.location.href = "dashboard.html";
-            } else {
-                errBox.innerText = "Username, email, atau password salah. Silakan coba lagi.";
+                // Berhasil daftar -> Langsung arahkan ke mode sign in (masuk) dengan notifikasi sukses
+                errBox.className = "p-3 rounded-2xl bg-emerald-500/20 text-white text-center font-semibold text-xs border border-emerald-400/40 backdrop-blur";
+                errBox.innerText = "Registrasi berhasil! Silakan Sign In menggunakan akun baru Anda.";
                 errBox.classList.remove('hidden');
+
+                // Pindah otomatis ke mode Sign In
+                toggleAuthMode();
+                document.getElementById('loginUsername').value = u;
+            } else {
+                // Proses Login (Sign In)
+                const validNip = userProfile.nip || "198006062001121001";
+                const validPass = userProfile.password || "";
+
+                if ((u === validNip || u.toLowerCase() === "admin" || u.toLowerCase() === "penyidik" || emailInput.includes("@")) && (validPass === "" || p === validPass || p.length > 0)) {
+                    errBox.classList.add('hidden');
+                    window.location.href = "dashboard.html";
+                } else {
+                    errBox.className = "p-3 rounded-2xl bg-rose-500/20 text-white text-center font-semibold text-xs border border-rose-400/40 backdrop-blur";
+                    errBox.innerText = "Username, email, atau password salah. Silakan coba lagi.";
+                    errBox.classList.remove('hidden');
+                }
             }
         }
     </script>
