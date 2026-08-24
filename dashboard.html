@@ -158,10 +158,11 @@
                             <span class="text-[10px] font-bold text-[#696cff] uppercase bg-indigo-50 px-2.5 py-1 rounded-full">Menu Penomoran Terintegrasi</span>
                             <h3 class="text-sm font-bold text-[#566a7f] mt-2">Ambil Nomor Urut Berkelanjutan (1, 2, 3...)</h3>
                         </div>
+                        <button type="button" onclick="bukaModalAmbilNomor()" class="sneat-btn-primary px-4 py-2.5 text-xs font-bold shadow transition flex items-center space-x-2"><i class="fa-solid fa-plus-circle"></i><span>Ambil Nomor Baru</span></button>
                     </div>
                     <div class="sneat-card rounded-2xl shadow-sm overflow-hidden">
                         <div class="p-4 bg-slate-50 border-b font-bold text-xs uppercase text-[#566a7f]">Daftar Alokasi Penomoran Berurutan</div>
-                        <div class="overflow-x-auto"><table class="w-full text-left text-xs"><thead class="border-b text-slate-400 bg-white"><tr><th class="p-3">ID Urut</th><th class="p-3">No. SBP</th><th class="p-3">No. LPP</th><th class="p-3">No. LPF</th><th class="p-3">No. SPLIT</th></tr></thead><tbody id="tablePenomoranBody" class="divide-y divide-slate-100"></tbody></table></div>
+                        <div class="overflow-x-auto"><table class="w-full text-left text-xs"><thead class="border-b text-slate-400 bg-white"><tr><th class="p-3">ID Urut</th><th class="p-3">No. SBP</th><th class="p-3">No. LPP</th><th class="p-3">No. LPF</th><th class="p-3">No. SPLIT</th><th class="p-3 text-center">Aksi</th></tr></thead><tbody id="tablePenomoranBody" class="divide-y divide-slate-100"></tbody></table></div>
                     </div>
                 </section>
 
@@ -172,10 +173,11 @@
                             <span class="text-[10px] font-bold text-indigo-600 uppercase bg-indigo-50 px-2.5 py-1 rounded-full">Manajemen Personel</span>
                             <h3 class="text-sm font-bold text-[#566a7f] mt-2">Menu Petugas & Tim Penyidikan</h3>
                         </div>
+                        <button type="button" onclick="bukaModalTambahPetugasPerkara()" class="sneat-btn-primary px-4 py-2.5 text-xs font-bold shadow transition flex items-center space-x-2"><i class="fa-solid fa-user-plus"></i><span>Tambah Petugas</span></button>
                     </div>
                     <div class="sneat-card rounded-2xl shadow-sm overflow-hidden">
                         <div class="p-4 bg-slate-50 border-b font-bold text-xs uppercase text-[#566a7f]">Daftar Alokasi Petugas</div>
-                        <div class="overflow-x-auto"><table class="w-full text-left text-xs"><thead class="border-b text-slate-400 bg-white"><tr><th class="p-3">No. LPP</th><th class="p-3">Pejabat</th><th class="p-3">Ketua Tim</th></tr></thead><tbody id="tablePetugasPerkaraBody" class="divide-y divide-slate-100"></tbody></table></div>
+                        <div class="overflow-x-auto"><table class="w-full text-left text-xs"><thead class="border-b text-slate-400 bg-white"><tr><th class="p-3">No. LPP</th><th class="p-3">Pejabat</th><th class="p-3">Ketua Tim</th><th class="p-3 text-center">Aksi</th></tr></thead><tbody id="tablePetugasPerkaraBody" class="divide-y divide-slate-100"></tbody></table></div>
                     </div>
                 </section>
 
@@ -221,6 +223,7 @@
                             <h3 class="text-sm font-bold text-[#566a7f] mt-2">Menu Berita Acara & Sprint Pencacahan</h3>
                             <p class="text-xs text-slate-400 mt-0.5">Kelola dan cetak Berita Acara Pencacahan (BA Cacah) dalam format PDF atau Word.</p>
                         </div>
+                        <button type="button" onclick="bukaModalBuatBeritaAcara()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow transition flex items-center space-x-2"><i class="fa-solid fa-file-circle-plus"></i><span>Buat Berita Acara</span></button>
                     </div>
                     <div class="sneat-card rounded-2xl shadow-sm overflow-hidden p-6 space-y-4">
                         <div class="flex justify-between items-center border-b pb-3">
@@ -404,6 +407,40 @@
                 </select>
             </div>
             <button type="button" onclick="eksekusiCetakBaCacah()" class="w-full py-2.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl shadow transition">PROSES CETAK</button>
+        </div>
+    </div>
+
+    <!-- MODAL AMBIL NOMOR & PETUGAS -->
+    <div id="modalAmbilNomor" class="fixed inset-0 ios-overlay hidden items-center justify-center z-50 p-4">
+        <div class="w-full max-w-md rounded-2xl shadow-2xl overflow-hidden ios-alert-box border border-slate-200 p-6 space-y-4 relative">
+            <button type="button" onclick="tutupModalAmbilNomor()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-sm"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <h3 class="text-sm font-bold text-slate-950"><i class="fa-solid fa-ticket text-[#696cff] mr-2"></i> Ambil Nomor Urut Berkelanjutan</h3>
+            <form onsubmit="prosesAmbilNomorBaru(event)" class="space-y-3 text-xs">
+                <div><label class="block font-semibold text-slate-700 mb-1">Nomor SBP Terkait</label><input type="text" id="ambil_no_sbp" required class="w-full p-3 ios-input-field font-medium" value="SBP-1659/Mandiri/KPU.2/2025"></div>
+                <div><label class="block font-semibold text-slate-700 mb-1">Nomor LP Baru</label><input type="text" id="ambil_no_lp" required class="w-full p-3 ios-input-field font-medium" value="LP-3"></div>
+                <div class="flex justify-end space-x-2 pt-2"><button type="button" onclick="tutupModalAmbilNomor()" class="px-4 py-2 bg-slate-100 rounded-xl">Batal</button><button type="submit" class="sneat-btn-primary px-5 py-2">PROSES</button></div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modalTambahPetugasPerkara" class="fixed inset-0 ios-overlay hidden items-center justify-center z-50 p-4">
+        <div class="w-full max-w-md rounded-2xl shadow-2xl overflow-hidden ios-alert-box border border-slate-200 p-6 space-y-4 relative">
+            <button type="button" onclick="tutupModalTambahPetugasPerkara()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-sm"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <h3 class="text-sm font-bold text-slate-950"><i class="fa-solid fa-user-plus text-indigo-600 mr-2"></i> Tambah Penugasan Tim Penyidikan</h3>
+            <form onsubmit="simpanDataPetugasBaru(event)" class="space-y-3 text-xs">
+                <div><label class="block font-semibold text-slate-700 mb-1">Nama Ketua Tim / Penyidik</label><input type="text" id="modal_penyidik" required class="w-full p-3 ios-input-field font-medium" value="Gindo Dabungke"></div>
+                <div><label class="block font-semibold text-slate-700 mb-1">NIP Penyidik</label><input type="text" id="modal_nip_penyidik" required class="w-full p-3 ios-input-field font-medium" value="19940305 201502 1 002"></div>
+                <div class="flex justify-end space-x-2 pt-2"><button type="button" onclick="tutupModalTambahPetugasPerkara()" class="px-4 py-2 bg-slate-100 rounded-xl">Batal</button><button type="submit" class="sneat-btn-primary px-5 py-2">PROSES</button></div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modalBuatBeritaAcara" class="fixed inset-0 ios-overlay hidden items-center justify-center z-50 p-4">
+        <div class="w-full max-w-md rounded-2xl shadow-2xl overflow-hidden ios-alert-box border border-slate-200 p-6 space-y-4 relative">
+            <button type="button" onclick="tutupModalBuatBeritaAcara()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-sm"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <h3 class="text-sm font-bold text-slate-950"><i class="fa-solid fa-file-circle-plus text-emerald-600 mr-2"></i> Buat Berita Acara Baru</h3>
+            <p class="text-xs text-slate-600">Sinkronkan pencacahan barang dari database pelanggaran aktif secara otomatis.</p>
+            <div class="flex justify-end space-x-2 pt-2"><button type="button" onclick="tutupModalBuatBeritaAcara()" class="px-4 py-2 bg-slate-100 rounded-xl">Batal</button><button type="button" onclick="simpanBeritaAcaraBaru(event)" class="bg-emerald-600 text-white px-5 py-2 rounded-xl font-bold">SINKRONKAN & BUAT</button></div>
         </div>
     </div>
 
@@ -752,14 +789,14 @@
             const tbody = document.getElementById('tablePenomoranBody'); tbody.innerHTML = '';
             if (daftarPelanggaran.length === 0) return;
             const p = daftarPelanggaran[0], k = configPenonoran.kode_kantor, t = configPenonoran.tahun_nomor;
-            tbody.innerHTML += `<tr class="hover:bg-slate-50 transition"><td class="p-3 font-bold">#1</td><td class="p-3">SBP-1659</td><td class="p-3">${p.lpp}</td><td class="p-3 text-blue-600 font-medium">${p.lpp}/${k}/${t}</td><td class="p-3 text-indigo-600 font-medium">${p.lpf}/${k}/${t}</td></tr>`;
+            tbody.innerHTML += `<tr class="hover:bg-slate-50 transition"><td class="p-3 font-bold">#1</td><td class="p-3">SBP-1659</td><td class="p-3">${p.lpp}</td><td class="p-3 text-blue-600 font-medium">${p.lpp}/${k}/${t}</td><td class="p-3 text-indigo-600 font-medium">${p.lpf}/${k}/${t}</td><td class="p-3 text-center"><button onclick="bukaModalAmbilNomor()" class="bg-blue-100 text-blue-700 px-2.5 py-1 rounded-lg text-xs font-bold">Edit</button></td></tr>`;
         }
 
         function renderTablePetugasPerkara() {
             const tbody = document.getElementById('tablePetugasPerkaraBody'); tbody.innerHTML = '';
             if (daftarPelanggaran.length === 0) return;
             const p = daftarPelanggaran[0], k = configPenonoran.kode_kantor, t = configPenonoran.tahun_nomor;
-            tbody.innerHTML += `<tr class="hover:bg-slate-50 transition"><td class="p-3 font-bold">${p.lpp}/${k}/${t}</td><td class="p-3">Kabid: ${configPenonoran.kabid}</td><td class="p-3 font-medium">Gindo Dabungke</td></tr>`;
+            tbody.innerHTML += `<tr class="hover:bg-slate-50 transition"><td class="p-3 font-bold">${p.lpp}/${k}/${t}</td><td class="p-3">Kabid: ${configPenonoran.kabid}</td><td class="p-3 font-medium">Gindo Dabungke</td><td class="p-3 text-center"><button onclick="bukaModalTambahPetugasPerkara()" class="bg-indigo-100 text-indigo-700 px-2.5 py-1 rounded-lg text-xs font-bold">Atur</button></td></tr>`;
         }
 
         function renderTablePerkara() {
@@ -774,9 +811,21 @@
             });
         }
 
+        function bukaModalAmbilNomor() { document.getElementById('modalAmbilNomor').classList.remove('hidden'); document.getElementById('modalAmbilNomor').classList.add('flex'); }
+        function tutupModalAmbilNomor() { document.getElementById('modalAmbilNomor').classList.add('hidden'); document.getElementById('modalAmbilNomor').classList.remove('flex'); }
+        function prosesAmbilNomorBaru(e) { e.preventDefault(); tutupModalAmbilNomor(); showModalInfo("Berhasil", "Nomor urut baru berhasil ditambahkan!"); }
+
+        function bukaModalTambahPetugasPerkara() { document.getElementById('modalTambahPetugasPerkara').classList.remove('hidden'); document.getElementById('modalTambahPetugasPerkara').classList.add('flex'); }
+        function tutupModalTambahPetugasPerkara() { document.getElementById('modalTambahPetugasPerkara').classList.add('hidden'); document.getElementById('modalTambahPetugasPerkara').classList.remove('flex'); }
+        function simpanDataPetugasBaru(e) { e.preventDefault(); tutupModalTambahPetugasPerkara(); showModalInfo("Berhasil", "Data petugas berhasil diperbarui!"); }
+
+        function bukaModalBuatBeritaAcara() { document.getElementById('modalBuatBeritaAcara').classList.remove('hidden'); document.getElementById('modalBuatBeritaAcara').classList.add('flex'); }
+        function tutupModalBuatBeritaAcara() { document.getElementById('modalBuatBeritaAcara').classList.add('hidden'); document.getElementById('modalBuatBeritaAcara').classList.remove('flex'); }
+        function simpanBeritaAcaraBaru(e) { e.preventDefault(); tutupModalBuatBeritaAcara(); renderTableCacah(); showModalInfo("Berhasil", "Berita acara berhasil disinkronkan!"); }
+
         function simpanDataLaporanLanjutan(event) { event.preventDefault(); showModalInfo("Berhasil", "Data LPF & SPLIT disimpan!"); }
         function simpanDataLhpKhusus(event) { event.preventDefault(); showModalInfo("Berhasil", "Data LHP disimpan!"); }
-        function saveDatePerkara(event) { event.preventDefault(); showModalInfo("Berhasil", "Data disimpan!"); }
+        function saveDataPerkara(event) { event.preventDefault(); showModalInfo("Berhasil", "Data perkara disimpan!"); }
         function simpanKonfigurasiUtama(event) { event.preventDefault(); showModalInfo("Berhasil", "Konfigurasi kantor disimpan!"); }
         function updateProfileInfo(event) { event.preventDefault(); showModalInfo("Berhasil", "Profil diperbarui!"); }
 
