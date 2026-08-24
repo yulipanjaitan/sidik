@@ -95,7 +95,7 @@
                 <div class="flex items-center space-x-4">
                     <button type="button" class="text-slate-500 hover:text-[#696cff] transition text-sm"><i class="fa-regular fa-bell"></i></button>
                     <div class="text-right hidden sm:block"><p id="displayProfileName" class="text-xs font-bold text-[#566a7f]">Penyidik Utama</p><p id="displayProfileNip" class="text-[10px] text-slate-400">NIP. 198006062001121001</p></div>
-                    <img id="headerProfileImg" src="logo-beacukai.png" alt="Avatar" class="w-9 h-9 rounded-full bg-slate-200 border-2 border-indigo-100 object-cover shadow-sm">
+                    <img id="headerProfileImg" alt="Avatar" class="w-9 h-9 rounded-full bg-slate-200 border-2 border-indigo-100 object-cover shadow-sm">
                 </div>
             </header>
 
@@ -204,32 +204,57 @@
                     </div>
                 </section>
 
-                <!-- TAB PETUGAS -->
+                <!-- TAB PETUGAS (DENGAN VALIDASI & POP-UP TAMBAH PETUGAS) -->
                 <section id="content-petugas" class="tab-content space-y-6 hidden">
                     <div class="sneat-card p-6 shadow-sm flex justify-between items-center">
-                        <div><span class="text-[10px] font-bold text-indigo-600 uppercase bg-indigo-50 px-2.5 py-1 rounded-full">Manajemen Personel</span><h3 class="text-sm font-bold text-[#566a7f] mt-2">Menu Petugas & Pejabat Penandatangan Dokumen</h3><p class="text-xs text-slate-400 mt-0.5">Pilih pejabat penandatangan dokumen yang aktif atau tambahkan pegawai/anggota baru.</p></div>
-                        <button type="button" onclick="bukaModalTambahPegawai()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow transition flex items-center space-x-2"><i class="fa-solid fa-user-plus"></i><span>Tambah Pegawai Baru</span></button>
+                        <div>
+                            <span class="text-[10px] font-bold text-indigo-600 uppercase bg-indigo-50 px-2.5 py-1 rounded-full">Manajemen Personel</span>
+                            <h3 class="text-sm font-bold text-[#566a7f] mt-2">Menu Petugas & Pejabat Penandatangan Dokumen</h3>
+                            <p class="text-xs text-slate-400 mt-0.5">Kelola penugasan pejabat dan tim penyidik per perkara.</p>
+                        </div>
+                        <button type="button" onclick="bukaModalTambahPetugasPerkara()" class="sneat-btn-primary px-4 py-2.5 text-xs font-bold shadow transition flex items-center space-x-2"><i class="fa-solid fa-user-plus"></i><span>Tambah / Atur Petugas</span></button>
                     </div>
-                    <form onsubmit="simpanDataPetugas(event)" class="space-y-6">
-                        <div class="sneat-card p-6 md:p-8 space-y-5">
-                            <h4 class="text-xs font-bold text-[#566a7f] uppercase tracking-wider border-b pb-3 flex items-center text-indigo-900"><i class="fa-solid fa-user-tie mr-2"></i> Pilih Pejabat Penandatangan Dokumen</h4>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 text-xs">
-                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Pilih Kepala Bidang P2</label><select id="select_kabid" class="w-full p-3.5 ios-input-field font-medium"></select></div>
-                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Pilih Kepala Seksi Penyidikan</label><select id="select_kasi" class="w-full p-3.5 ios-input-field font-medium"></select></div>
+
+                    <!-- Peringatan Validasi Jika Belum Ambil Penomoran -->
+                    <div id="petugasWarningBox" class="hidden sneat-card p-6 bg-rose-50 border border-rose-200 text-rose-800 space-y-2">
+                        <div class="flex items-center space-x-2 font-bold text-sm">
+                            <i class="fa-solid fa-triangle-exclamation text-rose-600"></i>
+                            <span>Penomoran LPP, LPF & SPLIT Belum Diambil!</span>
+                        </div>
+                        <p class="text-xs leading-relaxed">
+                            Anda belum mengambil atau melakukan alokasi penomoran dokumen (LPP, LPF, SPLIT). Silakan ambil penomoran terlebih dahulu pada menu **Penomoran** agar form petugas dapat diaktifkan.
+                        </p>
+                    </div>
+
+                    <!-- Tabel Ringkasan Petugas Aktif Perkara -->
+                    <div id="petugasContentContainer" class="sneat-card rounded-2xl shadow-sm overflow-hidden space-y-4 p-6">
+                        <div class="flex justify-between items-center border-b pb-3">
+                            <h4 class="text-xs font-bold uppercase text-indigo-900"><i class="fa-solid fa-users-viewfinder mr-2"></i> Daftar Petugas & Tim Penyidikan Aktif</h4>
+                            <span class="text-[10px] bg-indigo-50 text-[#696cff] px-2.5 py-1 rounded-full font-bold">Sinkron Perkara Utama</span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                            <div class="p-4 bg-slate-50 rounded-xl space-y-1">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase">Kepala Bidang P2</p>
+                                <p id="viewKabid" class="font-bold text-slate-900">-</p>
+                                <p id="viewNipKabid" class="text-[11px] text-slate-500">-</p>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-xl space-y-1">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase">Kepala Seksi Penyidikan</p>
+                                <p id="viewKasi" class="font-bold text-slate-900">-</p>
+                                <p id="viewNipKasi" class="text-[11px] text-slate-500">-</p>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-xl space-y-1">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase">Penyidik / Ketua Tim</p>
+                                <p id="viewPenyidik" class="font-bold text-slate-900">-</p>
+                                <p id="viewNipPenyidik" class="text-[11px] text-slate-500">-</p>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-xl space-y-1">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase">Anggota Tim Penyidik</p>
+                                <div id="viewAnggotaList" class="space-y-1 font-semibold text-slate-900">
+                                    <p>-</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="sneat-card p-6 md:p-8 space-y-5">
-                            <h4 class="text-xs font-bold text-[#566a7f] uppercase tracking-wider border-b pb-3 flex items-center text-indigo-900"><i class="fa-solid fa-users-gear mr-2"></i> Tim Penyidik & Petugas Pelaksana</h4>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 text-xs">
-                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Pilih Penyidik / Ketua Tim</label><select id="select_penyidik" class="w-full p-3.5 ios-input-field font-medium"></select></div>
-                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Pilih Pembuat LPP / Anggota</label><select id="select_pembuat" class="w-full p-3.5 ios-input-field font-medium"></select></div>
-                            </div>
-                        </div>
-                        <div class="flex justify-end pt-2 pb-6"><button type="submit" class="sneat-btn-primary px-8 py-4 text-xs font-bold tracking-wide flex items-center space-x-2 shadow-md"><i class="fa-solid fa-floppy-disk text-sm mr-1"></i><span>Simpan Pilihan Petugas Perkara</span></button></div>
-                    </form>
-                    <div class="sneat-card rounded-2xl shadow-sm overflow-hidden">
-                        <div class="p-4 bg-slate-50 border-b font-bold text-xs uppercase text-[#566a7f] flex justify-between items-center"><span>Daftar Master Pegawai Terdaftar</span><span class="text-[10px] text-slate-400 font-normal">Sinkron ke pilihan dropdown petugas</span></div>
-                        <div class="overflow-x-auto"><table class="w-full text-left text-xs"><thead class="border-b text-slate-400 bg-white"><tr><th class="p-3">Nama Pegawai</th><th class="p-3">NIP</th><th class="p-3">Jabatan / Peran</th><th class="p-3 text-center">Aksi</th></tr></thead><tbody id="tableMasterPegawai" class="divide-y divide-slate-100"></tbody></table></div>
                     </div>
                 </section>
 
@@ -344,9 +369,9 @@
                             <form onsubmit="simpanKonfigurasiUtama(event)" class="space-y-4 text-xs">
                                 <div><label class="block font-semibold text-slate-700 mb-1">Kode Kantor / Seksi</label><input type="text" id="config_kode_kantor" required class="w-full p-3 ios-input-field" value="KPU.206"></div>
                                 <div><label class="block font-semibold text-slate-700 mb-1">Tahun Penomoran Aktif</label><input type="text" id="config_tahun_nomor" required class="w-full p-3 ios-input-field" value="2025"></div>
-                                <div><label class="block font-semibold text-slate-700 mb-1">Nama Kepala Bidang P2 (Default)</label><input type="text" id="config_kabid" required class="w-full p-3 ios-input-field" value="Muhtadi"></div>
+                                <div><label class="block font-semibold text-slate-700 mb-1">Nama Kepala Bidang P2 (Default / Plh)</label><input type="text" id="config_kabid" required class="w-full p-3 ios-input-field" value="Muhtadi"></div>
                                 <div><label class="block font-semibold text-slate-700 mb-1">NIP Kepala Bidang P2</label><input type="text" id="config_nip_kabid" required class="w-full p-3 ios-input-field" value="19730908 199503 1 001"></div>
-                                <div><label class="block font-semibold text-slate-700 mb-1">Nama Kasi Penyidikan (Default)</label><input type="text" id="config_kasi" required class="w-full p-3 ios-input-field" value="Johan Kunaefi"></div>
+                                <div><label class="block font-semibold text-slate-700 mb-1">Nama Kasi Penyidikan (Default / Plh)</label><input type="text" id="config_kasi" required class="w-full p-3 ios-input-field" value="Johan Kunaefi"></div>
                                 <div><label class="block font-semibold text-slate-700 mb-1">NIP Kasi Penyidikan</label><input type="text" id="config_nip_kasi" required class="w-full p-3 ios-input-field" value="19800606 200112 1 001"></div>
                                 <button type="submit" class="sneat-btn-primary w-full py-3 shadow">Simpan Pengaturan Utama</button>
                             </form>
@@ -354,7 +379,7 @@
                         <div class="sneat-card p-8 shadow-sm space-y-4">
                             <h4 class="text-xs font-bold text-[#566a7f] uppercase tracking-wider border-b pb-3">Profil Pengguna, Username & Password</h4>
                             <div class="flex items-center space-x-4 py-2">
-                                <img id="previewProfileImg" src="logo-beacukai.png" alt="Avatar" class="w-16 h-16 rounded-full bg-slate-200 border object-cover">
+                                <img id="previewProfileImg" alt="Avatar" class="w-16 h-16 rounded-full bg-slate-200 border object-cover">
                                 <div class="space-y-1"><label class="block font-semibold text-slate-700 text-xs">Unggah Foto Profil Baru</label><input type="file" id="uploadAvatarInput" accept="image/*" onchange="previewImageFile(event)" class="text-[11px] text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-[#696cff] file:text-white cursor-pointer"></div>
                             </div>
                             <form onsubmit="updateProfileInfo(event)" class="space-y-4 text-xs pt-2">
@@ -374,7 +399,7 @@
                 <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 items-start text-xs">
                     <div class="space-y-3">
                         <div class="flex items-center space-x-3">
-                            <img src="logo-beacukai.png" alt="Logo Bea Cukai" class="w-10 h-10 object-contain bg-white/10 p-1 rounded-lg">
+                            <img alt="Logo Bea Cukai" class="w-10 h-10 object-contain bg-white/10 p-1 rounded-lg">
                             <div>
                                 <p class="font-bold text-white">Direktorat Jenderal Bea dan Cukai</p>
                                 <p class="text-[11px] text-blue-200">Kantor Pelayanan Utama Bea dan Cukai Tipe B Batam</p>
@@ -415,21 +440,16 @@
         </div>
     </div>
 
-    <!-- MODAL AMBIL NOMOR (TEKS DIPERBARUI & TOMBOL PROSES) -->
+    <!-- MODAL AMBIL NOMOR -->
     <div id="modalAmbilNomor" class="fixed inset-0 ios-overlay hidden items-center justify-center z-50 p-4">
         <div class="w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden ios-alert-box border border-slate-200 p-6 space-y-4 relative">
             <button type="button" onclick="tutupModalAmbilNomor()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-sm"><i class="fa-solid fa-xmark text-lg"></i></button>
-            <div class="flex items-center border-b pb-3 pr-8">
-                <h3 class="text-sm font-bold text-slate-950"><i class="fa-solid fa-ticket text-[#696cff] mr-2"></i> AMBIL NOMOR LPP, LPF DAN SPLIT</h3>
-            </div>
+            <div class="flex items-center border-b pb-3 pr-8"><h3 class="text-sm font-bold text-slate-950"><i class="fa-solid fa-ticket text-[#696cff] mr-2"></i> AMBIL NOMOR LPP, LPF DAN SPLIT</h3></div>
             <form onsubmit="prosesAmbilNomorBaru(event)" class="space-y-4 text-xs">
                 <div><label class="block font-semibold text-slate-700 mb-1">Nomor SBP</label><input type="text" id="ambil_no_sbp" required class="w-full p-3 ios-input-field font-medium" value="SBP-1659/Mandiri/KPU.2/2025"></div>
                 <div><label class="block font-semibold text-slate-700 mb-1">Tanggal SBP</label><input type="date" id="ambil_tgl_sbp" required class="w-full p-3 ios-input-field font-medium" value="2025-12-12"></div>
                 <div><label class="block font-semibold text-slate-700 mb-1">NOMOR LP</label><input type="text" id="ambil_no_lp" required class="w-full p-3 ios-input-field font-medium" value="LP-1"></div>
                 <div><label class="block font-semibold text-slate-700 mb-1">Tanggal LP</label><input type="date" id="ambil_tgl_lp" required class="w-full p-3 ios-input-field font-medium" value="2025-12-13"></div>
-                <div class="p-3 bg-indigo-50 text-indigo-900 rounded-xl font-medium">
-                    <i class="fa-solid fa-info-circle mr-1"></i> Sistem akan secara otomatis mengalokasikan nomor urut berikutnya (LPP, LPF, SPLIT) secara terintegrasi.
-                </div>
                 <div class="flex justify-end space-x-2 pt-2">
                     <button type="button" onclick="tutupModalAmbilNomor()" class="px-4 py-2.5 bg-slate-100 text-slate-600 font-bold rounded-xl">Batal</button>
                     <button type="submit" class="sneat-btn-primary px-6 py-2.5 font-bold">PROSES</button>
@@ -452,15 +472,64 @@
         </div>
     </div>
 
-    <div id="modalTambahPegawai" class="fixed inset-0 ios-overlay hidden items-center justify-center z-50 p-4">
-        <div class="w-full max-w-md rounded-2xl shadow-2xl overflow-hidden ios-alert-box border border-slate-200 p-6 space-y-4 relative">
-            <button type="button" onclick="tutupModalTambahPegawai()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-sm"><i class="fa-solid fa-xmark text-lg"></i></button>
-            <div class="flex items-center border-b pb-3 pr-8"><h3 class="text-sm font-bold text-slate-950">Tambah Pegawai / Personel Baru</h3></div>
-            <form onsubmit="tambahPegawaiBaruSimpan(event)" class="space-y-3 text-xs">
-                <div><label class="block font-semibold text-slate-700 mb-1">Nama Lengkap & Gelar</label><input type="text" id="new_nama_pegawai" required class="w-full p-3 ios-input-field" placeholder="Contoh: Budi Santoso, S.H."></div>
-                <div><label class="block font-semibold text-slate-700 mb-1">NIP</label><input type="text" id="new_nip_pegawai" required class="w-full p-3 ios-input-field" placeholder="Contoh: 199001012015021001"></div>
-                <div><label class="block font-semibold text-slate-700 mb-1">Peran / Jabatan</label><select id="new_peran_pegawai" class="w-full p-3 ios-input-field font-semibold"><option value="Penyidik / Ketua Tim">Penyidik / Ketua Tim</option><option value="Anggota Tim / Pembuat LPP">Anggota Tim / Pembuat LPP</option><option value="Kepala Seksi Penyidikan">Kepala Seksi Penyidikan</option><option value="Kepala Bidang P2">Kepala Bidang P2</option></select></div>
-                <div class="flex justify-end space-x-2 pt-2"><button type="button" onclick="tutupModalTambahPegawai()" class="px-4 py-2.5 bg-slate-100 text-slate-600 font-bold rounded-xl">Batal</button><button type="submit" class="sneat-btn-primary px-6 py-2.5 font-bold">PROSES</button></div>
+    <!-- MODAL TAMBAH / ATUR PETUGAS PERKARA -->
+    <div id="modalTambahPetugasPerkara" class="fixed inset-0 ios-overlay hidden items-center justify-center z-50 p-4 overflow-y-auto">
+        <div class="w-full max-w-xl rounded-2xl shadow-2xl overflow-hidden ios-alert-box border border-slate-200 p-6 space-y-4 relative my-8">
+            <button type="button" onclick="tutupModalTambahPetugasPerkara()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-sm"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <div class="flex items-center border-b pb-3 pr-8">
+                <h3 class="text-sm font-bold text-slate-950"><i class="fa-solid fa-users text-[#696cff] mr-2"></i> PENGISIAN PETUGAS & TIM PENYIDIKAN</h3>
+            </div>
+            <form onsubmit="simpanDataPetugasBaru(event)" class="space-y-4 text-xs">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Kepala Bidang P2 (Default/Plh)</label>
+                        <input type="text" id="modal_kabid" required class="w-full p-3 ios-input-field font-medium bg-slate-100" readonly>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">NIP Kepala Bidang P2</label>
+                        <input type="text" id="modal_nip_kabid" required class="w-full p-3 ios-input-field font-medium bg-slate-100" readonly>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Kepala Seksi Penyidikan (Default/Plh)</label>
+                        <input type="text" id="modal_kasi" required class="w-full p-3 ios-input-field font-medium bg-slate-100" readonly>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">NIP Kepala Seksi Penyidikan</label>
+                        <input type="text" id="modal_nip_kasi" required class="w-full p-3 ios-input-field font-medium bg-slate-100" readonly>
+                    </div>
+                </div>
+
+                <hr class="border-slate-200">
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Ketua Tim / Penyidik</label>
+                        <input type="text" id="modal_penyidik" required class="w-full p-3 ios-input-field font-medium" placeholder="Nama Penyidik / Ketua Tim">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">NIP Ketua Tim / Penyidik</label>
+                        <input type="text" id="modal_nip_penyidik" required class="w-full p-3 ios-input-field font-medium" placeholder="NIP Penyidik">
+                    </div>
+                </div>
+
+                <div class="space-y-2 pt-2">
+                    <div class="flex justify-between items-center">
+                        <label class="block font-bold text-slate-700 uppercase tracking-wider text-[11px]">Anggota Tim Penyidik:</label>
+                        <button type="button" onclick="tambahBarisAnggotaModal()" class="bg-indigo-50 hover:bg-indigo-100 text-[#696cff] px-2.5 py-1 rounded-lg text-[11px] font-bold transition"><i class="fa-solid fa-plus mr-1"></i> Tambah Anggota Tim</button>
+                    </div>
+                    <div id="containerAnggotaModal" class="space-y-2">
+                        <div class="flex items-center space-x-2 anggota-row">
+                            <input type="text" placeholder="Nama Anggota Tim" class="flex-1 p-2.5 ios-input-field text-xs font-medium nama-anggota-input" value="Dilla Allianza" required>
+                            <input type="text" placeholder="NIP Anggota" class="w-40 p-2.5 ios-input-field text-xs font-medium nip-anggota-input" value="200011212019122001" required>
+                            <button type="button" onclick="hapusBarisAnggota(this)" class="bg-rose-100 hover:bg-rose-200 text-rose-600 p-2.5 rounded-xl text-xs transition"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-end space-x-2 pt-4">
+                    <button type="button" onclick="tutupModalTambahPetugasPerkara()" class="px-4 py-2.5 bg-slate-100 text-slate-600 font-bold rounded-xl">Batal</button>
+                    <button type="submit" class="sneat-btn-primary px-6 py-2.5 font-bold">PROSES</button>
+                </div>
             </form>
         </div>
     </div>
@@ -506,7 +575,7 @@
         let daftarPerkara = JSON.parse(localStorage.getItem('bc_daftar_perkara')) || [{ nomor_sbp: "SBP-1659/Mandiri/KPU.2/2025", tanggal_sbp: "2025-12-12", nomor_lpp: "LP-1", tanggal_lpp: "2025-12-13", asal_perkara: "Seksi Penindakan", status_penangkapan: "Penindakan Biasa", nomor_lpf: "LPF-1", tanggal_lpf: "2025-12-13", nomor_split: "SPLIT-1", jenis_klasifikasi: "Pabean", komoditi_utama: "Sparepart", estimasi_kerugian: 150000000, nama_pelaku: "PT HAWILA ADHI PERKASA", npwp_pelaku: "860753292225000", pj_pelaku: "CHANNER SIMBOLON", alamat_pelaku: "Ruko The Capitol Superblok Imperium Bkok B No. 41, Batam", tempat_kejadian: "TPS Dharma Bandar Mandala (DBM)", waktu_kejadian: "12 Desember 2025 pukul 13.00 WIB", jenis_pelanggaran: "Pasal 53 ayat (3) UU No. 17 Tahun 2006", jenis_perkara: "Pengeluaran barang tanpa/salah pemberitahuan pabean", modus_operandi: "Mengeluarkan barang dari KPBPB", nomor_sprint_cacah: "PRINT-1/CACAH", nomor_ba_cacah: "BA-1/CACAH", lhp: "LHP-1", lhp_tanggal: "2025-12-20", lhp_kesimpulan: "Selesai Administrasi", lhp_catatan: "Tuntas", daftar_barang: [{ uraian: "Sparepart", jumlah: "2 Pcs" }], dok_pabean: "PPFTZ-01" }];
         let configPenomoran = JSON.parse(localStorage.getItem('bc_config_penomoran')) || { kode_kantor: "KPU.206", tahun_nomor: "2025", kabid: "Muhtadi", nip_kabid: "19730908 199503 1 001", kasi: "Johan Kunaefi", nip_kasi: "19800606 200112 1 001" };
         let masterPegawai = JSON.parse(localStorage.getItem('bc_master_pegawai')) || [{ nama: "Muhtadi", nip: "19730908 199503 1 001", peran: "Kepala Bidang P2" }, { nama: "Johan Kunaefi", nip: "19800606 200112 1 001", peran: "Kepala Seksi Penyidikan" }, { nama: "Gindo Dabungke", nip: "19940305 201502 1 002", peran: "Penyidik / Ketua Tim" }, { nama: "Dilla Allianza", nip: "20001121 201912 2 001", peran: "Anggota Tim / Pembuat LPP" }];
-        let dataPetugasPerkara = JSON.parse(localStorage.getItem('bc_data_petugas_perkara')) || { kabid: "Muhtadi", nip_kabid: "19730908 199503 1 001", kasi: "Johan Kunaefi", nip_kasi: "19800606 200112 1 001", penyidik: "Gindo Dabungke", nip_penyidik: "19940305 201502 1 002", pembuat: "Dilla Allianza", nip_pembuat: "200011212019122001" };
+        let dataPetugasPerkara = JSON.parse(localStorage.getItem('bc_data_petugas_perkara')) || { kabid: "Muhtadi", nip_kabid: "19730908 199503 1 001", kasi: "Johan Kunaefi", nip_kasi: "19800606 200112 1 001", penyidik: "Gindo Dabungke", nip_penyidik: "19940305 201502 1 002", anggota: [{ nama: "Dilla Allianza", nip: "200011212019122001" }] };
         let userProfile = JSON.parse(localStorage.getItem('bc_user_profile')) || { name: "Penyidik Utama", email: "penyidik.batam@beacukai.go.id", nip: "198006062001121001", password: "", avatar: "logo-beacukai.png", background: "" };
         let currentModalActionType = null, selectedPerkaraIndex = null, tempAvatarBase64 = null;
 
@@ -535,7 +604,7 @@
                 document.getElementById('lhp_catatan').value = daftarPerkara[0].lhp_catatan || 'Tuntas';
             }
 
-            muatDropdownPetugas(); applyWallpaper(); renderTablePenomoran(); updateCounterBadge(); cekValidasiLhp();
+            applyWallpaper(); renderTablePenomoran(); updateCounterBadge(); cekValidasiLhp(); cekValidasiPetugas(); renderTampilanPetugas();
         }
 
         function applyWallpaper() { 
@@ -576,52 +645,118 @@
             showModalInfo("Berhasil Disimpan", "Pengaturan utama kode kantor & master pejabat berhasil diperbarui!");
         }
 
-        function muatDropdownPetugas() {
-            const selKabid = document.getElementById('select_kabid'), selKasi = document.getElementById('select_kasi'), selPenyidik = document.getElementById('select_penyidik'), selPembuat = document.getElementById('select_pembuat');
-            selKabid.innerHTML = ''; selKasi.innerHTML = ''; selPenyidik.innerHTML = ''; selPembuat.innerHTML = '';
-            masterPegawai.forEach(p => {
-                const opt = `<option value="${p.nama}">${p.nama} (NIP. ${p.nip})</option>`;
-                if (p.peran.toLowerCase().includes('bidang') || p.peran.toLowerCase().includes('kabid')) selKabid.innerHTML += opt;
-                if (p.peran.toLowerCase().includes('kasi') || p.peran.toLowerCase().includes('seksi')) selKasi.innerHTML += opt;
-                if (p.peran.toLowerCase().includes('penyidik') || p.peran.toLowerCase().includes('ketua')) selPenyidik.innerHTML += opt;
-                if (p.peran.toLowerCase().includes('anggota') || p.peran.toLowerCase().includes('pembuat') || p.peran.toLowerCase().includes('lpp')) selPembuat.innerHTML += opt;
-            });
-            if (dataPetugasPerkara.kabid) selKabid.value = dataPetugasPerkara.kabid;
-            if (dataPetugasPerkara.kasi) selKasi.value = dataPetugasPerkara.kasi;
-            if (dataPetugasPerkara.penyidik) selPenyidik.value = dataPetugasPerkara.penyidik;
-            if (dataPetugasPerkara.pembuat) selPembuat.value = dataPetugasPerkara.pembuat;
-            renderTableMasterPegawai();
+        function renderTampilanPetugas() {
+            document.getElementById('viewKabid').innerText = dataPetugasPerkara.kabid || configPenomoran.kabid;
+            document.getElementById('viewNipKabid').innerText = "NIP. " + (dataPetugasPerkara.nip_kabid || configPenomoran.nip_kabid);
+            document.getElementById('viewKasi').innerText = dataPetugasPerkara.kasi || configPenomoran.kasi;
+            document.getElementById('viewNipKasi').innerText = "NIP. " + (dataPetugasPerkara.nip_kasi || configPenomoran.nip_kasi);
+            document.getElementById('viewPenyidik').innerText = dataPetugasPerkara.penyidik || '-';
+            document.getElementById('viewNipPenyidik').innerText = "NIP. " + (dataPetugasPerkara.nip_penyidik || '-');
+
+            const container = document.getElementById('viewAnggotaList');
+            container.innerHTML = '';
+            if (dataPetugasPerkara.anggota && dataPetugasPerkara.anggota.length > 0) {
+                dataPetugasPerkara.anggota.forEach((ag, idx) => {
+                    container.innerHTML += `<p>${idx+1}. ${ag.nama} <span class="text-[11px] font-normal text-slate-500">(NIP. ${ag.nip})</span></p>`;
+                });
+            } else {
+                container.innerHTML = `<p class="text-slate-400 font-normal">- Belum ada anggota tim -</p>`;
+            }
         }
 
-        function renderTableMasterPegawai() {
-            const tbody = document.getElementById('tableMasterPegawai'); tbody.innerHTML = '';
-            masterPegawai.forEach((p, idx) => {
-                tbody.innerHTML += `<tr class="hover:bg-slate-50 transition"><td class="p-3 font-semibold text-slate-900">${p.nama}</td><td class="p-3 text-slate-600">${p.nip}</td><td class="p-3"><span class="bg-indigo-50 text-indigo-700 font-bold px-2 py-0.5 rounded text-[10px]">${p.peran}</span></td><td class="p-3 text-center"><button type="button" onclick="hapusPegawai(${idx})" class="text-rose-600 hover:text-rose-800 p-1"><i class="fa-solid fa-trash"></i></button></td></tr>`;
-            });
+        function cekValidasiPetugas() {
+            const warningBox = document.getElementById('petugasWarningBox');
+            const contentContainer = document.getElementById('petugasContentContainer');
+            
+            let isLppSelesai = false;
+            let isLpfSelesai = false;
+            let isSplitSelesai = false;
+
+            if (daftarPerkara.length > 0) {
+                const item = daftarPerkara[0];
+                if (item.nomor_lpp && item.nomor_lpp.trim() !== "") isLppSelesai = true;
+                if (item.nomor_lpf && item.nomor_lpf.trim() !== "") isLpfSelesai = true;
+                if (item.nomor_split && item.nomor_split.trim() !== "") isSplitSelesai = true;
+            }
+
+            if (!isLppSelesai || !isLpfSelesai || !isSplitSelesai) {
+                warningBox.classList.remove('hidden');
+                contentContainer.classList.add('opacity-40', 'pointer-events-none');
+            } else {
+                warningBox.classList.add('hidden');
+                contentContainer.classList.remove('opacity-40', 'pointer-events-none');
+            }
         }
 
-        function bukaModalTambahPegawai() { document.getElementById('modalTambahPegawai').classList.remove('hidden'); document.getElementById('modalTambahPegawai').classList.add('flex'); }
-        function tutupModalTambahPegawai() { document.getElementById('modalTambahPegawai').classList.add('hidden'); document.getElementById('modalTambahPegawai').classList.remove('flex'); }
-        
-        function tambahPegawaiBaruSimpan(event) {
+        function bukaModalTambahPetugasPerkara() {
+            document.getElementById('modal_kabid').value = configPenomoran.kabid;
+            document.getElementById('modal_nip_kabid').value = configPenomoran.nip_kabid;
+            document.getElementById('modal_kasi').value = configPenomoran.kasi;
+            document.getElementById('modal_nip_kasi').value = configPenomoran.nip_kasi;
+            document.getElementById('modal_penyidik').value = dataPetugasPerkara.penyidik || '';
+            document.getElementById('modal_nip_penyidik').value = dataPetugasPerkara.nip_penyidik || '';
+            
+            const container = document.getElementById('containerAnggotaModal');
+            container.innerHTML = '';
+            if (dataPetugasPerkara.anggota && dataPetugasPerkara.anggota.length > 0) {
+                dataPetugasPerkara.anggota.forEach(ag => {
+                    const row = document.createElement('div');
+                    row.className = "flex items-center space-x-2 anggota-row";
+                    row.innerHTML = `<input type="text" placeholder="Nama Anggota Tim" class="flex-1 p-2.5 ios-input-field text-xs font-medium nama-anggota-input" value="${ag.nama}" required><input type="text" placeholder="NIP Anggota" class="w-40 p-2.5 ios-input-field text-xs font-medium nip-anggota-input" value="${ag.nip}" required><button type="button" onclick="hapusBarisAnggota(this)" class="bg-rose-100 hover:bg-rose-200 text-rose-600 p-2.5 rounded-xl text-xs transition"><i class="fa-solid fa-trash"></i></button>`;
+                    container.appendChild(row);
+                });
+            } else {
+                tambahBarisAnggotaModal();
+            }
+
+            document.getElementById('modalTambahPetugasPerkara').classList.remove('hidden');
+            document.getElementById('modalTambahPetugasPerkara').classList.add('flex');
+        }
+
+        function tutupModalTambahPetugasPerkara() {
+            document.getElementById('modalTambahPetugasPerkara').classList.add('hidden');
+            document.getElementById('modalTambahPetugasPerkara').classList.remove('flex');
+        }
+
+        function tambahBarisAnggotaModal() {
+            const container = document.getElementById('containerAnggotaModal');
+            const row = document.createElement('div');
+            row.className = "flex items-center space-x-2 anggota-row";
+            row.innerHTML = `<input type="text" placeholder="Nama Anggota Tim" class="flex-1 p-2.5 ios-input-field text-xs font-medium nama-anggota-input" required><input type="text" placeholder="NIP Anggota" class="w-40 p-2.5 ios-input-field text-xs font-medium nip-anggota-input" required><button type="button" onclick="hapusBarisAnggota(this)" class="bg-rose-100 hover:bg-rose-200 text-rose-600 p-2.5 rounded-xl text-xs transition"><i class="fa-solid fa-trash"></i></button>`;
+            container.appendChild(row);
+        }
+
+        function hapusBarisAnggota(btn) {
+            if (document.querySelectorAll('.anggota-row').length > 1) {
+                btn.closest('.anggota-row').remove();
+            } else {
+                showModalInfo("Peringatan", "Minimal harus ada 1 anggota tim penyidik.");
+            }
+        }
+
+        function simpanDataPetugasBaru(event) {
             event.preventDefault();
-            masterPegawai.push({ nama: document.getElementById('new_nama_pegawai').value, nip: document.getElementById('new_nip_pegawai').value, peran: document.getElementById('new_peran_pegawai').value });
-            localStorage.setItem('bc_master_pegawai', JSON.stringify(masterPegawai));
-            muatDropdownPetugas(); tutupModalTambahPegawai(); showModalInfo("Berhasil", "Pegawai baru berhasil ditambahkan!");
-        }
+            let listAnggota = [];
+            document.querySelectorAll('.anggota-row').forEach(row => {
+                const n = row.querySelector('.nama-anggota-input').value;
+                const nip = row.querySelector('.nip-anggota-input').value;
+                if (n.trim() !== "") listAnggota.push({ nama: n, nip: nip });
+            });
 
-        function hapusPegawai(index) {
-            if (masterPegawai.length <= 2) { showModalInfo("Peringatan", "Minimal harus ada 2 pegawai tersimpan."); return; }
-            masterPegawai.splice(index, 1); localStorage.setItem('bc_master_pegawai', JSON.stringify(masterPegawai)); muatDropdownPetugas();
-        }
+            dataPetugasPerkara = {
+                kabid: configPenomoran.kabid,
+                nip_kabid: configPenomoran.nip_kabid,
+                kasi: configPenomoran.kasi,
+                nip_kasi: configPenomoran.nip_kasi,
+                penyidik: document.getElementById('modal_penyidik').value,
+                nip_penyidik: document.getElementById('modal_nip_penyidik').value,
+                anggota: listAnggota
+            };
 
-        function simpanDataPetugas(event) {
-            event.preventDefault();
-            const kabidNama = document.getElementById('select_kabid').value, kasiNama = document.getElementById('select_kasi').value, penyidikNama = document.getElementById('select_penyidik').value, pembuatNama = document.getElementById('select_pembuat').value;
-            const getInfo = (n) => masterPegawai.find(p => p.nama === n) || { nip: '-' };
-            dataPetugasPerkara = { kabid: kabidNama, nip_kabid: getInfo(kabidNama).nip, kasi: kasiNama, nip_kasi: getInfo(kasiNama).nip, penyidik: penyidikNama, nip_penyidik: getInfo(penyidikNama).nip, pembuat: pembuatNama, nip_pembuat: getInfo(pembuatNama).nip };
             localStorage.setItem('bc_data_petugas_perkara', JSON.stringify(dataPetugasPerkara));
-            showModalInfo("Berhasil Disimpan", "Pilihan petugas penandatangan perkara berhasil diperbarui!");
+            tutupModalTambahPetugasPerkara();
+            renderTampilanPetugas();
+            showModalInfo("Berhasil Disimpan", "Data petugas dan tim penyidikan berhasil diperbarui!");
         }
 
         function bukaModalAmbilNomor() {
@@ -667,6 +802,7 @@
             updateCounterBadge();
             updateMonitoringStats();
             cekValidasiLhp();
+            cekValidasiPetugas();
             showModalInfo("Berhasil Ambil Nomor", `Nomor urut #${nextNumber} (LPP, LPF, SPLIT) berhasil diproses!`);
         }
 
@@ -692,7 +828,7 @@
             daftarPerkara[0].nomor_lpf = document.getElementById('edit_modal_lpf').value;
             daftarPerkara[0].nomor_split = document.getElementById('edit_modal_split').value;
             localStorage.setItem('bc_daftar_perkara', JSON.stringify(daftarPerkara));
-            tutupModalEditNomor(); renderTablePenomoran(); cekValidasiLhp();
+            tutupModalEditNomor(); renderTablePenomoran(); cekValidasiLhp(); cekValidasiPetugas();
             showModalInfo("Berhasil Diedit", "Penomoran dokumen berhasil diperbarui!");
         }
 
@@ -744,7 +880,7 @@
             if (targetId === 'cetak') renderTablePerkara();
             else if (targetId === 'monitoring') renderTableMonitoring();
             else if (targetId === 'penomoran') renderTablePenomoran();
-            else if (targetId === 'petugas') muatDropdownPetugas();
+            else if (targetId === 'petugas') { cekValidasiPetugas(); renderTampilanPetugas(); }
             else if (targetId === 'lhp_timeline') cekValidasiLhp();
             updateMonitoringStats();
         }
@@ -778,7 +914,7 @@
             daftarPerkara[0].pj_pelaku = document.getElementById('pj_pelaku').value;
             daftarPerkara[0].alamat_pelaku = document.getElementById('alamat_pelaku').value;
             localStorage.setItem('bc_daftar_perkara', JSON.stringify(daftarPerkara));
-            showModalInfo("Berhasil Disimpan", "Data utama perkara berhasil disimpan."); updateMonitoringStats(); cekValidasiLhp();
+            showModalInfo("Berhasil Disimpan", "Data utama perkara berhasil disimpan."); updateMonitoringStats(); cekValidasiLhp(); cekValidasiPetugas();
         }
 
         function simpanDataCacah() {
@@ -801,7 +937,7 @@
             daftarPerkara[0].nomor_split = document.getElementById('lap_nomor_split').value;
             localStorage.setItem('bc_daftar_perkara', JSON.stringify(daftarPerkara));
             showModalInfo("Berhasil Disimpan", "Data LPF & SPLIT berhasil diperbarui!");
-            updateMonitoringStats(); cekValidasiLhp();
+            updateMonitoringStats(); cekValidasiLhp(); cekValidasiPetugas();
         }
 
         function simpanDataLhpKhusus(event) {
