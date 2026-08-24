@@ -9,14 +9,39 @@
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background: linear-gradient(135deg, #f1f5f9 0%, #cbd5e1 100%);
+            background-color: #f1f5f9;
             min-height: 100vh;
             margin: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            overflow-x: hidden;
+            position: relative;
             zoom: 1.12;
+        }
+        /* Efek Blur Warna Latar Belakang (Blob Effect ala Referensi) */
+        .bg-blob-1 {
+            position: absolute;
+            top: -10%;
+            left: -10%;
+            width: 450px;
+            height: 450px;
+            background: rgba(37, 99, 235, 0.15);
+            filter: blur(80px);
+            border-radius: 50%;
+            z-index: -1;
+        }
+        .bg-blob-2 {
+            position: absolute;
+            bottom: -10%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: rgba(147, 51, 234, 0.12);
+            filter: blur(90px);
+            border-radius: 50%;
+            z-index: -1;
         }
         .input-custom {
             background: rgba(255, 255, 255, 0.95);
@@ -32,7 +57,11 @@
         }
     </style>
 </head>
-<body class="w-screen p-4 sm:p-6 lg:p-8 overflow-x-hidden">
+<body class="w-screen p-4 sm:p-6 lg:p-8">
+
+    <!-- Efek Blur Warna Latar Belakang -->
+    <div class="bg-blob-1"></div>
+    <div class="bg-blob-2"></div>
 
     <!-- KONTAINER KARTU UTAMA (CARD SPLIT LAYOUT) -->
     <div class="w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-2 relative border border-slate-100 mx-auto">
