@@ -20,15 +20,15 @@
         .ios-alert-box { background: #ffffff; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         .sidebar-hidden { transform: translateX(-100%); width: 0 !important; padding: 0 !important; overflow: hidden; opacity: 0; }
         
-        /* Animasi Slow / Smooth untuk Submenu */
+        /* Animasi Slow / Smooth untuk Submenu Toggle Klik */
         #submenuContainer {
             max-height: 0;
             overflow: hidden;
             opacity: 0;
             transition: max-height 0.5s ease-in-out, opacity 0.4s ease-in-out;
         }
-        #menuInputGroup:hover #submenuContainer {
-            max-height: 300px;
+        #submenuContainer.show-submenu {
+            max-height: 350px;
             opacity: 1;
         }
 
@@ -57,14 +57,17 @@
                     <button type="button" onclick="switchTab('dashboard', this)" id="btn-dashboard" class="nav-btn nav-item-active w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition"><i class="fa-solid fa-house w-4"></i><span>Dashboard Penyidikan</span></button>
                     
                     <div id="menuInputGroup" class="space-y-1">
-                        <button type="button" onclick="switchTab('input', this)" id="btn-input" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-[#697888] hover:bg-[#f5f5f9] transition"><i class="fa-solid fa-pen-to-square w-4"></i><span class="flex-1 text-left">Data Perkara</span><i class="fa-solid fa-chevron-down text-[10px]"></i></button>
+                        <button type="button" onclick="toggleSubmenuClick(event)" id="btn-input" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-[#697888] hover:bg-[#f5f5f9] transition"><i class="fa-solid fa-pen-to-square w-4"></i><span class="flex-1 text-left">Data Perkara</span><i id="chevronIcon" class="fa-solid fa-chevron-down text-[10px] transition-transform duration-300"></i></button>
                         <div id="submenuContainer" class="pl-4 space-y-1 border-l-2 border-slate-200 ml-4 pt-1">
                             <button type="button" onclick="switchTab('penomoran', this)" id="btn-penomoran" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-[#697888] hover:bg-[#f5f5f9] transition"><i class="fa-solid fa-list-ol w-4 text-blue-500"></i><span>Penomoran</span></button>
                             <button type="button" onclick="switchTab('petugas', this)" id="btn-petugas" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-[#697888] hover:bg-[#f5f5f9] transition"><i class="fa-solid fa-users w-4 text-indigo-500"></i><span>Petugas</span></button>
                             <button type="button" onclick="switchTab('bacacah', this)" id="btn-bacacah" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-[#697888] hover:bg-[#f5f5f9] transition"><i class="fa-solid fa-boxes-stacked w-4 text-emerald-600"></i><span>BA Cacah</span></button>
-                            <button type="button" onclick="switchTab('laporan', this)" id="btn-laporan" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-[#697888] hover:bg-[#f5f5f9] transition"><i class="fa-solid fa-file-shield w-4 text-amber-500"></i><span>Laporan</span></button>
+                            <button type="button" onclick="switchTab('laporan', this)" id="btn-laporan" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-[#697888] hover:bg-[#f5f5f9] transition"><i class="fa-solid fa-file-shield w-4 text-amber-500"></i><span>Laporan (LPF & SPLIT)</span></button>
                         </div>
                     </div>
+                    
+                    <!-- MENU LEMBAR HASIL PENELITIAN (LHP) DIBAWAH DATA PERKARA -->
+                    <button type="button" onclick="switchTab('lhp_timeline', this)" id="btn-lhp-timeline" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-[#697888] hover:bg-[#f5f5f9] transition"><i class="fa-solid fa-file-invoice w-4 text-purple-600"></i><span>Lembar Hasil Penelitian (LHP)</span></button>
                     
                     <button type="button" onclick="switchTab('cetak', this)" id="btn-cetak" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-[#697888] hover:bg-[#f5f5f9] transition"><i class="fa-solid fa-print w-4"></i><span>Cetak Dokumen Resmi</span></button>
                     <button type="button" onclick="switchTab('monitoring', this)" id="btn-monitoring" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-[#697888] hover:bg-[#f5f5f9] transition"><i class="fa-solid fa-chart-pie w-4"></i><span>Monitoring & Statistik</span></button>
@@ -75,7 +78,6 @@
                 <div class="space-y-1"><a href="index.html" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold text-rose-600 hover:bg-rose-50 transition"><i class="fa-solid fa-power-off w-4"></i><span>Sign Out</span></a></div>
             </div>
 
-            <!-- Banner Upgrade Sneat Sidebar -->
             <div class="p-3.5 bg-indigo-50/70 rounded-2xl border border-indigo-100 text-center space-y-2">
                 <p class="text-[11px] font-bold text-[#696cff]">SIDIKMAN Pro v2.6</p>
                 <a href="index.html" class="block w-full py-2 bg-[#696cff] hover:bg-[#5f61e6] text-white rounded-xl text-[11px] font-bold shadow transition">Portal Utama</a>
@@ -84,11 +86,9 @@
 
         <!-- KONTEN UTAMA -->
         <div class="flex-1 flex flex-col min-h-screen">
-            <!-- HEADER / NAVBAR SNEAT -->
             <header class="sneat-card px-6 py-3.5 flex justify-between items-center mb-6 shadow-sm">
                 <div class="flex items-center space-x-3 w-1/3">
                     <button type="button" onclick="toggleSidebar()" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition text-xs"><i class="fa-solid fa-bars"></i></button>
-                    <!-- Search Bar Atas -->
                     <div class="relative w-full max-w-xs hidden sm:block">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400"><i class="fa-solid fa-magnifying-glass text-xs"></i></span>
                         <input type="text" placeholder="Search (Ctrl+/)" class="w-full pl-9 pr-10 py-2 bg-[#f8f9fa] border border-[#dbdade] rounded-xl text-xs focus:outline-none focus:border-[#696cff]">
@@ -151,7 +151,7 @@
                     </div>
                 </section>
 
-                <!-- TAB DATA PERKARA (INPUT) -->
+                <!-- TAB DATA PERKARA -->
                 <section id="content-input" class="tab-content space-y-6 hidden">
                     <div class="sneat-card p-6 flex justify-between items-center">
                         <div><span class="text-[10px] font-bold text-[#696cff] uppercase bg-indigo-50 px-2.5 py-1 rounded-full">Database Penyidikan</span><h3 class="text-sm font-bold text-[#566a7f] mt-2">Form Data Perkara Utama</h3><p class="text-xs text-slate-400 mt-0.5">Input data utama perkara, klasifikasi jenis perkara, komoditi, hingga kerugian negara.</p></div>
@@ -163,7 +163,7 @@
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-5 text-xs">
                                 <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor SBP</label><input type="text" id="nomor_sbp" required class="w-full p-3.5 ios-input-field font-medium" value="1659/Mandiri/KPU.2/2025"></div>
                                 <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Tanggal SBP</label><input type="date" id="tanggal_sbp" required class="w-full p-3.5 ios-input-field font-medium" value="2025-12-12"></div>
-                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor LPP</label><input type="text" id="nomor_lpp" required class="w-full p-3.5 ios-input-field font-medium" value="1482"></div>
+                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor LPP</label><input type="text" id="nomor_lpp" required class="w-full p-3.5 ios-input-field font-medium" value="1"></div>
                                 <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Tanggal LPP</label><input type="date" id="tanggal_lpp" required class="w-full p-3.5 ios-input-field font-medium" value="2025-12-13"></div>
                                 <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Klasifikasi Jenis Perkara</label><select id="jenis_klasifikasi" class="w-full p-3.5 ios-input-field font-medium"><option value="Pabean">Perkara Pabean</option><option value="Cukai">Perkara Cukai</option></select></div>
                                 <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Komoditi Utama</label><select id="komoditi_utama" class="w-full p-3.5 ios-input-field font-medium"><option value="Tekstil">Tekstil / Garment</option><option value="Ballpress">Ballpress (Pakaian Bekas)</option><option value="Obat">Obat-obatan / Kosmetik</option><option value="Sparepart">Sparepart / Mesin / Lainnya</option></select></div>
@@ -188,23 +188,23 @@
                 <!-- TAB PENOMORAN -->
                 <section id="content-penomoran" class="tab-content space-y-6 hidden">
                     <div class="sneat-card p-6 shadow-sm flex justify-between items-center">
-                        <div><span class="text-[10px] font-bold text-[#696cff] uppercase bg-indigo-50 px-2.5 py-1 rounded-full">Menu Penomoran & Sinkronisasi</span><h3 class="text-sm font-bold text-[#566a7f] mt-2">Kelola, Simpan & Edit Penomoran Dokumen</h3><p class="text-xs text-slate-400 mt-0.5">Ubah atau simpan nomor urut dokumen resmi penyidikan agar otomatis tersinkron ke semua berkas.</p></div>
-                        <button type="button" onclick="bukaModalEditNomor()" class="bg-[#696cff] hover:bg-[#5f61e6] text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow transition flex items-center space-x-2"><i class="fa-solid fa-pen-to-square"></i><span>Edit Penomoran Perkara</span></button>
+                        <div>
+                            <span class="text-[10px] font-bold text-[#696cff] uppercase bg-indigo-50 px-2.5 py-1 rounded-full">Menu Penomoran Terintegrasi</span>
+                            <h3 class="text-sm font-bold text-[#566a7f] mt-2">Ambil Nomor Urut Berkelanjutan (1, 2, 3...)</h3>
+                            <p class="text-xs text-slate-400 mt-0.5">Ambil nomor urut secara berurutan setelah mengisi SBP dan LP terkait.</p>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button type="button" onclick="bukaModalAmbilNomor()" class="sneat-btn-primary px-4 py-2.5 text-xs font-bold shadow transition flex items-center space-x-2"><i class="fa-solid fa-plus-circle"></i><span>Ambil Nomor Baru</span></button>
+                            <button type="button" onclick="bukaModalEditNomor()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold px-4 py-2.5 rounded-xl shadow transition flex items-center space-x-2"><i class="fa-solid fa-pen-to-square"></i><span>Edit Manual</span></button>
+                        </div>
                     </div>
-                    <div class="sneat-card p-6 md:p-8 space-y-6">
-                        <h4 class="text-xs font-bold text-[#566a7f] uppercase tracking-wider border-b pb-3 flex items-center text-[#696cff]"><i class="fa-solid fa-list-ol mr-2"></i> Form Cepat Simpan & Sinkronisasi Nomor Perkara Aktif</h4>
-                        <form onsubmit="simpanDataPenomoran(event)" class="space-y-5 text-xs">
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor Urut Utama (LPP/LPF/SPLIT/LHP)</label><input type="text" id="gen_nomor_utama" required class="w-full p-3.5 ios-input-field font-medium" value="1482"></div>
-                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor Sprint Pencacahan</label><input type="text" id="gen_sprint_cacah" required class="w-full p-3.5 ios-input-field font-medium" value="1482/CACAH"></div>
-                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor BA Pencacahan</label><input type="text" id="gen_ba_cacah" required class="w-full p-3.5 ios-input-field font-medium" value="1482/CACAH"></div>
-                            </div>
-                            <div class="flex justify-end pt-2"><button type="submit" class="sneat-btn-primary px-8 py-3.5 font-bold tracking-wide shadow flex items-center space-x-2"><i class="fa-solid fa-floppy-disk"></i><span>Simpan & Perbarui Nomor Dokumen</span></button></div>
-                        </form>
-                    </div>
+                    
                     <div class="sneat-card rounded-2xl shadow-sm overflow-hidden">
-                        <div class="p-4 bg-slate-50 border-b font-bold text-xs uppercase text-[#566a7f]">Preview Format Nomor Lengkap (Tersinkron)</div>
-                        <div class="overflow-x-auto"><table class="w-full text-left text-xs"><thead class="border-b text-slate-400 bg-white"><tr><th class="p-3">Perusahaan / Pelaku</th><th class="p-3">No. LPP</th><th class="p-3">No. LPF</th><th class="p-3">No. SPLIT</th><th class="p-3">No. Sprint Cacah</th><th class="p-3">No. BA Cacah</th><th class="p-3">No. LHP</th><th class="p-3 text-center">Aksi Edit</th></tr></thead><tbody id="tablePenomoranBody" class="divide-y divide-slate-100"></tbody></table></div>
+                        <div class="p-4 bg-slate-50 border-b font-bold text-xs uppercase text-[#566a7f] flex justify-between items-center">
+                            <span>Daftar Alokasi Penomoran Berurutan (LPP -> LPF -> SPLIT)</span>
+                            <span id="counterNomorBadge" class="text-[10px] bg-indigo-100 text-indigo-700 px-2 py-1 rounded-full font-bold">Counter Berikutnya: #1</span>
+                        </div>
+                        <div class="overflow-x-auto"><table class="w-full text-left text-xs"><thead class="border-b text-slate-400 bg-white"><tr><th class="p-3">ID Urut</th><th class="p-3">No. SBP / Tgl SBP</th><th class="p-3">No. LP / Tgl LP</th><th class="p-3">No. LPP</th><th class="p-3">No. LPF</th><th class="p-3">No. SPLIT</th><th class="p-3 text-center">Aksi</th></tr></thead><tbody id="tablePenomoranBody" class="divide-y divide-slate-100"></tbody></table></div>
                     </div>
                 </section>
 
@@ -259,33 +259,62 @@
                     </div>
                 </section>
 
-                <!-- TAB LAPORAN (PENGISIAN DATA SPLIT HINGGA LHP) -->
+                <!-- TAB LAPORAN (LPF & SPLIT) -->
                 <section id="content-laporan" class="tab-content space-y-6 hidden">
                     <div class="sneat-card p-6 flex justify-between items-center">
                         <div>
                             <span class="text-[10px] font-bold text-amber-600 uppercase bg-amber-50 px-2.5 py-1 rounded-full">Modul Laporan Lanjutan</span>
-                            <h3 class="text-sm font-bold text-[#566a7f] mt-2">Pengisian Data SPLIT, LPF, hingga LHP</h3>
-                            <p class="text-xs text-slate-400 mt-0.5">Kelola rincian nomor investigasi, Laporan Penelitian Formal, hingga Lembar Hasil Penelitian akhir.</p>
+                            <h3 class="text-sm font-bold text-[#566a7f] mt-2">Pengisian Data LPF & SPLIT</h3>
+                            <p class="text-xs text-slate-400 mt-0.5">Kelola rincian Laporan Penelitian Formal dan Nomor SPLIT Investigasi.</p>
                         </div>
                     </div>
                     <form onsubmit="simpanDataLaporanLanjutan(event)" class="space-y-6">
                         <div class="sneat-card p-6 md:p-8 space-y-5">
-                            <h4 class="text-xs font-bold text-[#566a7f] uppercase tracking-wider border-b pb-3 flex items-center text-amber-700"><i class="fa-solid fa-file-shield mr-2"></i> I. Pengisian Laporan Penelitian Formal (LPF) & Nomor SPLIT</h4>
+                            <h4 class="text-xs font-bold text-[#566a7f] uppercase tracking-wider border-b pb-3 flex items-center text-amber-700"><i class="fa-solid fa-file-shield mr-2"></i> Pengisian Laporan Penelitian Formal (LPF) & Nomor SPLIT</h4>
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-5 text-xs">
-                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor LPF</label><input type="text" id="lap_nomor_lpf" required class="w-full p-3.5 ios-input-field font-medium" value="1482"></div>
+                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor LPF</label><input type="text" id="lap_nomor_lpf" required class="w-full p-3.5 ios-input-field font-medium" value="1"></div>
                                 <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Tanggal LPF</label><input type="date" id="lap_tanggal_lpf" required class="w-full p-3.5 ios-input-field font-medium" value="2025-12-13"></div>
-                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor SPLIT Investigasi</label><input type="text" id="lap_nomor_split" required class="w-full p-3.5 ios-input-field font-medium" value="1482"></div>
+                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor SPLIT Investigasi</label><input type="text" id="lap_nomor_split" required class="w-full p-3.5 ios-input-field font-medium" value="1"></div>
                             </div>
                         </div>
+                        <div class="flex justify-end pt-2 pb-6"><button type="submit" class="sneat-btn-primary px-8 py-4 text-xs font-bold tracking-wide flex items-center space-x-2 shadow-md"><i class="fa-solid fa-floppy-disk text-sm mr-1"></i><span>Simpan Data Laporan Lanjutan</span></button></div>
+                    </form>
+                </section>
+
+                <!-- TAB LEMBAR HASIL PENELITIAN (LHP) DENGAN VALIDASI KELENGKAPAN LPP & SPLIT -->
+                <section id="content-lhp_timeline" class="tab-content space-y-6 hidden">
+                    <div class="sneat-card p-6 flex justify-between items-center">
+                        <div>
+                            <span class="text-[10px] font-bold text-purple-600 uppercase bg-purple-50 px-2.5 py-1 rounded-full">Modul LHP Akhir</span>
+                            <h3 class="text-sm font-bold text-[#566a7f] mt-2">Lembar Hasil Penelitian (LHP)</h3>
+                            <p class="text-xs text-slate-400 mt-0.5">LHP hanya dapat dibuat jika LPP dan SPLIT telah selesai diisi.</p>
+                        </div>
+                    </div>
+
+                    <!-- Peringatan Validasi Jika LPP / SPLIT Belum Selesai -->
+                    <div id="lhpWarningBox" class="hidden sneat-card p-6 bg-rose-50 border border-rose-200 text-rose-800 space-y-2">
+                        <div class="flex items-center space-x-2 font-bold text-sm">
+                            <i class="fa-solid fa-triangle-exclamation text-rose-600"></i>
+                            <span>LPP dan SPLIT Belum Lengkap!</span>
+                        </div>
+                        <p class="text-xs leading-relaxed">
+                            Mohon pastikan data **LPP (Lembar Penerimaan Perkara)** dan **SPLIT (Surat Perintah Penelitian)** sudah diisi dan disimpan terlebih dahulu melalui menu Data Perkara / Penomoran sebelum Anda dapat membuat Lembar Hasil Penelitian (LHP).
+                        </p>
+                    </div>
+
+                    <!-- Form LHP Utama -->
+                    <form id="formLhpContainer" onsubmit="simpanDataLhpKhusus(event)" class="space-y-6">
                         <div class="sneat-card p-6 md:p-8 space-y-5">
-                            <h4 class="text-xs font-bold text-[#566a7f] uppercase tracking-wider border-b pb-3 flex items-center text-amber-700"><i class="fa-solid fa-clipboard-check mr-2"></i> II. Pengisian Lembar Hasil Penelitian (LHP)</h4>
+                            <h4 class="text-xs font-bold text-[#566a7f] uppercase tracking-wider border-b pb-3 flex items-center text-purple-700"><i class="fa-solid fa-file-invoice mr-2"></i> Form Lembar Hasil Penelitian (LHP)</h4>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-5 text-xs">
-                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor LHP Akhir</label><input type="text" id="lap_nomor_lhp" required class="w-full p-3.5 ios-input-field font-medium" value="1482"></div>
-                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Kesimpulan & Alternatif Penyelesaian</label><input type="text" id="lap_kesimpulan_lhp" required class="w-full p-3.5 ios-input-field font-medium" value="Penelitian dugaan pelanggaran kepabeanan diselesaikan sesuai ketentuan berlaku"></div>
-                                <div class="md:col-span-2"><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Catatan Analisis Modus & Unsur Pasal</label><textarea id="lap_catatan_analisis" rows="3" class="w-full p-3.5 ios-input-field font-medium">Berdasarkan hasil penelitian, terbukti terjadi pelanggaran administrasi pengeluaran barang tanpa/salah pemberitahuan pabean.</textarea></div>
+                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor LHP Akhir</label><input type="text" id="lhp_nomor_khusus" required class="w-full p-3.5 ios-input-field font-medium" value="1"></div>
+                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Tanggal Terbit LHP</label><input type="date" id="lhp_tanggal_khusus" required class="w-full p-3.5 ios-input-field font-medium" value="2025-12-20"></div>
+                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Kesimpulan & Alternatif Penyelesaian</label><input type="text" id="lhp_kesimpulan" required class="w-full p-3.5 ios-input-field font-medium" value="Penelitian dugaan pelanggaran kepabeanan diselesaikan sesuai ketentuan berlaku"></div>
+                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Status Penyelesaian</label><select id="lhp_status" class="w-full p-3.5 ios-input-field font-medium"><option value="Selesai Administrasi">Selesai Administrasi</option><option value="Dilimpahkan">Dilimpahkan ke Penyidik Pegawai Negeri Sipil (PPNS)</option><option value="Penghentian">Penghentian Penyidikan</option></select></div>
+                                <div class="md:col-span-2"><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Catatan Analisis Modus & Unsur Pasal</label><textarea id="lhp_catatan" rows="3" class="w-full p-3.5 ios-input-field font-medium">Berdasarkan hasil penelitian akhir, terbukti penyelesaian perkara telah tuntas secara administratif.</textarea></div>
                             </div>
                         </div>
-                        <div class="flex justify-end pt-2 pb-6"><button type="submit" class="sneat-btn-primary px-8 py-4 text-xs font-bold tracking-wide flex items-center space-x-2 shadow-md"><i class="fa-solid fa-floppy-disk text-sm mr-1"></i><span>Simpan Data Laporan Lanjutan (SPLIT s.d LHP)</span></button></div>
+                        <div class="flex justify-end pt-2 pb-6"><button type="submit" id="btnSimpanLhp" class="sneat-btn-primary px-8 py-4 text-xs font-bold tracking-wide flex items-center space-x-2 shadow-md"><i class="fa-solid fa-floppy-disk text-sm mr-1"></i><span>Simpan Lembar Hasil Penelitian (LHP)</span></button></div>
                     </form>
                 </section>
 
@@ -392,18 +421,42 @@
         </div>
     </div>
 
-    <!-- MODAL & SCRIPT -->
+    <!-- MODAL AMBIL NOMOR -->
+    <div id="modalAmbilNomor" class="fixed inset-0 ios-overlay hidden items-center justify-center z-50 p-4">
+        <div class="w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden ios-alert-box border border-slate-200 p-6 space-y-4">
+            <div class="flex justify-between items-center border-b pb-3">
+                <h3 class="text-sm font-bold text-slate-950"><i class="fa-solid fa-ticket text-[#696cff] mr-2"></i> Ambil Nomor Urut Otomatis Berkelanjutan</h3>
+                <button type="button" onclick="tutupModalAmbilNomor()" class="text-slate-400 hover:text-slate-600 text-xs"><i class="fa-solid fa-xmark text-base"></i></button>
+            </div>
+            <form onsubmit="prosesAmbilNomorBaru(event)" class="space-y-4 text-xs">
+                <div><label class="block font-semibold text-slate-700 mb-1">Nomor SBP</label><input type="text" id="ambil_no_sbp" required class="w-full p-3 ios-input-field font-medium" value="1659/Mandiri/KPU.2/2025"></div>
+                <div><label class="block font-semibold text-slate-700 mb-1">Tanggal SBP</label><input type="date" id="ambil_tgl_sbp" required class="w-full p-3 ios-input-field font-medium" value="2025-12-12"></div>
+                <div><label class="block font-semibold text-slate-700 mb-1">Nomor LP / LPP Dasar</label><input type="text" id="ambil_no_lp" required class="w-full p-3 ios-input-field font-medium" placeholder="Contoh: 1"></div>
+                <div><label class="block font-semibold text-slate-700 mb-1">Tanggal LP</label><input type="date" id="ambil_tgl_lp" required class="w-full p-3 ios-input-field font-medium" value="2025-12-13"></div>
+                <div class="p-3 bg-indigo-50 text-indigo-900 rounded-xl font-medium">
+                    <i class="fa-solid fa-info-circle mr-1"></i> Sistem akan secara otomatis mengalokasikan nomor urut berikutnya (1, 2, dst) untuk LPP, LPF, hingga SPLIT secara terintegrasi.
+                </div>
+                <div class="flex justify-end space-x-2 pt-2">
+                    <button type="button" onclick="tutupModalAmbilNomor()" class="px-4 py-2.5 bg-slate-100 text-slate-600 font-bold rounded-xl">Batal</button>
+                    <button type="submit" class="sneat-btn-primary px-6 py-2.5 font-bold">Generate & Ambil Nomor</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL EDIT NOMOR -->
     <div id="modalEditNomor" class="fixed inset-0 ios-overlay hidden items-center justify-center z-50 p-4">
         <div class="w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden ios-alert-box border border-slate-200 p-6 space-y-4">
             <div class="flex justify-between items-center border-b pb-3"><h3 class="text-sm font-bold text-slate-950"><i class="fa-solid fa-pen-to-square text-[#696cff] mr-2"></i> Edit Penomoran Dokumen Perkara</h3><button type="button" onclick="tutupModalEditNomor()" class="text-slate-400 hover:text-slate-600 text-xs"><i class="fa-solid fa-xmark text-base"></i></button></div>
             <form onsubmit="simpanEditNomorModal(event)" class="space-y-4 text-xs">
-                <div><label class="block font-semibold text-slate-700 mb-1">Nomor Urut Utama (LPP / LPF / SPLIT / LHP)</label><input type="text" id="edit_modal_utama" required class="w-full p-3 ios-input-field font-medium"></div>
-                <div><label class="block font-semibold text-slate-700 mb-1">Nomor Sprint Pencacahan</label><input type="text" id="edit_modal_sprint" required class="w-full p-3 ios-input-field font-medium"></div>
-                <div><label class="block font-semibold text-slate-700 mb-1">Nomor BA Pencacahan</label><input type="text" id="edit_modal_ba" required class="w-full p-3 ios-input-field font-medium"></div>
+                <div><label class="block font-semibold text-slate-700 mb-1">Nomor Urut Utama (LPP)</label><input type="text" id="edit_modal_utama" required class="w-full p-3 ios-input-field font-medium"></div>
+                <div><label class="block font-semibold text-slate-700 mb-1">Nomor LPF</label><input type="text" id="edit_modal_lpf" required class="w-full p-3 ios-input-field font-medium"></div>
+                <div><label class="block font-semibold text-slate-700 mb-1">Nomor SPLIT</label><input type="text" id="edit_modal_split" required class="w-full p-3 ios-input-field font-medium"></div>
                 <div class="flex justify-end space-x-2 pt-2"><button type="button" onclick="tutupModalEditNomor()" class="px-4 py-2.5 bg-slate-100 text-slate-600 font-bold rounded-xl">Batal</button><button type="submit" class="sneat-btn-primary px-6 py-2.5 font-bold">Simpan Perubahan Nomor</button></div>
             </form>
         </div>
     </div>
+
     <div id="modalTambahPegawai" class="fixed inset-0 ios-overlay hidden items-center justify-center z-50 p-4">
         <div class="w-full max-w-md rounded-2xl shadow-2xl overflow-hidden ios-alert-box border border-slate-200 p-6 space-y-4">
             <div class="flex justify-between items-center border-b pb-3"><h3 class="text-sm font-bold text-slate-950">Tambah Pegawai / Personel Baru</h3><button type="button" onclick="tutupModalTambahPegawai()" class="text-slate-400 hover:text-slate-600 text-xs"><i class="fa-solid fa-xmark text-base"></i></button></div>
@@ -453,11 +506,11 @@
     <div id="printArea" class="hidden"></div>
 
     <script>
-        let daftarPerkara = JSON.parse(localStorage.getItem('bc_daftar_perkara')) || [{ nomor_sbp: "1659/Mandiri/KPU.2/2025", tanggal_sbp: "2025-12-12", nomor_lpp: "1482", tanggal_lpp: "2025-12-13", asal_perkara: "Seksi Penindakan", status_penangkapan: "Penindakan Biasa", nomor_lpf: "1482", tanggal_lpf: "2025-12-13", nomor_split: "1482", jenis_klasifikasi: "Pabean", komoditi_utama: "Sparepart", estimasi_kerugian: 150000000, nama_pelaku: "PT HAWILA ADHI PERKASA", npwp_pelaku: "860753292225000", pj_pelaku: "CHANNER SIMBOLON", alamat_pelaku: "Ruko The Capitol Superblok Imperium Bkok B No. 41, Batam", tempat_kejadian: "TPS Dharma Bandar Mandala (DBM)", waktu_kejadian: "12 Desember 2025 pukul 13.00 WIB", jenis_pelanggaran: "Pasal 53 ayat (3) UU No. 17 Tahun 2006 dan Pasal 33 ayat (1), Pasal 71 ayat (1) PP No. 41 Tahun 2021", jenis_perkara: "Pengeluaran barang dari KPBPB Batam ke TLDDP tanpa/salah pemberitahuan pabean", modus_operandi: "Mengeluarkan barang dari KPBPB Batam ke TLDDP tanpa/salah pemberitahuan pabean", nomor_sprint_cacah: "1482/CACAH", nomor_ba_cacah: "1482/CACAH", lhp: "1482", daftar_barang: [{ uraian: "2 Pce / M Core B 81A447-2351, ETC", jumlah: "2 Pcs" }], dok_pabean: "PPFTZ-01 Nomor 011407 Tanggal 28 November 2025" }];
+        let daftarPerkara = JSON.parse(localStorage.getItem('bc_daftar_perkara')) || [{ nomor_sbp: "1659/Mandiri/KPU.2/2025", tanggal_sbp: "2025-12-12", nomor_lpp: "1", tanggal_lpp: "2025-12-13", asal_perkara: "Seksi Penindakan", status_penangkapan: "Penindakan Biasa", nomor_lpf: "1", tanggal_lpf: "2025-12-13", nomor_split: "1", jenis_klasifikasi: "Pabean", komoditi_utama: "Sparepart", estimasi_kerugian: 150000000, nama_pelaku: "PT HAWILA ADHI PERKASA", npwp_pelaku: "860753292225000", pj_pelaku: "CHANNER SIMBOLON", alamat_pelaku: "Ruko The Capitol Superblok Imperium Bkok B No. 41, Batam", tempat_kejadian: "TPS Dharma Bandar Mandala (DBM)", waktu_kejadian: "12 Desember 2025 pukul 13.00 WIB", jenis_pelanggaran: "Pasal 53 ayat (3) UU No. 17 Tahun 2006", jenis_perkara: "Pengeluaran barang tanpa/salah pemberitahuan pabean", modus_operandi: "Mengeluarkan barang dari KPBPB", nomor_sprint_cacah: "1/CACAH", nomor_ba_cacah: "1/CACAH", lhp: "1", lhp_tanggal: "2025-12-20", lhp_kesimpulan: "Selesai Administrasi", lhp_catatan: "Tuntas", daftar_barang: [{ uraian: "Sparepart", jumlah: "2 Pcs" }], dok_pabean: "PPFTZ-01" }];
         let configPenomoran = JSON.parse(localStorage.getItem('bc_config_penomoran')) || { kode_kantor: "KPU.206", tahun_nomor: "2025", kabid: "Muhtadi", nip_kabid: "19730908 199503 1 001", kasi: "Johan Kunaefi", nip_kasi: "19800606 200112 1 001" };
         let masterPegawai = JSON.parse(localStorage.getItem('bc_master_pegawai')) || [{ nama: "Muhtadi", nip: "19730908 199503 1 001", peran: "Kepala Bidang P2" }, { nama: "Johan Kunaefi", nip: "19800606 200112 1 001", peran: "Kepala Seksi Penyidikan" }, { nama: "Gindo Dabungke", nip: "19940305 201502 1 002", peran: "Penyidik / Ketua Tim" }, { nama: "Dilla Allianza", nip: "20001121 201912 2 001", peran: "Anggota Tim / Pembuat LPP" }];
         let dataPetugasPerkara = JSON.parse(localStorage.getItem('bc_data_petugas_perkara')) || { kabid: "Muhtadi", nip_kabid: "19730908 199503 1 001", kasi: "Johan Kunaefi", nip_kasi: "19800606 200112 1 001", penyidik: "Gindo Dabungke", nip_penyidik: "19940305 201502 1 002", pembuat: "Dilla Allianza", nip_pembuat: "200011212019122001" };
-        let userProfile = JSON.parse(localStorage.getItem('bc_user_profile')) || { name: "Penyidik Utama", email: "penyidik.batam@beacukai.go.id", nip: "198006062001121001", password: "", theme: "slate", avatar: "logo-beacukai.png", background: "" };
+        let userProfile = JSON.parse(localStorage.getItem('bc_user_profile')) || { name: "Penyidik Utama", email: "penyidik.batam@beacukai.go.id", nip: "198006062001121001", password: "", avatar: "logo-beacukai.png", background: "" };
         let currentModalActionType = null, selectedPerkaraIndex = null, tempAvatarBase64 = null;
 
         function initProfile() {
@@ -476,21 +529,33 @@
             document.getElementById('config_kasi').value = configPenomoran.kasi;
             document.getElementById('config_nip_kasi').value = configPenomoran.nip_kasi;
             
-            // Load ke Form Laporan jika ada
             if (daftarPerkara.length > 0) {
-                document.getElementById('lap_nomor_lpf').value = daftarPerkara[0].nomor_lpf || '1482';
-                document.getElementById('lap_nomor_split').value = daftarPerkara[0].nomor_split || '1482';
-                document.getElementById('lap_nomor_lhp').value = daftarPerkara[0].lhp || '1482';
+                document.getElementById('lap_nomor_lpf').value = daftarPerkara[0].nomor_lpf || '1';
+                document.getElementById('lap_nomor_split').value = daftarPerkara[0].nomor_split || '1';
+                document.getElementById('lhp_nomor_khusus').value = daftarPerkara[0].lhp || '1';
+                document.getElementById('lhp_tanggal_khusus').value = daftarPerkara[0].lhp_tanggal || '2025-12-20';
+                document.getElementById('lhp_kesimpulan').value = daftarPerkara[0].lhp_kesimpulan || 'Selesai Administrasi';
+                document.getElementById('lhp_catatan').value = daftarPerkara[0].lhp_catatan || 'Tuntas';
             }
 
-            muatDropdownPetugas(); applyWallpaper();
+            muatDropdownPetugas(); applyWallpaper(); renderTablePenomoran(); updateCounterBadge(); cekValidasiLhp();
         }
+
         function applyWallpaper() { 
             const bg = (userProfile.background && userProfile.background.trim() !== "") ? userProfile.background : 'background.png';
             const el = document.getElementById('dashboardWallpaper');
             el.style.backgroundImage = `url('${bg}')`;
             el.style.display = 'block';
         }
+
+        function toggleSubmenuClick(event) {
+            event.stopPropagation();
+            const submenu = document.getElementById('submenuContainer');
+            const chevron = document.getElementById('chevronIcon');
+            submenu.classList.toggle('show-submenu');
+            chevron.classList.toggle('rotate-180');
+        }
+
         function previewImageFile(event) {
             const file = event.target.files[0];
             if (file) {
@@ -499,7 +564,9 @@
                 reader.readAsDataURL(file);
             }
         }
+
         function toggleSidebar() { document.getElementById('sidebar').classList.toggle('sidebar-hidden'); }
+
         function simpanKonfigurasiUtama(event) {
             event.preventDefault();
             configPenomoran.kode_kantor = document.getElementById('config_kode_kantor').value;
@@ -511,6 +578,7 @@
             localStorage.setItem('bc_config_penomoran', JSON.stringify(configPenomoran));
             showModalInfo("Berhasil Disimpan", "Pengaturan utama kode kantor & master pejabat berhasil diperbarui!");
         }
+
         function muatDropdownPetugas() {
             const selKabid = document.getElementById('select_kabid'), selKasi = document.getElementById('select_kasi'), selPenyidik = document.getElementById('select_penyidik'), selPembuat = document.getElementById('select_pembuat');
             selKabid.innerHTML = ''; selKasi.innerHTML = ''; selPenyidik.innerHTML = ''; selPembuat.innerHTML = '';
@@ -527,24 +595,29 @@
             if (dataPetugasPerkara.pembuat) selPembuat.value = dataPetugasPerkara.pembuat;
             renderTableMasterPegawai();
         }
+
         function renderTableMasterPegawai() {
             const tbody = document.getElementById('tableMasterPegawai'); tbody.innerHTML = '';
             masterPegawai.forEach((p, idx) => {
                 tbody.innerHTML += `<tr class="hover:bg-slate-50 transition"><td class="p-3 font-semibold text-slate-900">${p.nama}</td><td class="p-3 text-slate-600">${p.nip}</td><td class="p-3"><span class="bg-indigo-50 text-indigo-700 font-bold px-2 py-0.5 rounded text-[10px]">${p.peran}</span></td><td class="p-3 text-center"><button type="button" onclick="hapusPegawai(${idx})" class="text-rose-600 hover:text-rose-800 p-1"><i class="fa-solid fa-trash"></i></button></td></tr>`;
             });
         }
+
         function bukaModalTambahPegawai() { document.getElementById('modalTambahPegawai').classList.remove('hidden'); document.getElementById('modalTambahPegawai').classList.add('flex'); }
         function tutupModalTambahPegawai() { document.getElementById('modalTambahPegawai').classList.add('hidden'); document.getElementById('modalTambahPegawai').classList.remove('flex'); }
+        
         function tambahPegawaiBaruSimpan(event) {
             event.preventDefault();
             masterPegawai.push({ nama: document.getElementById('new_nama_pegawai').value, nip: document.getElementById('new_nip_pegawai').value, peran: document.getElementById('new_peran_pegawai').value });
             localStorage.setItem('bc_master_pegawai', JSON.stringify(masterPegawai));
             muatDropdownPetugas(); tutupModalTambahPegawai(); showModalInfo("Berhasil", "Pegawai baru berhasil ditambahkan!");
         }
+
         function hapusPegawai(index) {
             if (masterPegawai.length <= 2) { showModalInfo("Peringatan", "Minimal harus ada 2 pegawai tersimpan."); return; }
             masterPegawai.splice(index, 1); localStorage.setItem('bc_master_pegawai', JSON.stringify(masterPegawai)); muatDropdownPetugas();
         }
+
         function simpanDataPetugas(event) {
             event.preventDefault();
             const kabidNama = document.getElementById('select_kabid').value, kasiNama = document.getElementById('select_kasi').value, penyidikNama = document.getElementById('select_penyidik').value, pembuatNama = document.getElementById('select_pembuat').value;
@@ -553,44 +626,79 @@
             localStorage.setItem('bc_data_petugas_perkara', JSON.stringify(dataPetugasPerkara));
             showModalInfo("Berhasil Disimpan", "Pilihan petugas penandatangan perkara berhasil diperbarui!");
         }
-        function simpanDataPenomoran(event) {
-            event.preventDefault();
-            if (daftarPerkara.length === 0) daftarPerkara.push({});
-            const noUtama = document.getElementById('gen_nomor_utama').value;
-            daftarPerkara[0].nomor_lpp = noUtama; daftarPerkara[0].nomor_lpf = noUtama; daftarPerkara[0].nomor_split = noUtama; daftarPerkara[0].lhp = noUtama;
-            daftarPerkara[0].nomor_sprint_cacah = document.getElementById('gen_sprint_cacah').value;
-            daftarPerkara[0].nomor_ba_cacah = document.getElementById('gen_ba_cacah').value;
-            localStorage.setItem('bc_daftar_perkara', JSON.stringify(daftarPerkara));
-            showModalInfo("Berhasil Disimpan", "Nomor dokumen berhasil disimpan dan disinkronkan!");
-            renderTablePenomoran(); updateMonitoringStats();
+
+        function bukaModalAmbilNomor() {
+            document.getElementById('modalAmbilNomor').classList.remove('hidden');
+            document.getElementById('modalAmbilNomor').classList.add('flex');
         }
+        function tutupModalAmbilNomor() {
+            document.getElementById('modalAmbilNomor').classList.add('hidden');
+            document.getElementById('modalAmbilNomor').classList.remove('flex');
+        }
+
+        function prosesAmbilNomorBaru(event) {
+            event.preventDefault();
+            const nextNumber = daftarPerkara.length + 1;
+            const noSbp = document.getElementById('ambil_no_sbp').value;
+            const tglSbp = document.getElementById('ambil_tgl_sbp').value;
+            const noLp = document.getElementById('ambil_no_lp').value;
+            const tglLp = document.getElementById('ambil_tgl_lp').value;
+
+            const newItem = {
+                nomor_sbp: noSbp,
+                tanggal_sbp: tglSbp,
+                nomor_lpp: String(nextNumber),
+                tanggal_lpp: tglLp,
+                nomor_lpf: String(nextNumber),
+                tanggal_lpf: tglLp,
+                nomor_split: String(nextNumber),
+                lhp: String(nextNumber),
+                nomor_sprint_cacah: `${nextNumber}/CACAH`,
+                nomor_ba_cacah: `${nextNumber}/CACAH`,
+                nama_pelaku: `PERUSAHAAN / PELAKU #${nextNumber}`,
+                asal_perkara: "Seksi Penindakan",
+                jenis_klasifikasi: "Pabean",
+                komoditi_utama: "Sparepart",
+                estimasi_kerugian: 100000000,
+                daftar_barang: [{ uraian: "Barang Bukti Perkara", jumlah: "1 Lot" }]
+            };
+
+            daftarPerkara.unshift(newItem);
+            localStorage.setItem('bc_daftar_perkara', JSON.stringify(daftarPerkara));
+            tutupModalAmbilNomor();
+            renderTablePenomoran();
+            updateCounterBadge();
+            updateMonitoringStats();
+            cekValidasiLhp();
+            showModalInfo("Berhasil Ambil Nomor", `Nomor urut #${nextNumber} berhasil dialokasikan untuk LPP, LPF, dan SPLIT!`);
+        }
+
+        function updateCounterBadge() {
+            const nextNumber = daftarPerkara.length + 1;
+            document.getElementById('counterNomorBadge').innerText = `Counter Berikutnya: #${nextNumber}`;
+        }
+
         function bukaModalEditNomor() {
             if (daftarPerkara.length > 0) {
                 document.getElementById('edit_modal_utama').value = daftarPerkara[0].nomor_lpp || '';
-                document.getElementById('edit_modal_sprint').value = daftarPerkara[0].nomor_sprint_cacah || '';
-                document.getElementById('edit_modal_ba').value = daftarPerkara[0].nomor_ba_cacah || '';
+                document.getElementById('edit_modal_lpf').value = daftarPerkara[0].nomor_lpf || '';
+                document.getElementById('edit_modal_split').value = daftarPerkara[0].nomor_split || '';
             }
             document.getElementById('modalEditNomor').classList.remove('hidden'); document.getElementById('modalEditNomor').classList.add('flex');
         }
         function tutupModalEditNomor() { document.getElementById('modalEditNomor').classList.add('hidden'); document.getElementById('modalEditNomor').classList.remove('flex'); }
+        
         function simpanEditNomorModal(event) {
             event.preventDefault();
             if (daftarPerkara.length === 0) daftarPerkara.push({});
-            const noUtama = document.getElementById('edit_modal_utama').value;
-            daftarPerkara[0].nomor_lpp = noUtama; daftarPerkara[0].nomor_lpf = noUtama; daftarPerkara[0].nomor_split = noUtama; daftarPerkara[0].lhp = noUtama;
-            daftarPerkara[0].nomor_sprint_cacah = document.getElementById('edit_modal_sprint').value;
-            daftarPerkara[0].nomor_ba_cacah = document.getElementById('edit_modal_ba').value;
+            daftarPerkara[0].nomor_lpp = document.getElementById('edit_modal_utama').value;
+            daftarPerkara[0].nomor_lpf = document.getElementById('edit_modal_lpf').value;
+            daftarPerkara[0].nomor_split = document.getElementById('edit_modal_split').value;
             localStorage.setItem('bc_daftar_perkara', JSON.stringify(daftarPerkara));
-            tutupModalEditNomor(); loadDataPenomoranToForm(); renderTablePenomoran();
-            showModalInfo("Berhasil Diedit", "Nomor dokumen perkara berhasil diperbarui!");
+            tutupModalEditNomor(); renderTablePenomoran(); cekValidasiLhp();
+            showModalInfo("Berhasil Diedit", "Penomoran dokumen berhasil diperbarui!");
         }
-        function loadDataPenomoranToForm() {
-            if (daftarPerkara.length > 0) {
-                if (daftarPerkara[0].nomor_lpp) document.getElementById('gen_nomor_utama').value = daftarPerkara[0].nomor_lpp;
-                if (daftarPerkara[0].nomor_sprint_cacah) document.getElementById('gen_sprint_cacah').value = daftarPerkara[0].nomor_sprint_cacah;
-                if (daftarPerkara[0].nomor_ba_cacah) document.getElementById('gen_ba_cacah').value = daftarPerkara[0].nomor_ba_cacah;
-            }
-        }
+
         function tambahBarisBarang() {
             const container = document.getElementById('containerBarangCacah');
             const row = document.createElement('div'); row.className = "flex items-center space-x-2 barang-row";
@@ -601,6 +709,30 @@
             if (document.querySelectorAll('.barang-row').length > 1) btn.closest('.barang-row').remove();
             else showModalInfo("Peringatan", "Minimal harus ada 1 baris barang bukti.");
         }
+
+        // VALIDASI APAKAH LPP DAN SPLIT SUDAH SELESAI
+        function cekValidasiLhp() {
+            const warningBox = document.getElementById('lhpWarningBox');
+            const formContainer = document.getElementById('formLhpContainer');
+            
+            let isLppSelesai = false;
+            let isSplitSelesai = false;
+
+            if (daftarPerkara.length > 0) {
+                const item = daftarPerkara[0];
+                if (item.nomor_lpp && item.nomor_lpp.trim() !== "") isLppSelesai = true;
+                if (item.nomor_split && item.nomor_split.trim() !== "") isSplitSelesai = true;
+            }
+
+            if (!isLppSelesai || !isSplitSelesai) {
+                warningBox.classList.remove('hidden');
+                formContainer.classList.add('opacity-40', 'pointer-events-none');
+            } else {
+                warningBox.classList.add('hidden');
+                formContainer.classList.remove('opacity-40', 'pointer-events-none');
+            }
+        }
+
         function switchTab(targetId, btnElement) {
             document.querySelectorAll('.tab-content').forEach(c => { c.classList.add('hidden'); c.classList.remove('block'); });
             document.querySelectorAll('.nav-btn').forEach(b => { 
@@ -615,10 +747,12 @@
             }
             if (targetId === 'cetak') renderTablePerkara();
             else if (targetId === 'monitoring') renderTableMonitoring();
-            else if (targetId === 'penomoran') { loadDataPenomoranToForm(); renderTablePenomoran(); }
+            else if (targetId === 'penomoran') renderTablePenomoran();
             else if (targetId === 'petugas') muatDropdownPetugas();
+            else if (targetId === 'lhp_timeline') cekValidasiLhp();
             updateMonitoringStats();
         }
+
         function updateProfileInfo(event) {
             event.preventDefault();
             userProfile.name = document.getElementById('settingName').value;
@@ -630,6 +764,7 @@
             localStorage.setItem('bc_user_profile', JSON.stringify(userProfile));
             initProfile(); showModalInfo("Berhasil", "Profil pengguna, username, dan password berhasil diperbarui!");
         }
+
         function saveDataPerkara(event) {
             event.preventDefault();
             if (daftarPerkara.length === 0) daftarPerkara.push({});
@@ -647,8 +782,9 @@
             daftarPerkara[0].pj_pelaku = document.getElementById('pj_pelaku').value;
             daftarPerkara[0].alamat_pelaku = document.getElementById('alamat_pelaku').value;
             localStorage.setItem('bc_daftar_perkara', JSON.stringify(daftarPerkara));
-            showModalInfo("Berhasil Disimpan", "Data utama perkara berhasil disimpan."); updateMonitoringStats();
+            showModalInfo("Berhasil Disimpan", "Data utama perkara berhasil disimpan."); updateMonitoringStats(); cekValidasiLhp();
         }
+
         function simpanDataCacah() {
             if (daftarPerkara.length === 0) daftarPerkara.push({});
             let daftarBarang = [];
@@ -661,16 +797,29 @@
             localStorage.setItem('bc_daftar_perkara', JSON.stringify(daftarPerkara));
             showModalInfo("Berhasil Disimpan", "Rincian Berita Acara Pencacahan & Barang Bukti berhasil disimpan."); updateMonitoringStats();
         }
+
         function simpanDataLaporanLanjutan(event) {
             event.preventDefault();
             if (daftarPerkara.length === 0) daftarPerkara.push({});
             daftarPerkara[0].nomor_lpf = document.getElementById('lap_nomor_lpf').value;
             daftarPerkara[0].nomor_split = document.getElementById('lap_nomor_split').value;
-            daftarPerkara[0].lhp = document.getElementById('lap_nomor_lhp').value;
             localStorage.setItem('bc_daftar_perkara', JSON.stringify(daftarPerkara));
-            showModalInfo("Berhasil Disimpan", "Data Laporan Lanjutan (SPLIT s.d LHP) berhasil diperbarui!");
+            showModalInfo("Berhasil Disimpan", "Data LPF & SPLIT berhasil diperbarui!");
+            updateMonitoringStats(); cekValidasiLhp();
+        }
+
+        function simpanDataLhpKhusus(event) {
+            event.preventDefault();
+            if (daftarPerkara.length === 0) daftarPerkara.push({});
+            daftarPerkara[0].lhp = document.getElementById('lhp_nomor_khusus').value;
+            daftarPerkara[0].lhp_tanggal = document.getElementById('lhp_tanggal_khusus').value;
+            daftarPerkara[0].lhp_kesimpulan = document.getElementById('lhp_kesimpulan').value;
+            daftarPerkara[0].lhp_catatan = document.getElementById('lhp_catatan').value;
+            localStorage.setItem('bc_daftar_perkara', JSON.stringify(daftarPerkara));
+            showModalInfo("Berhasil Disimpan", "Lembar Hasil Penelitian (LHP) berhasil disimpan!");
             updateMonitoringStats();
         }
+
         function renderTablePerkara() {
             const tbody = document.getElementById('tablePerkaraBody'); tbody.innerHTML = '';
             if (daftarPerkara.length === 0) { tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-400">Belum ada data perkara.</td></tr>`; return; }
@@ -678,14 +827,16 @@
                 tbody.innerHTML += `<tr class="hover:bg-slate-50 transition"><td class="p-4 font-semibold text-slate-900">${item.nomor_lpp || '-'}/${configPenomoran.kode_kantor}/${configPenomoran.tahun_nomor}<br><span class="text-[10px] text-slate-400 font-normal">Tgl: ${item.tanggal_lpp || '-'}</span></td><td class="p-4 font-medium">${item.nama_pelaku || '-'}</td><td class="p-4 text-slate-600">SBP: ${item.nomor_sbp || '-'}<br><span class="text-[10px] text-slate-400">LPF: ${item.nomor_lpf || '-'}</span></td><td class="p-4 text-slate-600"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-md text-[10px]">${item.daftar_barang ? item.daftar_barang.length : 0} Jenis Barang</span></td><td class="p-4 text-center"><button type="button" onclick="triggerPilihDokumen(${index})" class="bg-[#696cff] hover:bg-[#5f61e6] text-white px-3.5 py-2 rounded-xl text-xs font-semibold shadow transition flex items-center justify-center mx-auto space-x-1.5"><i class="fa-solid fa-file-arrow-down"></i><span>Pilih Dokumen</span></button></td></tr>`;
             });
         }
+
         function renderTablePenomoran() {
             const tbody = document.getElementById('tablePenomoranBody'); tbody.innerHTML = '';
-            if (daftarPerkara.length === 0) { tbody.innerHTML = `<tr><td colspan="8" class="p-6 text-center text-slate-400">Belum ada data penomoran.</td></tr>`; return; }
-            daftarPerkara.forEach(item => {
+            if (daftarPerkara.length === 0) { tbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-slate-400">Belum ada data penomoran.</td></tr>`; return; }
+            daftarPerkara.forEach((item, idx) => {
                 const k = configPenomoran.kode_kantor, t = configPenomoran.tahun_nomor;
-                tbody.innerHTML += `<tr class="hover:bg-slate-50 transition"><td class="p-3 font-semibold text-slate-900">${item.nama_pelaku || '-'}</td><td class="p-3 font-medium text-blue-600">${item.nomor_lpp}/${k}/${t}</td><td class="p-3 font-medium text-indigo-600">${item.nomor_lpf}/${k}/${t}</td><td class="p-3 font-medium text-emerald-600">${item.nomor_split}/${k}/${t}</td><td class="p-3 font-medium text-amber-600">${item.nomor_sprint_cacah}/${k}/${t}</td><td class="p-3 font-medium text-purple-600">BA-${item.nomor_ba_cacah}/${k}/${t}</td><td class="p-3 font-medium text-rose-600">${item.lhp}/${k}/${t}</td><td class="p-3 text-center"><button type="button" onclick="bukaModalEditNomor()" class="bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 py-1.5 rounded-lg text-xs font-bold transition"><i class="fa-solid fa-pen"></i> Edit</button></td></tr>`;
+                tbody.innerHTML += `<tr class="hover:bg-slate-50 transition"><td class="p-3 font-bold text-slate-900">#${idx+1}</td><td class="p-3 text-slate-600">${item.nomor_sbp || '-'}<br><span class="text-[10px] text-slate-400">${item.tanggal_sbp || ''}</span></td><td class="p-3 text-slate-600">LP-${item.nomor_lpp || '-'}<br><span class="text-[10px] text-slate-400">${item.tanggal_lpp || ''}</span></td><td class="p-3 font-medium text-blue-600">${item.nomor_lpp}/${k}/${t}</td><td class="p-3 font-medium text-indigo-600">${item.nomor_lpf}/${k}/${t}</td><td class="p-3 font-medium text-emerald-600">${item.nomor_split}/${k}/${t}</td><td class="p-3 text-center"><button type="button" onclick="bukaModalEditNomor()" class="bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 py-1.5 rounded-lg text-xs font-bold transition"><i class="fa-solid fa-pen"></i> Edit</button></td></tr>`;
             });
         }
+
         function renderTableMonitoring() {
             const tbody = document.getElementById('tableMonitoringBody'); tbody.innerHTML = '';
             if (daftarPerkara.length === 0) { tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-slate-400">Belum ada data monitoring.</td></tr>`; return; }
@@ -694,6 +845,7 @@
                 tbody.innerHTML += `<tr class="hover:bg-slate-50 transition"><td class="p-3 font-semibold text-slate-900">${item.nama_pelaku || '-'}</td><td class="p-3 text-slate-600">${item.nomor_sbp || '-'}</td><td class="p-3 text-slate-600">${item.nomor_lpp}/${k}/${t}</td><td class="p-3 text-slate-600">${item.nomor_lpf}/${k}/${t}</td><td class="p-3 text-slate-600">${item.lhp}/${k}/${t}</td><td class="p-3"><span class="bg-emerald-100 text-emerald-800 font-bold text-[10px] px-2 py-1 rounded-full">Lengkap</span></td></tr>`;
             });
         }
+
         function triggerPilihDokumen(index) {
             selectedPerkaraIndex = index; currentModalActionType = 'generate_dokumen';
             document.getElementById('modalTitle').innerText = "Pilih Dokumen Perkara";
@@ -702,12 +854,15 @@
             document.getElementById('modalActionBtn').innerText = "Proses Dokumen";
             document.getElementById('dashboardModal').classList.remove('hidden'); document.getElementById('dashboardModal').classList.add('flex');
         }
+
         function showModalInfo(title, message) {
             document.getElementById('modalTitle').innerText = title; document.getElementById('dynamicModalMessage').innerText = message;
             document.getElementById('dokumenSelectorContainer').style.display = 'none'; document.getElementById('modalActionBtn').innerText = "OK";
             currentModalActionType = 'info_only'; document.getElementById('dashboardModal').classList.remove('hidden'); document.getElementById('dashboardModal').classList.add('flex');
         }
+
         function closeDashboardModal() { document.getElementById('dashboardModal').classList.add('hidden'); document.getElementById('dashboardModal').classList.remove('flex'); }
+        
         function executeModalAction() {
             if (currentModalActionType === 'generate_dokumen' && selectedPerkaraIndex !== null) {
                 const item = daftarPerkara[selectedPerkaraIndex], jenisDoc = document.getElementById('pilihJenisDokumen').value;
@@ -730,8 +885,6 @@
                             <tr><td>SBP Nomor</td><td>:</td><td>SBP-${item.nomor_sbp || '-'} Tanggal ${item.tanggal_sbp || '-'}</td></tr>
                             <tr><td>Asal Perkara</td><td>:</td><td>${item.asal_perkara || '-'}</td></tr>
                             <tr><td>Klasifikasi Perkara</td><td>:</td><td>${item.jenis_klasifikasi || 'Pabean'}</td></tr>
-                            <tr><td>Komoditi Utama</td><td>:</td><td>${item.komoditi_utama || 'Sparepart'}</td></tr>
-                            <tr><td>Estimasi Kerugian Negara</td><td>:</td><td>Rp ${(item.estimasi_kerugian || 0).toLocaleString('id-ID')}</td></tr>
                         </table>
                     `;
                 } else if (jenisDoc === 'LPF') {
@@ -772,6 +925,9 @@
                         <hr style="border: 1px solid black; margin-bottom: 15px;">
                         <h3 style="text-align: center; text-transform: uppercase; margin-bottom: 5px;">LEMBAR HASIL PENELITIAN (LHP)</h3>
                         <p style="text-align: center; margin-bottom: 15px;"><strong>NOMOR : LHP-${item.lhp || '-'}/${k}/${t}</strong></p>
+                        <p><strong>Tanggal Terbit :</strong> ${item.lhp_tanggal || '-'}</p>
+                        <p><strong>Kesimpulan :</strong> ${item.lhp_kesimpulan || '-'}</p>
+                        <p><strong>Catatan Analisis :</strong> ${item.lhp_catatan || '-'}</p>
                     `;
                 }
                 kontenHtml += `</div>`;
@@ -791,6 +947,7 @@
                 }
             }
         }
+
         function updateMonitoringStats() {
             const total = daftarPerkara.length;
             document.getElementById('dashTotalPerkara').innerText = total;
