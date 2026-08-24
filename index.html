@@ -30,30 +30,10 @@
     <!-- KONTAINER KARTU UTAMA (CARD SPLIT LAYOUT) -->
     <div class="w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-2 relative border border-slate-100">
 
-        <!-- SISI KIRI: WALLPAPER / ILUSTRASI -->
-        <div class="relative hidden lg:flex flex-col justify-between p-12 bg-slate-50 overflow-hidden items-center justify-center">
-            <div class="absolute inset-0 bg-cover bg-center transition-all duration-700" style="background-image: url('background.jpg');"></div>
-            <div class="absolute inset-0 bg-gradient-to-tr from-blue-950/40 via-transparent to-blue-900/20"></div>
-
-            <div class="relative z-10 w-full text-left">
-                <div class="inline-flex items-center space-x-2 bg-white/80 backdrop-blur-md px-3 py-1.5 rounded-full shadow-sm">
-                    <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-                    <span class="text-[11px] font-bold text-slate-800 tracking-wider uppercase">Secure System</span>
-                </div>
-            </div>
-
-            <div class="relative z-10 w-full text-left space-y-2 mt-auto">
-                <h3 class="text-white text-xl font-bold drop-shadow-md">KPU Bea dan Cukai Batam</h3>
-                <p class="text-slate-100 text-xs drop-shadow leading-relaxed">
-                    Sistem Terpadu Manajemen Penyidikan, Berkas Perkara, dan Barang Hasil Penindakan berbasis digital.
-                </p>
-            </div>
-        </div>
-
-        <!-- SISI KANAN: FORM LOGIN / SIGN UP DENGAN BACKGROUND BIRU PENUH -->
+        <!-- SISI KIRI: FORM LOGIN / SIGN UP DENGAN BACKGROUND BIRU PENUH -->
         <div class="bg-blue-600 p-8 sm:p-12 flex flex-col justify-between text-white relative">
             
-            <!-- Header Kartu Kanan (Logo Bea Cukai & Judul) -->
+            <!-- Header Kartu Kiri (Logo Bea Cukai & Judul) -->
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-3">
                     <img src="logo-beacukai.png" alt="Logo Bea Cukai" class="w-8 h-8 rounded-lg bg-white p-0.5 object-contain shadow">
@@ -66,7 +46,7 @@
             <div class="w-full max-w-sm mx-auto space-y-6 my-8">
                 <div class="space-y-1">
                     <h1 id="formTitle" class="text-3xl font-bold tracking-tight text-white">Welcome!</h1>
-                    <p id="formSubtitle" class="text-xs text-blue-100">Silakan masuk menggunakan NIP atau akun penyidik Anda.</p>
+                    <p id="formSubtitle" class="text-xs text-blue-100">Silakan masuk menggunakan email dan password Anda.</p>
                 </div>
 
                 <!-- FORM UTAMA -->
@@ -77,19 +57,19 @@
                         <input type="text" id="inputNama" class="w-full pl-11 pr-4 py-3.5 input-custom text-slate-800 font-semibold placeholder:text-slate-400 shadow-sm" placeholder="Nama Lengkap & Gelar">
                     </div>
 
-                    <!-- Username / NIP -->
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-blue-300"><i class="fa-solid fa-user"></i></span>
-                        <input type="text" id="loginUsername" required class="w-full pl-11 pr-4 py-3.5 input-custom text-slate-800 font-semibold placeholder:text-slate-400 shadow-sm" placeholder="Username / NIP">
+                    <!-- Field NIP (Hanya muncul saat Register / Sign Up) -->
+                    <div id="fieldNipContainer" class="relative hidden">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-blue-300"><i class="fa-solid fa-user-shield"></i></span>
+                        <input type="text" id="inputNip" class="w-full pl-11 pr-4 py-3.5 input-custom text-slate-800 font-semibold placeholder:text-slate-400 shadow-sm" placeholder="Nomor Induk Pegawai (NIP)">
                     </div>
 
-                    <!-- Email -->
+                    <!-- Email (Selalu Tampil) -->
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-blue-300"><i class="fa-solid fa-envelope"></i></span>
                         <input type="email" id="loginEmail" required class="w-full pl-11 pr-4 py-3.5 input-custom text-slate-800 font-semibold placeholder:text-slate-400 shadow-sm" placeholder="Alamat Email Aktif">
                     </div>
 
-                    <!-- Password -->
+                    <!-- Password (Selalu Tampil) -->
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-blue-300"><i class="fa-solid fa-lock"></i></span>
                         <input type="password" id="loginPassword" required class="w-full pl-11 pr-4 py-3.5 input-custom text-slate-800 font-semibold placeholder:text-slate-400 shadow-sm" placeholder="Password">
@@ -109,7 +89,7 @@
                         </div>
                     </div>
 
-                    <!-- Tombol Aksi (Toggle / Submit) -->
+                    <!-- Tombol Aksi -->
                     <div class="grid grid-cols-2 gap-3 pt-3">
                         <button type="button" id="toggleModeBtn" onclick="toggleAuthMode()" class="w-full py-3.5 bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold rounded-full transition shadow-md text-center">
                             Register Akun
@@ -125,9 +105,32 @@
                 <div id="loginErrorMsg" class="hidden p-3 rounded-2xl bg-rose-500/20 text-white text-center font-semibold text-xs border border-rose-400/40 backdrop-blur"></div>
             </div>
 
-            <!-- Footer Kartu Kanan -->
+            <!-- Footer Kartu Kiri -->
             <div class="text-center text-[10px] text-blue-200">
                 &copy; 2026 KPU Bea dan Cukai Tipe B Batam. All rights reserved.
+            </div>
+        </div>
+
+        <!-- SISI KANAN: WALLPAPER BACKGROUND.PNG (POSISI KANAN) -->
+        <div class="relative hidden lg:flex flex-col justify-between p-12 bg-slate-900 overflow-hidden items-center justify-center">
+            <!-- Wallpaper Menggunakan background.png dengan Fallback Warna Gelap -->
+            <div class="absolute inset-0 bg-cover bg-center transition-all duration-700" style="background-image: url('background.png'); background-color: #0f172a;"></div>
+            
+            <!-- Gradient Overlay agar teks kontras dan estetis -->
+            <div class="absolute inset-0 bg-gradient-to-tr from-blue-950/50 via-transparent to-blue-900/30"></div>
+
+            <div class="relative z-10 w-full text-left">
+                <div class="inline-flex items-center space-x-2 bg-white/20 backdrop-blur-md px-3 py-1.5 rounded-full shadow-sm border border-white/20">
+                    <div class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
+                    <span class="text-[11px] font-bold text-white tracking-wider uppercase">Secure System</span>
+                </div>
+            </div>
+
+            <div class="relative z-10 w-full text-left space-y-2 mt-auto">
+                <h3 class="text-white text-xl font-bold drop-shadow-md">KPU Bea dan Cukai Batam</h3>
+                <p class="text-slate-200 text-xs drop-shadow leading-relaxed">
+                    Sistem Terpadu Manajemen Penyidikan, Berkas Perkara, dan Barang Hasil Penindakan berbasis digital.
+                </p>
             </div>
         </div>
 
@@ -141,6 +144,7 @@
             const title = document.getElementById('formTitle');
             const subtitle = document.getElementById('formSubtitle');
             const fieldNama = document.getElementById('fieldNamaContainer');
+            const fieldNip = document.getElementById('fieldNipContainer');
             const toggleBtn = document.getElementById('toggleModeBtn');
             const submitBtnText = document.getElementById('submitBtnText');
             const errBox = document.getElementById('loginErrorMsg');
@@ -151,14 +155,18 @@
                 title.innerText = "Register Account";
                 subtitle.innerText = "Daftarkan akun baru penyidik atau administrator.";
                 fieldNama.classList.remove('hidden');
+                fieldNip.classList.remove('hidden');
                 document.getElementById('inputNama').required = true;
+                document.getElementById('inputNip').required = true;
                 toggleBtn.innerText = "Sudah punya akun?";
                 submitBtnText.innerText = "Sign Up";
             } else {
                 title.innerText = "Welcome!";
-                subtitle.innerText = "Silakan masuk menggunakan NIP atau akun penyidik Anda.";
+                subtitle.innerText = "Silakan masuk menggunakan email dan password Anda.";
                 fieldNama.classList.add('hidden');
+                fieldNip.classList.add('hidden');
                 document.getElementById('inputNama').required = false;
+                document.getElementById('inputNip').required = false;
                 toggleBtn.innerText = "Register Akun";
                 submitBtnText.innerText = "Sign in";
             }
@@ -166,42 +174,43 @@
 
         function handleAuthSubmit(event) {
             event.preventDefault();
-            const u = document.getElementById('loginUsername').value.trim();
             const emailInput = document.getElementById('loginEmail').value.trim();
             const p = document.getElementById('loginPassword').value.trim();
             const errBox = document.getElementById('loginErrorMsg');
 
-            let userProfile = JSON.parse(localStorage.getItem('bc_user_profile')) || { name: "Penyidik Utama", nip: "198006062001121001", password: "" };
+            let userProfile = JSON.parse(localStorage.getItem('bc_user_profile')) || { name: "Penyidik Utama", nip: "198006062001121001", email: "penyidik.batam@beacukai.go.id", password: "" };
 
             if (isRegisterMode) {
                 // Proses Pendaftaran Akun Baru
                 const namaBaru = document.getElementById('inputNama').value.trim();
+                const nipBaru = document.getElementById('inputNip').value.trim();
+                
                 userProfile.name = namaBaru !== "" ? namaBaru : "Penyidik Batam";
-                userProfile.nip = u;
+                userProfile.nip = nipBaru !== "" ? nipBaru : "198006062001121001";
                 userProfile.email = emailInput;
                 userProfile.password = p;
                 
                 localStorage.setItem('bc_user_profile', JSON.stringify(userProfile));
 
-                // Berhasil daftar -> Langsung arahkan ke mode sign in (masuk) dengan notifikasi sukses
+                // Berhasil daftar -> Tampilkan notifikasi sukses dan langsung pindah ke mode Sign In
                 errBox.className = "p-3 rounded-2xl bg-emerald-500/20 text-white text-center font-semibold text-xs border border-emerald-400/40 backdrop-blur";
-                errBox.innerText = "Registrasi berhasil! Silakan Sign In menggunakan akun baru Anda.";
+                errBox.innerText = "Registrasi berhasil! Silakan Sign In menggunakan email Anda.";
                 errBox.classList.remove('hidden');
 
                 // Pindah otomatis ke mode Sign In
                 toggleAuthMode();
-                document.getElementById('loginUsername').value = u;
+                document.getElementById('loginEmail').value = emailInput;
             } else {
-                // Proses Login (Sign In)
-                const validNip = userProfile.nip || "198006062001121001";
+                // Proses Login (Sign In) - Menggunakan Email & Password
+                const validEmail = userProfile.email || "penyidik.batam@beacukai.go.id";
                 const validPass = userProfile.password || "";
 
-                if ((u === validNip || u.toLowerCase() === "admin" || u.toLowerCase() === "penyidik" || emailInput.includes("@")) && (validPass === "" || p === validPass || p.length > 0)) {
+                if ((emailInput.toLowerCase() === validEmail.toLowerCase() || emailInput.includes("@")) && (validPass === "" || p === validPass || p.length > 0)) {
                     errBox.classList.add('hidden');
                     window.location.href = "dashboard.html";
                 } else {
                     errBox.className = "p-3 rounded-2xl bg-rose-500/20 text-white text-center font-semibold text-xs border border-rose-400/40 backdrop-blur";
-                    errBox.innerText = "Username, email, atau password salah. Silakan coba lagi.";
+                    errBox.innerText = "Email atau password salah. Silakan coba lagi.";
                     errBox.classList.remove('hidden');
                 }
             }
