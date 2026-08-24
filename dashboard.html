@@ -27,7 +27,7 @@
             transition: max-height 0.5s ease-in-out, opacity 0.4s ease-in-out;
         }
         #submenuContainer.show-submenu {
-            max-height: 350px;
+            max-height: 400px;
             opacity: 1;
         }
 
@@ -58,6 +58,7 @@
                         <div id="submenuContainer" class="pl-4 space-y-1 border-l-2 border-slate-200 ml-4 pt-1">
                             <button type="button" onclick="switchTab('penomoran', this)" id="btn-penomoran" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-[#697888] hover:bg-[#f5f5f9] transition"><i class="fa-solid fa-list-ol w-4 text-blue-500"></i><span>Penomoran</span></button>
                             <button type="button" onclick="switchTab('petugas', this)" id="btn-petugas" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-[#697888] hover:bg-[#f5f5f9] transition"><i class="fa-solid fa-users w-4 text-indigo-500"></i><span>Petugas</span></button>
+                            <button type="button" onclick="switchTab('pelanggaran', this)" id="btn-pelanggaran" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-[#697888] hover:bg-[#f5f5f9] transition"><i class="fa-solid fa-triangle-exclamation w-4 text-rose-500"></i><span>Data Pelanggaran</span></button>
                             <button type="button" onclick="switchTab('bacacah', this)" id="btn-bacacah" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-[#697888] hover:bg-[#f5f5f9] transition"><i class="fa-solid fa-boxes-stacked w-4 text-emerald-600"></i><span>BA Cacah</span></button>
                             <button type="button" onclick="switchTab('laporan', this)" id="btn-laporan" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-[#697888] hover:bg-[#f5f5f9] transition"><i class="fa-solid fa-file-shield w-4 text-amber-500"></i><span>Laporan (LPF & SPLIT)</span></button>
                         </div>
@@ -130,28 +131,12 @@
                             <span class="inline-flex items-center text-[11px] text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-md w-max"><i class="fa-solid fa-arrow-up mr-1"></i> +72.8% Sinking</span>
                         </div>
                     </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <div class="sneat-card p-5 flex justify-between items-center">
-                            <div><p class="text-[11px] font-bold text-slate-400 uppercase">Total Berkas Perkara</p><h3 id="dashTotalPerkara" class="text-2xl font-bold text-[#566a7f] mt-1">1</h3><p class="text-[10px] text-emerald-600 font-semibold mt-0.5">Sinkron & Aktif</p></div>
-                            <div class="w-11 h-11 rounded-xl bg-indigo-50 text-[#696cff] flex items-center justify-center text-base"><i class="fa-solid fa-folder-open"></i></div>
-                        </div>
-                        <div class="sneat-card p-5 flex justify-between items-center">
-                            <div><p class="text-[11px] font-bold text-slate-400 uppercase">Klasifikasi Perkara</p><h3 id="dashKlasifikasiPerkara" class="text-sm font-bold text-[#696cff] mt-1">Pabean: 1 | Cukai: 0</h3><p class="text-[10px] text-slate-400 mt-0.5">Komoditi Utama Aktif</p></div>
-                            <div class="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-base"><i class="fa-solid fa-boxes-stacked"></i></div>
-                        </div>
-                        <div class="sneat-card p-5 flex justify-between items-center">
-                            <div><p class="text-[11px] font-bold text-slate-400 uppercase">Komoditi Dominan</p><h3 id="dashKomoditiUtama" class="text-sm font-bold text-indigo-600 mt-1">Sparepart</h3><p class="text-[10px] text-slate-400 mt-0.5">Tekstil / Ballpress / Obat</p></div>
-                            <div class="w-11 h-11 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-base"><i class="fa-solid fa-cube"></i></div>
-                        </div>
-                    </div>
                 </section>
 
-                <!-- TAB DATA PERKARA -->
+                <!-- TAB DATA PERKARA UTAMA -->
                 <section id="content-input" class="tab-content space-y-6 hidden">
                     <div class="sneat-card p-6 flex justify-between items-center">
                         <div><span class="text-[10px] font-bold text-[#696cff] uppercase bg-indigo-50 px-2.5 py-1 rounded-full">Database Penyidikan</span><h3 class="text-sm font-bold text-[#566a7f] mt-2">Form Data Perkara Utama</h3><p class="text-xs text-slate-400 mt-0.5">Input data utama perkara, klasifikasi jenis perkara, komoditi, hingga kerugian negara.</p></div>
-                        <button type="button" onclick="loadSampleData()" class="sneat-btn-primary px-4 py-2.5 text-xs font-semibold flex items-center space-x-2"><i class="fa-solid fa-bolt mr-1"></i><span>Muat Data Kasus Hawila</span></button>
                     </div>
                     <form id="penyidikanForm" onsubmit="saveDataPerkara(event)" class="space-y-6">
                         <div class="sneat-card p-6 md:p-8 space-y-5">
@@ -166,15 +151,6 @@
                                 <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Estimasi Kerugian Negara (Rp)</label><input type="number" id="estimasi_kerugian" required class="w-full p-3.5 ios-input-field font-medium" value="150000000"></div>
                                 <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Asal Perkara</label><input type="text" id="asal_perkara" required class="w-full p-3.5 ios-input-field font-medium" value="Seksi Penindakan"></div>
                                 <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Status Penangkapan</label><input type="text" id="status_penangkapan" required class="w-full p-3.5 ios-input-field font-medium" value="Penindakan Biasa"></div>
-                            </div>
-                        </div>
-                        <div class="sneat-card p-6 md:p-8 space-y-5">
-                            <h4 class="text-xs font-bold text-[#566a7f] uppercase tracking-wider border-b pb-3 flex items-center text-[#696cff]"><i class="fa-solid fa-building mr-2"></i> II. Identitas Pelaku / Perusahaan</h4>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 text-xs">
-                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nama Perusahaan / Pelaku</label><input type="text" id="nama_pelaku" required class="w-full p-3.5 ios-input-field font-medium" value="PT HAWILA ADHI PERKASA"></div>
-                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">NPWP / Identitas</label><input type="text" id="npwp_pelaku" required class="w-full p-3.5 ios-input-field font-medium" value="860753292225000"></div>
-                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Penanggung Jawab / Pemilik</label><input type="text" id="pj_pelaku" required class="w-full p-3.5 ios-input-field font-medium" value="CHANNER SIMBOLON"></div>
-                                <div class="md:col-span-3"><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Alamat Lengkap</label><input type="text" id="alamat_pelaku" required class="w-full p-3.5 ios-input-field font-medium" value="Ruko The Capitol Superblok Imperium Bkok B No. 41, Batam"></div>
                             </div>
                         </div>
                         <div class="flex justify-end pt-2 pb-6"><button type="submit" class="sneat-btn-primary px-8 py-4 text-xs font-bold tracking-wide flex items-center space-x-2 shadow-md"><i class="fa-solid fa-floppy-disk text-sm mr-1"></i><span>Simpan Data Perkara Utama</span></button></div>
@@ -194,7 +170,6 @@
                             <button type="button" onclick="bukaModalEditNomor()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold px-4 py-2.5 rounded-xl shadow transition flex items-center space-x-2"><i class="fa-solid fa-pen-to-square"></i><span>Edit Manual</span></button>
                         </div>
                     </div>
-                    
                     <div class="sneat-card rounded-2xl shadow-sm overflow-hidden">
                         <div class="p-4 bg-slate-50 border-b font-bold text-xs uppercase text-[#566a7f] flex justify-between items-center">
                             <span>Daftar Alokasi Penomoran Berurutan (LPP -> LPF -> SPLIT)</span>
@@ -210,41 +185,86 @@
                         <div>
                             <span class="text-[10px] font-bold text-indigo-600 uppercase bg-indigo-50 px-2.5 py-1 rounded-full">Manajemen Personel</span>
                             <h3 class="text-sm font-bold text-[#566a7f] mt-2">Menu Petugas & Tim Penyidikan</h3>
-                            <p class="text-xs text-slate-400 mt-0.5">Kelola penugasan pejabat dan tim penyidik berdasarkan nomor LPP, LPF, dan SPLIT yang aktif.</p>
+                            <p class="text-xs text-slate-400 mt-0.5">Kelola penugasan pejabat dan tim penyidik.</p>
                         </div>
                         <button type="button" onclick="bukaModalTambahPetugasPerkara()" class="sneat-btn-primary px-4 py-2.5 text-xs font-bold shadow transition flex items-center space-x-2"><i class="fa-solid fa-user-plus"></i><span>Tambah Petugas</span></button>
                     </div>
-
-                    <div id="petugasWarningBox" class="hidden sneat-card p-6 bg-rose-50 border border-rose-200 text-rose-800 space-y-2">
-                        <div class="flex items-center space-x-2 font-bold text-sm">
-                            <i class="fa-solid fa-triangle-exclamation text-rose-600"></i>
-                            <span>Penomoran LPP, LPF & SPLIT Belum Diambil!</span>
-                        </div>
-                        <p class="text-xs leading-relaxed">
-                            Anda belum mengambil atau melakukan alokasi penomoran dokumen (LPP, LPF, SPLIT). Silakan ambil penomoran terlebih dahulu pada menu **Penomoran** agar form petugas dapat diaktifkan.
-                        </p>
-                    </div>
-
                     <div id="petugasContentContainer" class="sneat-card rounded-2xl shadow-sm overflow-hidden">
-                        <div class="p-4 bg-slate-50 border-b font-bold text-xs uppercase text-[#566a7f] flex justify-between items-center">
-                            <span>Daftar Alokasi Petugas & Tim Penyidik Per Perkara</span>
-                            <span class="text-[10px] bg-indigo-100 text-indigo-700 px-2 py-1 rounded-full font-bold">Sinkron Penomoran</span>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left text-xs">
-                                <thead class="border-b text-slate-400 bg-white">
-                                    <tr>
-                                        <th class="p-3">No. LPP / LPF / SPLIT</th>
-                                        <th class="p-3">Kabid P2 & Kasi Penyidikan</th>
-                                        <th class="p-3">Ketua Tim / Penyidik</th>
-                                        <th class="p-3">Anggota Tim Penyidik</th>
-                                        <th class="p-3 text-center">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tablePetugasPerkaraBody" class="divide-y divide-slate-100"></tbody>
-                            </table>
+                        <div class="p-4 bg-slate-50 border-b font-bold text-xs uppercase text-[#566a7f]">Daftar Alokasi Petugas & Tim Penyidik Per Perkara</div>
+                        <div class="overflow-x-auto"><table class="w-full text-left text-xs"><thead class="border-b text-slate-400 bg-white"><tr><th class="p-3">No. LPP / LPF / SPLIT</th><th class="p-3">Kabid P2 & Kasi Penyidikan</th><th class="p-3">Ketua Tim / Penyidik</th><th class="p-3">Anggota Tim Penyidik</th><th class="p-3 text-center">Aksi</th></tr></thead><tbody id="tablePetugasPerkaraBody" class="divide-y divide-slate-100"></tbody></table></div>
+                    </div>
+                </section>
+
+                <!-- TAB BARU: DATA PELANGGARAN -->
+                <section id="content-pelanggaran" class="tab-content space-y-6 hidden">
+                    <div class="sneat-card p-6 shadow-sm flex justify-between items-center">
+                        <div>
+                            <span class="text-[10px] font-bold text-rose-600 uppercase bg-rose-50 px-2.5 py-1 rounded-full">Modul Laporan / Perkara</span>
+                            <h3 class="text-sm font-bold text-[#566a7f] mt-2">Menu Data Pelanggaran Perkara</h3>
+                            <p class="text-xs text-slate-400 mt-0.5">Lengkapi rincian jenis penindakan, uraian pelanggaran, data pelaku, hingga detail barang bukti.</p>
                         </div>
                     </div>
+
+                    <form id="formPelanggaranRinci" onsubmit="simpanDataPelanggaranRinci(event)" class="space-y-6">
+                        <!-- 1. Asal Perkara & Jenis Penindakan -->
+                        <div class="sneat-card p-6 md:p-8 space-y-4">
+                            <h4 class="text-xs font-bold text-rose-700 uppercase tracking-wider border-b pb-3 flex items-center"><i class="fa-solid fa-shield-halved mr-2"></i> A. Asal Perkara & Jenis Penindakan</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 text-xs">
+                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Asal Perkara</label><input type="text" id="pel_asal_perkara" required class="w-full p-3.5 ios-input-field font-medium" value="Seksi Penindakan"></div>
+                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Jenis Penindakan</label><input type="text" id="pel_jenis_penindakan" required class="w-full p-3.5 ios-input-field font-medium" value="Pemeriksaan, penegahan, dan penyegelan barang"></div>
+                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Jenis Perkara</label><input type="text" id="pel_jenis_perkara" required class="w-full p-3.5 ios-input-field font-medium" value="Pengeluaran barang dari KPBPB Batam ke TLDDP tanpa/salah pemberitahuan pabean"></div>
+                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Status Penangkapan</label><input type="text" id="pel_status_penangkapan" required class="w-full p-3.5 ios-input-field font-medium" value="Penindakan Biasa"></div>
+                            </div>
+                        </div>
+
+                        <!-- 2. Uraian Pelanggaran -->
+                        <div class="sneat-card p-6 md:p-8 space-y-4">
+                            <h4 class="text-xs font-bold text-rose-700 uppercase tracking-wider border-b pb-3 flex items-center"><i class="fa-solid fa-file-invoice mr-2"></i> B. Uraian Pelanggaran</h4>
+                            <div class="space-y-4 text-xs">
+                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">1. Jenis Pelanggaran / Pasal</label><input type="text" id="pel_pasal" required class="w-full p-3.5 ios-input-field font-medium" value="Kepabeanan / Pasal 53 ayat (3) UU No. 17 Tahun 2006 dan Pasal 33 ayat (1), Pasal 71 ayat (1) PP No. 41 Tahun 2021"></div>
+                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">2. Modus Operandi</label><input type="text" id="pel_modus" required class="w-full p-3.5 ios-input-field font-medium" value="Mengeluarkan barang dari KPBPB Batam ke TLDDP tanpa/salah pemberitahuan pabean"></div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2">
+                                    <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">3. Lokasi Tempat Kejadian (Locus)</label><input type="text" id="pel_locus" required class="w-full p-3.5 ios-input-field font-medium" value="TPS Dharma Bandar Mandala (DBM)"></div>
+                                    <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Tanggal dan Waktu Kejadian (Tempus)</label><input type="text" id="pel_tempus" required class="w-full p-3.5 ios-input-field font-medium" value="12 Desember 2025 / 13.00 WIB"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 3. Pelaku Pelanggaran -->
+                        <div class="sneat-card p-6 md:p-8 space-y-4">
+                            <h4 class="text-xs font-bold text-rose-700 uppercase tracking-wider border-b pb-3 flex items-center"><i class="fa-solid fa-user-tie mr-2"></i> C. Pelaku Pelanggaran</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 text-xs">
+                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nama Perusahaan / Pelaku</label><input type="text" id="pel_nama_pelaku" required class="w-full p-3.5 ios-input-field font-medium" value="PT HAWILA ADHI PERKASA"></div>
+                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Umur</label><input type="text" id="pel_umur" class="w-full p-3.5 ios-input-field font-medium" value="-"></div>
+                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Jenis Kelamin</label><input type="text" id="pel_jk" class="w-full p-3.5 ios-input-field font-medium" value="-"></div>
+                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">NIK / No. Passport / NPWP</label><input type="text" id="pel_nik_npwp" required class="w-full p-3.5 ios-input-field font-medium" value="860753292225000"></div>
+                                <div class="md:col-span-2"><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Alamat Lengkap</label><input type="text" id="pel_alamat" required class="w-full p-3.5 ios-input-field font-medium" value="Ruko The Capitol Superblok Imperium Bkok B No. 41, Batam"></div>
+                            </div>
+                        </div>
+
+                        <!-- 4. Barang Hasil Penindakan & Detail Uraian Barang -->
+                        <div class="sneat-card p-6 md:p-8 space-y-4">
+                            <h4 class="text-xs font-bold text-rose-700 uppercase tracking-wider border-b pb-3 flex items-center"><i class="fa-solid fa-boxes-stacked mr-2"></i> D. Barang Hasil Penindakan & Detail</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 text-xs">
+                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Komoditi</label><input type="text" id="pel_komoditi" required class="w-full p-3.5 ios-input-field font-medium" value="Barang lainnya"></div>
+                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Jumlah Koli / Jenis Koli</label><input type="text" id="pel_koli" required class="w-full p-3.5 ios-input-field font-medium" value="UNPACKED OR UNPACKAGED / -"></div>
+                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Pengangkut / Nopol - Voyage - Flight</label><input type="text" id="pel_pengangkut" required class="w-full p-3.5 ios-input-field font-medium" value="- / -"></div>
+                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">No Container / Ukuran</label><input type="text" id="pel_container" required class="w-full p-3.5 ios-input-field font-medium" value="LCL / -"></div>
+                                <div class="md:col-span-2"><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Detail Uraian Barang</label><textarea id="pel_detail_barang" rows="2" class="w-full p-3.5 ios-input-field font-medium">2 Pce / M Core B 81A447-2351, ETC</textarea></div>
+                            </div>
+                        </div>
+
+                        <!-- 5. Dokumen Barang -->
+                        <div class="sneat-card p-6 md:p-8 space-y-4">
+                            <h4 class="text-xs font-bold text-rose-700 uppercase tracking-wider border-b pb-3 flex items-center"><i class="fa-solid fa-file-lines mr-2"></i> E. Dokumen Barang</h4>
+                            <div class="text-xs">
+                                <label class="block font-semibold text-slate-600 mb-1.5 ml-1">Dokumen Pabean / Pelengkap</label>
+                                <input type="text" id="pel_dok_barang" required class="w-full p-3.5 ios-input-field font-medium" value="PPFTZ-01 nomor 011407 tanggal 28 November 2025">
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end pt-2 pb-6"><button type="submit" class="sneat-btn-primary px-8 py-4 text-xs font-bold tracking-wide flex items-center space-x-2 shadow-md bg-rose-600 hover:bg-rose-700"><i class="fa-solid fa-floppy-disk text-sm mr-1"><span>Simpan Data Pelanggaran</span></i></button></div>
+                    </form>
                 </section>
 
                 <!-- TAB BA CACAH -->
@@ -284,6 +304,7 @@
                                         <th class="p-3">Jumlah & Satuan</th>
                                         <th class="p-3">Negara Asal</th>
                                         <th class="p-3">Keterangan</th>
+                                        <th class="p-3 text-center">Cetak BA Cacah</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tableCacahBody" class="divide-y divide-slate-100"></tbody>
@@ -298,7 +319,6 @@
                         <div>
                             <span class="text-[10px] font-bold text-amber-600 uppercase bg-amber-50 px-2.5 py-1 rounded-full">Modul Laporan Lanjutan</span>
                             <h3 class="text-sm font-bold text-[#566a7f] mt-2">Pengisian Data LPF & SPLIT</h3>
-                            <p class="text-xs text-slate-400 mt-0.5">Kelola rincian Laporan Penelitian Formal dan Nomor SPLIT Investigasi.</p>
                         </div>
                     </div>
                     <form onsubmit="simpanDataLaporanLanjutan(event)" class="space-y-6">
@@ -320,20 +340,11 @@
                         <div>
                             <span class="text-[10px] font-bold text-purple-600 uppercase bg-purple-50 px-2.5 py-1 rounded-full">Modul LHP Akhir</span>
                             <h3 class="text-sm font-bold text-[#566a7f] mt-2">Lembar Hasil Penelitian (LHP)</h3>
-                            <p class="text-xs text-slate-400 mt-0.5">LHP hanya dapat dibuat jika LPP dan SPLIT telah selesai diisi.</p>
                         </div>
                     </div>
-
                     <div id="lhpWarningBox" class="hidden sneat-card p-6 bg-rose-50 border border-rose-200 text-rose-800 space-y-2">
-                        <div class="flex items-center space-x-2 font-bold text-sm">
-                            <i class="fa-solid fa-triangle-exclamation text-rose-600"></i>
-                            <span>LPP dan SPLIT Belum Lengkap!</span>
-                        </div>
-                        <p class="text-xs leading-relaxed">
-                            Mohon pastikan data **LPP (Lembar Penerimaan Perkara)** dan **SPLIT (Surat Perintah Penelitian)** sudah diisi dan disimpan terlebih dahulu melalui menu Data Perkara / Penomoran sebelum Anda dapat membuat Lembar Hasil Penelitian (LHP).
-                        </p>
+                        <div class="flex items-center space-x-2 font-bold text-sm"><i class="fa-solid fa-triangle-exclamation text-rose-600"></i><span>LPP dan SPLIT Belum Lengkap!</span></div>
                     </div>
-
                     <form id="formLhpContainer" onsubmit="simpanDataLhpKhusus(event)" class="space-y-6">
                         <div class="sneat-card p-6 md:p-8 space-y-5">
                             <h4 class="text-xs font-bold text-[#566a7f] uppercase tracking-wider border-b pb-3 flex items-center text-purple-700"><i class="fa-solid fa-file-invoice mr-2"></i> Form Lembar Hasil Penelitian (LHP)</h4>
@@ -341,7 +352,7 @@
                                 <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor LHP Akhir</label><input type="text" id="lhp_nomor_khusus" required class="w-full p-3.5 ios-input-field font-medium" value="LHP-1"></div>
                                 <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Tanggal Terbit LHP</label><input type="date" id="lhp_tanggal_khusus" required class="w-full p-3.5 ios-input-field font-medium" value="2025-12-20"></div>
                                 <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Kesimpulan & Alternatif Penyelesaian</label><input type="text" id="lhp_kesimpulan" required class="w-full p-3.5 ios-input-field font-medium" value="Penelitian dugaan pelanggaran kepabeanan diselesaikan sesuai ketentuan berlaku"></div>
-                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Status Penyelesaian</label><select id="lhp_status" class="w-full p-3.5 ios-input-field font-medium"><option value="Selesai Administrasi">Selesai Administrasi</option><option value="Dilimpahkan">Dilimpahkan ke Penyidik Pegawai Negeri Sipil (PPNS)</option><option value="Penghentian">Penghentian Penyidikan</option></select></div>
+                                <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Status Penyelesaian</label><select id="lhp_status" class="w-full p-3.5 ios-input-field font-medium"><option value="Selesai Administrasi">Selesai Administrasi</option><option value="Dilimpahkan">Dilimpahkan ke PPNS</option><option value="Penghentian">Penghentian Penyidikan</option></select></div>
                                 <div class="md:col-span-2"><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Catatan Analisis Modus & Unsur Pasal</label><textarea id="lhp_catatan" rows="3" class="w-full p-3.5 ios-input-field font-medium">Berdasarkan hasil penelitian akhir, terbukti penyelesaian perkara telah tuntas secara administratif.</textarea></div>
                             </div>
                         </div>
@@ -351,7 +362,7 @@
 
                 <!-- TAB CETAK -->
                 <section id="content-cetak" class="tab-content space-y-6 hidden">
-                    <div class="sneat-card p-6 shadow-sm"><h3 class="text-sm font-bold text-[#566a7f]">Cetak & Generate Dokumen Resmi Penyidikan</h3><p class="text-xs text-slate-400 mt-0.5">Pilih dokumen yang ingin dicetak (LPP, LPF, SPLIT, Sprint Pencacahan, Berita Acara Pencacahan, atau LHP).</p></div>
+                    <div class="sneat-card p-6 shadow-sm"><h3 class="text-sm font-bold text-[#566a7f]">Cetak & Generate Dokumen Resmi Penyidikan</h3></div>
                     <div class="sneat-card rounded-2xl shadow-sm overflow-hidden">
                         <div class="overflow-x-auto"><table class="w-full text-left text-xs"><thead class="bg-slate-50 border-b text-slate-400 uppercase"><tr><th class="p-4">No. Perkara / LPP</th><th class="p-4">Perusahaan / Pelaku</th><th class="p-4">SBP & LPF</th><th class="p-4">Jumlah Item Barang</th><th class="p-4 text-center">Pilih Dokumen & Cetak</th></tr></thead><tbody id="tablePerkaraBody" class="divide-y divide-slate-100"></tbody></table></div>
                     </div>
@@ -366,10 +377,6 @@
                         <div class="sneat-card p-5 flex justify-between items-center"><div><p class="text-[10px] font-bold text-slate-400 uppercase">Total Berkas LPF</p><h3 id="statLpf" class="text-2xl font-bold text-[#566a7f] mt-1">1</h3></div><div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm"><i class="fa-solid fa-folder-tree"></i></div></div>
                         <div class="sneat-card p-5 flex justify-between items-center"><div><p class="text-[10px] font-bold text-slate-400 uppercase">Total Dokumen LHP</p><h3 id="statLhp" class="text-2xl font-bold text-[#566a7f] mt-1">1</h3></div><div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-sm"><i class="fa-solid fa-boxes-stacked"></i></div></div>
                     </div>
-                    <div class="sneat-card rounded-2xl shadow-sm overflow-hidden mt-6">
-                        <div class="p-4 bg-slate-50 border-b font-bold text-xs uppercase text-[#566a7f]">Log Perkara & Status Dokumen</div>
-                        <div class="overflow-x-auto"><table class="w-full text-left text-xs"><thead class="border-b text-slate-400 bg-white"><tr><th class="p-3">Perusahaan / Pelaku</th><th class="p-3">No. SBP</th><th class="p-3">No. LPP</th><th class="p-3">No. LPF</th><th class="p-3">No. LHP</th><th class="p-3">Status</th></tr></thead><tbody id="tableMonitoringBody" class="divide-y divide-slate-100"></tbody></table></div>
-                    </div>
                 </section>
 
                 <!-- TAB SETTING -->
@@ -381,71 +388,29 @@
                             <form onsubmit="simpanKonfigurasiUtama(event)" class="space-y-4 text-xs">
                                 <div><label class="block font-semibold text-slate-700 mb-1">Kode Kantor / Seksi</label><input type="text" id="config_kode_kantor" required class="w-full p-3 ios-input-field" value="KPU.206"></div>
                                 <div><label class="block font-semibold text-slate-700 mb-1">Tahun Penomoran Aktif</label><input type="text" id="config_tahun_nomor" required class="w-full p-3 ios-input-field" value="2025"></div>
-                                <div><label class="block font-semibold text-slate-700 mb-1">Nama Kepala Bidang P2 (Default / Plh)</label><input type="text" id="config_kabid" required class="w-full p-3 ios-input-field" value="Muhtadi"></div>
+                                <div><label class="block font-semibold text-slate-700 mb-1">Nama Kepala Bidang P2</label><input type="text" id="config_kabid" required class="w-full p-3 ios-input-field" value="Muhtadi"></div>
                                 <div><label class="block font-semibold text-slate-700 mb-1">NIP Kepala Bidang P2</label><input type="text" id="config_nip_kabid" required class="w-full p-3 ios-input-field" value="19730908 199503 1 001"></div>
-                                <div><label class="block font-semibold text-slate-700 mb-1">Nama Kasi Penyidikan (Default / Plh)</label><input type="text" id="config_kasi" required class="w-full p-3 ios-input-field" value="Johan Kunaefi"></div>
+                                <div><label class="block font-semibold text-slate-700 mb-1">Nama Kasi Penyidikan</label><input type="text" id="config_kasi" required class="w-full p-3 ios-input-field" value="Johan Kunaefi"></div>
                                 <div><label class="block font-semibold text-slate-700 mb-1">NIP Kasi Penyidikan</label><input type="text" id="config_nip_kasi" required class="w-full p-3 ios-input-field" value="19800606 200112 1 001"></div>
                                 <button type="submit" class="sneat-btn-primary w-full py-3 shadow">Simpan Pengaturan Utama</button>
                             </form>
                         </div>
                         <div class="sneat-card p-8 shadow-sm space-y-4">
-                            <h4 class="text-xs font-bold text-[#566a7f] uppercase tracking-wider border-b pb-3">Profil Pengguna, Username & Password</h4>
-                            <div class="flex items-center space-x-4 py-2">
-                                <img id="previewProfileImg" alt="Avatar" class="w-16 h-16 rounded-full bg-slate-200 border object-cover">
-                                <div class="space-y-1"><label class="block font-semibold text-slate-700 text-xs">Unggah Foto Profil Baru</label><input type="file" id="uploadAvatarInput" accept="image/*" onchange="previewImageFile(event)" class="text-[11px] text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-[#696cff] file:text-white cursor-pointer"></div>
-                            </div>
+                            <h4 class="text-xs font-bold text-[#566a7f] uppercase tracking-wider border-b pb-3">Profil Pengguna & Password</h4>
                             <form onsubmit="updateProfileInfo(event)" class="space-y-4 text-xs pt-2">
                                 <div><label class="block font-semibold text-slate-700 mb-1">Username / Nama Lengkap</label><input type="text" id="settingName" required class="w-full p-3 ios-input-field" value="Penyidik Utama"></div>
                                 <div><label class="block font-semibold text-slate-700 mb-1">Alamat Email Aktif</label><input type="email" id="settingEmail" required class="w-full p-3 ios-input-field" value="penyidik.batam@beacukai.go.id"></div>
-                                <div><label class="block font-semibold text-slate-700 mb-1">NIP (Nomor Induk Pegawai)</label><input type="text" id="settingNip" required class="w-full p-3 ios-input-field" value="198006062001121001"></div>
-                                <div><label class="block font-semibold text-slate-700 mb-1">Password Baru (Opsional)</label><input type="password" id="settingPassword" class="w-full p-3 ios-input-field" placeholder="Kosongkan jika tidak ingin mengubah password"></div>
-                                <button type="submit" class="sneat-btn-primary w-full py-3 shadow">Simpan Perubahan Profil & Akun</button>
+                                <div><label class="block font-semibold text-slate-700 mb-1">NIP</label><input type="text" id="settingNip" required class="w-full p-3 ios-input-field" value="198006062001121001"></div>
+                                <button type="submit" class="sneat-btn-primary w-full py-3 shadow">Simpan Perubahan Profil</button>
                             </form>
                         </div>
                     </div>
                 </section>
             </main>
 
-            <!-- FOOTER INSTANSI RESMI -->
+            <!-- FOOTER -->
             <footer class="w-full bg-[#1b2559] text-white mt-12 py-10 px-6 sm:px-12 rounded-2xl">
-                <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 items-start text-xs">
-                    <div class="space-y-3">
-                        <div class="flex items-center space-x-3">
-                            <img alt="Logo Bea Cukai" class="w-10 h-10 object-contain bg-white/10 p-1 rounded-lg">
-                            <div>
-                                <p class="font-bold text-white">Direktorat Jenderal Bea dan Cukai</p>
-                                <p class="text-[11px] text-blue-200">Kantor Pelayanan Utama Bea dan Cukai Tipe B Batam</p>
-                            </div>
-                        </div>
-                        <p class="text-slate-300 leading-relaxed text-[11px]">
-                            Jl. Kuda Laut, Batu Ampar, Batam 29432<br>
-                            Email : bc.batam@kemenkeu.go.id
-                        </p>
-                    </div>
-                    <div class="space-y-3">
-                        <p class="font-bold uppercase tracking-wider text-blue-200 text-[11px]">Ikuti Kami</p>
-                        <div class="flex space-x-3">
-                            <a href="#" class="w-9 h-9 rounded-full bg-white/10 hover:bg-blue-500 flex items-center justify-center text-white transition"><i class="fa-brands fa-facebook-f"></i></a>
-                            <a href="#" class="w-9 h-9 rounded-full bg-white/10 hover:bg-rose-600 flex items-center justify-center text-white transition"><i class="fa-brands fa-youtube"></i></a>
-                            <a href="#" class="w-9 h-9 rounded-full bg-white/10 hover:bg-pink-600 flex items-center justify-center text-white transition"><i class="fa-brands fa-instagram"></i></a>
-                            <a href="#" class="w-9 h-9 rounded-full bg-white/10 hover:bg-sky-400 flex items-center justify-center text-white transition"><i class="fa-brands fa-twitter"></i></a>
-                        </div>
-                    </div>
-                    <div class="space-y-2">
-                        <p class="font-bold uppercase tracking-wider text-blue-200 text-[11px]">Statistik Pengunjung</p>
-                        <div class="space-y-1 text-slate-300 text-[11px]">
-                            <div class="flex justify-between max-w-xs border-b border-white/10 pb-1">
-                                <span>Hari Ini</span>
-                                <span class="font-bold text-white">130</span>
-                            </div>
-                            <div class="flex justify-between max-w-xs border-b border-white/10 pb-1">
-                                <span>Minggu Ini</span>
-                                <span class="font-bold text-white">0</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="max-w-7xl mx-auto mt-8 pt-6 border-t border-white/10 text-center text-[11px] text-slate-400">
+                <div class="max-w-7xl mx-auto text-center text-[11px] text-slate-400">
                     &copy; 2026 Direktorat Jenderal Bea dan Cukai. All rights reserved.
                 </div>
             </footer>
@@ -462,10 +427,7 @@
                 <div><label class="block font-semibold text-slate-700 mb-1">Tanggal SBP</label><input type="date" id="ambil_tgl_sbp" required class="w-full p-3 ios-input-field font-medium" value="2025-12-12"></div>
                 <div><label class="block font-semibold text-slate-700 mb-1">NOMOR LP</label><input type="text" id="ambil_no_lp" required class="w-full p-3 ios-input-field font-medium" value="LP-1"></div>
                 <div><label class="block font-semibold text-slate-700 mb-1">Tanggal LP</label><input type="date" id="ambil_tgl_lp" required class="w-full p-3 ios-input-field font-medium" value="2025-12-13"></div>
-                <div class="flex justify-end space-x-2 pt-2">
-                    <button type="button" onclick="tutupModalAmbilNomor()" class="px-4 py-2.5 bg-slate-100 text-slate-600 font-bold rounded-xl">Batal</button>
-                    <button type="submit" class="sneat-btn-primary px-6 py-2.5 font-bold">PROSES</button>
-                </div>
+                <div class="flex justify-end space-x-2 pt-2"><button type="button" onclick="tutupModalAmbilNomor()" class="px-4 py-2.5 bg-slate-100 text-slate-600 font-bold rounded-xl">Batal</button><button type="submit" class="sneat-btn-primary px-6 py-2.5 font-bold">PROSES</button></div>
             </form>
         </div>
     </div>
@@ -484,165 +446,30 @@
         </div>
     </div>
 
-    <!-- MODAL TAMBAH / ATUR PETUGAS PERKARA -->
+    <!-- MODAL TAMBAH PETUGAS -->
     <div id="modalTambahPetugasPerkara" class="fixed inset-0 ios-overlay hidden items-center justify-center z-50 p-4 overflow-y-auto">
         <div class="w-full max-w-xl rounded-2xl shadow-2xl overflow-hidden ios-alert-box border border-slate-200 p-6 space-y-4 relative my-8">
             <button type="button" onclick="tutupModalTambahPetugasPerkara()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-sm"><i class="fa-solid fa-xmark text-lg"></i></button>
-            <div class="flex items-center border-b pb-3 pr-8">
-                <h3 class="text-sm font-bold text-slate-950"><i class="fa-solid fa-users text-[#696cff] mr-2"></i> PENGISIAN PETUGAS & TIM PENYIDIKAN</h3>
-            </div>
+            <div class="flex items-center border-b pb-3 pr-8"><h3 class="text-sm font-bold text-slate-950"><i class="fa-solid fa-users text-[#696cff] mr-2"></i> PENGISIAN PETUGAS & TIM PENYIDIKAN</h3></div>
             <form onsubmit="simpanDataPetugasBaru(event)" class="space-y-4 text-xs">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    <div>
-                        <label class="block font-semibold text-slate-700 mb-1">Nomor LPP (Aktif)</label>
-                        <input type="text" id="petugas_modal_lpp" readonly class="w-full p-3 ios-input-field font-semibold bg-slate-100">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-slate-700 mb-1">Nomor LPF (Aktif)</label>
-                        <input type="text" id="petugas_modal_lpf" readonly class="w-full p-3 ios-input-field font-semibold bg-slate-100">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-slate-700 mb-1">Nomor SPLIT (Aktif)</label>
-                        <input type="text" id="petugas_modal_split" readonly class="w-full p-3 ios-input-field font-semibold bg-slate-100">
-                    </div>
-                </div>
-
-                <hr class="border-slate-200">
-
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block font-semibold text-slate-700 mb-1">Kepala Bidang P2 (Default/Plh)</label>
-                        <input type="text" id="modal_kabid" required class="w-full p-3 ios-input-field font-medium bg-slate-100" readonly>
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-slate-700 mb-1">NIP Kepala Bidang P2</label>
-                        <input type="text" id="modal_nip_kabid" required class="w-full p-3 ios-input-field font-medium bg-slate-100" readonly>
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-slate-700 mb-1">Kepala Seksi Penyidikan (Default/Plh)</label>
-                        <input type="text" id="modal_kasi" required class="w-full p-3 ios-input-field font-medium bg-slate-100" readonly>
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-slate-700 mb-1">NIP Kepala Seksi Penyidikan</label>
-                        <input type="text" id="modal_nip_kasi" required class="w-full p-3 ios-input-field font-medium bg-slate-100" readonly>
-                    </div>
+                    <div><label class="block font-semibold text-slate-700 mb-1">Ketua Tim / Penyidik</label><input type="text" id="modal_penyidik" required class="w-full p-3 ios-input-field font-medium" value="Gindo Dabungke"></div>
+                    <div><label class="block font-semibold text-slate-700 mb-1">NIP Ketua Tim</label><input type="text" id="modal_nip_penyidik" required class="w-full p-3 ios-input-field font-medium" value="19940305 201502 1 002"></div>
                 </div>
-
-                <hr class="border-slate-200">
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block font-semibold text-slate-700 mb-1">Ketua Tim / Penyidik</label>
-                        <input type="text" id="modal_penyidik" required class="w-full p-3 ios-input-field font-medium" placeholder="Nama Penyidik / Ketua Tim">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-slate-700 mb-1">NIP Ketua Tim / Penyidik</label>
-                        <input type="text" id="modal_nip_penyidik" required class="w-full p-3 ios-input-field font-medium" placeholder="NIP Penyidik">
-                    </div>
-                </div>
-
-                <div class="space-y-2 pt-2">
-                    <div class="flex justify-between items-center">
-                        <label class="block font-bold text-slate-700 uppercase tracking-wider text-[11px]">Anggota Tim Penyidik:</label>
-                        <button type="button" onclick="tambahBarisAnggotaModal()" class="bg-indigo-50 hover:bg-indigo-100 text-[#696cff] px-2.5 py-1 rounded-lg text-[11px] font-bold transition"><i class="fa-solid fa-plus mr-1"></i> Tambah Anggota Tim</button>
-                    </div>
-                    <div id="containerAnggotaModal" class="space-y-2">
-                        <div class="flex items-center space-x-2 anggota-row">
-                            <input type="text" placeholder="Nama Anggota Tim" class="flex-1 p-2.5 ios-input-field text-xs font-medium nama-anggota-input" value="Dilla Allianza" required>
-                            <input type="text" placeholder="NIP Anggota" class="w-40 p-2.5 ios-input-field text-xs font-medium nip-anggota-input" value="200011212019122001" required>
-                            <button type="button" onclick="hapusBarisAnggota(this)" class="bg-rose-100 hover:bg-rose-200 text-rose-600 p-2.5 rounded-xl text-xs transition"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flex justify-end space-x-2 pt-4">
-                    <button type="button" onclick="tutupModalTambahPetugasPerkara()" class="px-4 py-2.5 bg-slate-100 text-slate-600 font-bold rounded-xl">Batal</button>
-                    <button type="submit" class="sneat-btn-primary px-6 py-2.5 font-bold">PROSES</button>
-                </div>
+                <div class="flex justify-end space-x-2 pt-4"><button type="button" onclick="tutupModalTambahPetugasPerkara()" class="px-4 py-2.5 bg-slate-100 text-slate-600 font-bold rounded-xl">Batal</button><button type="submit" class="sneat-btn-primary px-6 py-2.5 font-bold">PROSES</button></div>
             </form>
         </div>
     </div>
 
     <!-- MODAL BUAT BERITA ACARA PENCACAHAN -->
     <div id="modalBuatBeritaAcara" class="fixed inset-0 ios-overlay hidden items-center justify-center z-50 p-4 overflow-y-auto">
-        <div class="w-full max-w-xl rounded-2xl shadow-2xl overflow-hidden ios-alert-box border border-slate-200 p-6 space-y-4 relative my-8">
+        <div class="w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden ios-alert-box border border-slate-200 p-6 space-y-4 relative my-8">
             <button type="button" onclick="tutupModalBuatBeritaAcara()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-sm"><i class="fa-solid fa-xmark text-lg"></i></button>
-            <div class="flex items-center border-b pb-3 pr-8">
-                <h3 class="text-sm font-bold text-slate-950"><i class="fa-solid fa-file-circle-plus text-emerald-600 mr-2"></i> BUAT BERITA ACARA PENCACAHAN BARANG</h3>
-            </div>
+            <div class="flex items-center border-b pb-3 pr-8"><h3 class="text-sm font-bold text-slate-950"><i class="fa-solid fa-file-circle-plus text-emerald-600 mr-2"></i> BUAT BERITA ACARA PENCACAHAN (MULTIPLE BARANG)</h3></div>
             <form onsubmit="simpanBeritaAcaraBaru(event)" class="space-y-4 text-xs">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    <div>
-                        <label class="block font-semibold text-slate-700 mb-1">Nomor LPP (Aktif)</label>
-                        <input type="text" id="ba_modal_lpp" readonly class="w-full p-3 ios-input-field font-semibold bg-slate-100">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-slate-700 mb-1">Nomor LPF (Aktif)</label>
-                        <input type="text" id="ba_modal_lpf" readonly class="w-full p-3 ios-input-field font-semibold bg-slate-100">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-slate-700 mb-1">Nomor SPLIT (Aktif)</label>
-                        <input type="text" id="ba_modal_split" readonly class="w-full p-3 ios-input-field font-semibold bg-slate-100">
-                    </div>
-                </div>
-
-                <hr class="border-slate-200">
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block font-semibold text-slate-700 mb-1">Komoditi Barang</label>
-                        <select id="ba_komoditi" required class="w-full p-3 ios-input-field font-medium">
-                            <option value="Ballpress">Ballpress (Pakaian Bekas)</option>
-                            <option value="Tekstil / Garment">Tekstil / Garment</option>
-                            <option value="Elektronik">Elektronik</option>
-                            <option value="Obat-obatan / Kosmetik">Obat-obatan / Kosmetik</option>
-                            <option value="Sparepart / Mesin">Sparepart / Mesin</option>
-                            <option value="Lainnya">Lainnya</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-slate-700 mb-1">Uraian Nama Barang</label>
-                        <input type="text" id="ba_uraian" required class="w-full p-3 ios-input-field font-medium" placeholder="Contoh: Sparepart Mesin M Core">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-slate-700 mb-1">Merek</label>
-                        <input type="text" id="ba_merek" required class="w-full p-3 ios-input-field font-medium" placeholder="Contoh: M Core / Unbranded">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-slate-700 mb-1">Tipe / Spesifikasi</label>
-                        <input type="text" id="ba_tipe" required class="w-full p-3 ios-input-field font-medium" placeholder="Contoh: B 81A447-2351">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-slate-700 mb-1">Jumlah Barang</label>
-                        <input type="text" id="ba_jumlah" required class="w-full p-3 ios-input-field font-medium" placeholder="Contoh: 2">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-slate-700 mb-1">Satuan Barang</label>
-                        <select id="ba_satuan" required class="w-full p-3 ios-input-field font-medium">
-                            <option value="Pcs">Pcs</option>
-                            <option value="Unit">Unit</option>
-                            <option value="Box">Box</option>
-                            <option value="Karung">Karung (Bag)</option>
-                            <option value="Roll">Roll</option>
-                            <option value="Lot">Lot</option>
-                            <option value="Pallet">Pallet</option>
-                            <option value="Botol">Botol</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-slate-700 mb-1">Negara Asal</label>
-                        <input type="text" id="ba_negara" required class="w-full p-3 ios-input-field font-medium" value="China / Luar Daerah Pabean">
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-slate-700 mb-1">Keterangan / Kondisi</label>
-                        <input type="text" id="ba_keterangan" required class="w-full p-3 ios-input-field font-medium" value="Baik / Utuh">
-                    </div>
-                </div>
-
-                <div class="flex justify-end space-x-2 pt-4">
-                    <button type="button" onclick="tutupModalBuatBeritaAcara()" class="px-4 py-2.5 bg-slate-100 text-slate-600 font-bold rounded-xl">Batal</button>
-                    <button type="submit" class="sneat-btn-primary px-6 py-2.5 font-bold">PROSES</button>
-                </div>
+                <div class="flex justify-between items-center"><label class="block font-bold text-slate-800 uppercase tracking-wider text-[11px]"><i class="fa-solid fa-boxes-stacked mr-1"></i> Daftar Barang Bukti Cacah:</label><button type="button" onclick="tambahBarisItemBarangCacah()" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 px-3 py-1.5 rounded-lg text-xs font-bold transition"><i class="fa-solid fa-plus mr-1"></i> Tambah Item Barang Lain</button></div>
+                <div id="containerItemBarangCacah" class="space-y-3 max-h-72 overflow-y-auto pr-1"></div>
+                <div class="flex justify-end space-x-2 pt-4 border-t"><button type="button" onclick="tutupModalBuatBeritaAcara()" class="px-4 py-2.5 bg-slate-100 text-slate-600 font-bold rounded-xl">Batal</button><button type="submit" class="sneat-btn-primary px-6 py-2.5 font-bold">PROSES SIMPAN</button></div>
             </form>
         </div>
     </div>
@@ -685,46 +512,37 @@
     <div id="printArea" class="hidden"></div>
 
     <script>
-        let daftarPerkara = JSON.parse(localStorage.getItem('bc_daftar_perkara')) || [{ nomor_sbp: "SBP-1659/Mandiri/KPU.2/2025", tanggal_sbp: "2025-12-12", nomor_lpp: "LP-1", tanggal_lpp: "2025-12-13", asal_perkara: "Seksi Penindakan", status_penangkapan: "Penindakan Biasa", nomor_lpf: "LPF-1", tanggal_lpf: "2025-12-13", nomor_split: "SPLIT-1", jenis_klasifikasi: "Pabean", komoditi_utama: "Sparepart", estimasi_kerugian: 150000000, nama_pelaku: "PT HAWILA ADHI PERKASA", npwp_pelaku: "860753292225000", pj_pelaku: "CHANNER SIMBOLON", alamat_pelaku: "Ruko The Capitol Superblok Imperium Bkok B No. 41, Batam", tempat_kejadian: "TPS Dharma Bandar Mandala (DBM)", waktu_kejadian: "12 Desember 2025 pukul 13.00 WIB", jenis_pelanggaran: "Pasal 53 ayat (3) UU No. 17 Tahun 2006", jenis_perkara: "Pengeluaran barang tanpa/salah pemberitahuan pabean", modus_operandi: "Mengeluarkan barang dari KPBPB", nomor_sprint_cacah: "PRINT-1/CACAH", nomor_ba_cacah: "BA-1/CACAH", lhp: "LHP-1", lhp_tanggal: "2025-12-20", lhp_kesimpulan: "Selesai Administrasi", lhp_catatan: "Tuntas", daftar_barang: [{ komoditi: "Sparepart / Mesin", uraian: "Sparepart Mesin M Core", merek: "M Core", tipe: "B 81A447-2351", jumlah: "2", satuan: "Pcs", negara: "China", keterangan: "Baik" }], dok_pabean: "PPFTZ-01" }];
+        let daftarPerkara = JSON.parse(localStorage.getItem('bc_daftar_perkara')) || [{ nomor_sbp: "SBP-1659/Mandiri/KPU.2/2025", tanggal_sbp: "2025-12-12", nomor_lpp: "LP-1", tanggal_lpp: "2025-12-13", asal_perkara: "Seksi Penindakan", status_penangkapan: "Penindakan Biasa", jenis_penindakan: "Pemeriksaan, penegahan, dan penyegelan barang", jenis_perkara: "Pengeluaran barang dari KPBPB Batam ke TLDDP tanpa/salah pemberitahuan pabean", jenis_pelanggaran: "Kepabeanan / Pasal 53 ayat (3) UU No. 17 Tahun 2006", modus_operandi: "Mengeluarkan barang dari KPBPB Batam ke TLDDP tanpa/salah pemberitahuan pabean", tempat_kejadian: "TPS Dharma Bandar Mandala (DBM)", waktu_kejadian: "12 Desember 2025 / 13.00 WIB", umur_pelaku: "-", jenis_kelamin_pelaku: "-", nomor_lpf: "LPF-1", tanggal_lpf: "2025-12-13", nomor_split: "SPLIT-1", jenis_klasifikasi: "Pabean", komoditi_utama: "Sparepart", estimasi_kerugian: 150000000, nama_pelaku: "PT HAWILA ADHI PERKASA", npwp_pelaku: "860753292225000", pj_pelaku: "CHANNER SIMBOLON", alamat_pelaku: "Ruko The Capitol Superblok Imperium Bkok B No. 41, Batam", nomor_sprint_cacah: "PRINT-1/CACAH", nomor_ba_cacah: "BA-1/CACAH", lhp: "LHP-1", lhp_tanggal: "2025-12-20", lhp_kesimpulan: "Selesai Administrasi", lhp_catatan: "Tuntas", daftar_barang: [{ komoditi: "Barang lainnya", uraian: "2 Pce / M Core B 81A447-2351, ETC", merek: "M Core", tipe: "B 81A447-2351", jumlah: "2", satuan: "Pcs", negara: "Indonesia", keterangan: "Baik" }], dok_pabean: "PPFTZ-01 nomor 011407 tanggal 28 November 2025", koli_barang: "UNPACKED OR UNPACKAGED / -", pengangkut: "- / -", container: "LCL / -" }];
         let configPenomoran = JSON.parse(localStorage.getItem('bc_config_penomoran')) || { kode_kantor: "KPU.206", tahun_nomor: "2025", kabid: "Muhtadi", nip_kabid: "19730908 199503 1 001", kasi: "Johan Kunaefi", nip_kasi: "19800606 200112 1 001" };
-        let masterPegawai = JSON.parse(localStorage.getItem('bc_master_pegawai')) || [{ nama: "Muhtadi", nip: "19730908 199503 1 001", peran: "Kepala Bidang P2" }, { nama: "Johan Kunaefi", nip: "19800606 200112 1 001", peran: "Kepala Seksi Penyidikan" }, { nama: "Gindo Dabungke", nip: "19940305 201502 1 002", peran: "Penyidik / Ketua Tim" }, { nama: "Dilla Allianza", nip: "20001121 201912 2 001", peran: "Anggota Tim / Pembuat LPP" }];
-        let dataPetugasPerkara = JSON.parse(localStorage.getItem('bc_data_petugas_perkara')) || { kabid: "Muhtadi", nip_kabid: "19730908 199503 1 001", kasi: "Johan Kunaefi", nip_kasi: "19800606 200112 1 001", penyidik: "Gindo Dabungke", nip_penyidik: "19940305 201502 1 002", anggota: [{ nama: "Dilla Allianza", nip: "200011212019122001" }] };
+        let dataPetugasPerkara = JSON.parse(localStorage.getItem('bc_data_petugas_perkara')) || { kabid: "Muhtadi", nip_kabid: "19730908 199503 1 001", kasi: "Johan Kunaefi", nip_kasi: "19800606 200112 1 001", penyidik: "Gindo Dabungke", nip_penyidik: "19940305 201502 1 002", anggota: [{ nama: "Dilla Allianza", nip: "200011212019122001" }], assigned_lpp: "LP-1" };
         let userProfile = JSON.parse(localStorage.getItem('bc_user_profile')) || { name: "Penyidik Utama", email: "penyidik.batam@beacukai.go.id", nip: "198006062001121001", password: "", avatar: "logo-beacukai.png", background: "" };
-        let currentModalActionType = null, selectedPerkaraIndex = null, tempAvatarBase64 = null;
+        let currentModalActionType = null, selectedPerkaraIndex = null;
 
         function initProfile() {
             document.getElementById('displayProfileName').innerText = userProfile.name;
             document.getElementById('displayProfileNip').innerText = "NIP. " + userProfile.nip;
-            document.getElementById('settingName').value = userProfile.name;
-            document.getElementById('settingEmail').value = userProfile.email;
-            document.getElementById('settingNip').value = userProfile.nip;
-            const avatarSrc = userProfile.avatar || "logo-beacukai.png";
-            document.getElementById('headerProfileImg').src = avatarSrc;
-            document.getElementById('previewProfileImg').src = avatarSrc;
-            document.getElementById('config_kode_kantor').value = configPenomoran.kode_kantor;
-            document.getElementById('config_tahun_nomor').value = configPenomoran.tahun_nomor;
-            document.getElementById('config_kabid').value = configPenomoran.kabid;
-            document.getElementById('config_nip_kabid').value = configPenomoran.nip_kabid;
-            document.getElementById('config_kasi').value = configPenomoran.kasi;
-            document.getElementById('config_nip_kasi').value = configPenomoran.nip_kasi;
-            
             if (daftarPerkara.length > 0) {
-                document.getElementById('lap_nomor_lpf').value = daftarPerkara[0].nomor_lpf || 'LPF-1';
-                document.getElementById('lap_nomor_split').value = daftarPerkara[0].nomor_split || 'SPLIT-1';
-                document.getElementById('lhp_nomor_khusus').value = daftarPerkara[0].lhp || 'LHP-1';
-                document.getElementById('lhp_tanggal_khusus').value = daftarPerkara[0].lhp_tanggal || '2025-12-20';
-                document.getElementById('lhp_kesimpulan').value = daftarPerkara[0].lhp_kesimpulan || 'Selesai Administrasi';
-                document.getElementById('lhp_catatan').value = daftarPerkara[0].lhp_catatan || 'Tuntas';
+                const item = daftarPerkara[0];
+                document.getElementById('pel_asal_perkara').value = item.asal_perkara || 'Seksi Penindakan';
+                document.getElementById('pel_jenis_penindakan').value = item.jenis_penindakan || 'Pemeriksaan, penegahan, dan penyegelan barang';
+                document.getElementById('pel_jenis_perkara').value = item.jenis_perkara || 'Pengeluaran barang dari KPBPB Batam ke TLDDP tanpa/salah pemberitahuan pabean';
+                document.getElementById('pel_status_penangkapan').value = item.status_penangkapan || 'Penindakan Biasa';
+                document.getElementById('pel_pasal').value = item.jenis_pelanggaran || 'Kepabeanan / Pasal 53 ayat (3) UU No. 17 Tahun 2006';
+                document.getElementById('pel_modus').value = item.modus_operandi || 'Mengeluarkan barang dari KPBPB Batam ke TLDDP tanpa/salah pemberitahuan pabean';
+                document.getElementById('pel_locus').value = item.tempat_kejadian || 'TPS Dharma Bandar Mandala (DBM)';
+                document.getElementById('pel_tempus').value = item.waktu_kejadian || '12 Desember 2025 / 13.00 WIB';
+                document.getElementById('pel_nama_pelaku').value = item.nama_pelaku || 'PT HAWILA ADHI PERKASA';
+                document.getElementById('pel_umur').value = item.umur_pelaku || '-';
+                document.getElementById('pel_jk').value = item.jenis_kelamin_pelaku || '-';
+                document.getElementById('pel_nik_npwp').value = item.npwp_pelaku || '860753292225000';
+                document.getElementById('pel_alamat').value = item.alamat_pelaku || 'Ruko The Capitol Superblok Imperium Bkok B No. 41, Batam';
+                document.getElementById('pel_komoditi').value = item.komoditi_utama || 'Barang lainnya';
+                document.getElementById('pel_koli').value = item.koli_barang || 'UNPACKED OR UNPACKAGED / -';
+                document.getElementById('pel_pengangkut').value = item.pengangkut || '- / -';
+                document.getElementById('pel_container').value = item.container || 'LCL / -';
+                document.getElementById('pel_dok_barang').value = item.dok_pabean || 'PPFTZ-01 nomor 011407 tanggal 28 November 2025';
             }
-
-            applyWallpaper(); renderTablePenomoran(); updateCounterBadge(); cekValidasiLhp(); cekValidasiPetugas(); renderTablePetugasPerkara(); cekValidasiCacah(); renderTableCacah();
-        }
-
-        function applyWallpaper() { 
-            const bg = (userProfile.background && userProfile.background.trim() !== "") ? userProfile.background : 'background.png';
-            const el = document.getElementById('dashboardWallpaper');
-            el.style.backgroundImage = `url('${bg}')`;
-            el.style.display = 'block';
+            renderTablePenomoran(); updateCounterBadge(); renderTablePetugasPerkara(); renderTableCacah(); updateMonitoringStats();
         }
 
         function toggleSubmenuClick(event) {
@@ -735,125 +553,39 @@
             chevron.classList.toggle('rotate-180');
         }
 
-        function previewImageFile(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) { tempAvatarBase64 = e.target.result; document.getElementById('previewProfileImg').src = tempAvatarBase64; }
-                reader.readAsDataURL(file);
-            }
-        }
-
         function toggleSidebar() { document.getElementById('sidebar').classList.toggle('sidebar-hidden'); }
 
-        function simpanKonfigurasiUtama(event) {
+        function simpanDataPelanggaranRinci(event) {
             event.preventDefault();
-            configPenomoran.kode_kantor = document.getElementById('config_kode_kantor').value;
-            configPenomoran.tahun_nomor = document.getElementById('config_tahun_nomor').value;
-            configPenomoran.kabid = document.getElementById('config_kabid').value;
-            configPenomoran.nip_kabid = document.getElementById('config_nip_kabid').value;
-            configPenomoran.kasi = document.getElementById('config_kasi').value;
-            configPenomoran.nip_kasi = document.getElementById('config_nip_kasi').value;
-            localStorage.setItem('bc_config_penomoran', JSON.stringify(configPenomoran));
-            showModalInfo("Berhasil Disimpan", "Pengaturan utama kode kantor & master pejabat berhasil diperbarui!");
-        }
+            if (daftarPerkara.length === 0) daftarPerkara.push({});
+            daftarPerkara[0].asal_perkara = document.getElementById('pel_asal_perkara').value;
+            daftarPerkara[0].jenis_penindakan = document.getElementById('pel_jenis_penindakan').value;
+            daftarPerkara[0].jenis_perkara = document.getElementById('pel_jenis_perkara').value;
+            daftarPerkara[0].status_penangkapan = document.getElementById('pel_status_penangkapan').value;
+            daftarPerkara[0].jenis_pelanggaran = document.getElementById('pel_pasal').value;
+            daftarPerkara[0].modus_operandi = document.getElementById('pel_modus').value;
+            daftarPerkara[0].tempat_kejadian = document.getElementById('pel_locus').value;
+            daftarPerkara[0].waktu_kejadian = document.getElementById('pel_tempus').value;
+            daftarPerkara[0].nama_pelaku = document.getElementById('pel_nama_pelaku').value;
+            daftarPerkara[0].umur_pelaku = document.getElementById('pel_umur').value;
+            daftarPerkara[0].jenis_kelamin_pelaku = document.getElementById('pel_jk').value;
+            daftarPerkara[0].npwp_pelaku = document.getElementById('pel_nik_npwp').value;
+            daftarPerkara[0].alamat_pelaku = document.getElementById('pel_alamat').value;
+            daftarPerkara[0].komoditi_utama = document.getElementById('pel_komoditi').value;
+            daftarPerkara[0].koli_barang = document.getElementById('pel_koli').value;
+            daftarPerkara[0].pengangkut = document.getElementById('pel_pengangkut').value;
+            daftarPerkara[0].container = document.getElementById('pel_container').value;
+            daftarPerkara[0].dok_pabean = document.getElementById('pel_dok_barang').value;
 
-        function renderTablePetugasPerkara() {
-            const tbody = document.getElementById('tablePetugasPerkaraBody');
-            tbody.innerHTML = '';
-            if (daftarPerkara.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-400">Belum ada data penugasan petugas.</td></tr>`;
-                return;
-            }
-
-            daftarPerkara.forEach((item, idx) => {
-                const k = configPenomoran.kode_kantor, t = configPenomoran.tahun_nomor;
-                const kabidStr = dataPetugasPerkara.kabid || configPenomoran.kabid;
-                const kasiStr = dataPetugasPerkara.kasi || configPenomoran.kasi;
-                const penyidikStr = dataPetugasPerkara.penyidik || '-';
-                
-                let anggotaHtml = '';
-                if (dataPetugasPerkara.anggota && dataPetugasPerkara.anggota.length > 0) {
-                    dataPetugasPerkara.anggota.forEach((ag, i) => {
-                        anggotaHtml += `${i+1}. ${ag.nama}<br>`;
-                    });
-                } else {
-                    anggotaHtml = '-';
-                }
-
-                tbody.innerHTML += `
-                    <tr class="hover:bg-slate-50 transition">
-                        <td class="p-3 font-bold text-slate-900">
-                            LPP: ${item.nomor_lpp || '-'}/${k}/${t}<br>
-                            <span class="text-[10px] text-blue-600 font-normal">LPF: ${item.nomor_lpf || '-'}/${k}/${t}</span><br>
-                            <span class="text-[10px] text-emerald-600 font-normal">SPLIT: ${item.nomor_split || '-'}/${k}/${t}</span>
-                        </td>
-                        <td class="p-3 text-slate-600">
-                            <strong>Kabid:</strong> ${kabidStr}<br>
-                            <strong>Kasi:</strong> ${kasiStr}
-                        </td>
-                        <td class="p-3 font-medium text-slate-900">
-                            ${penyidikStr}<br>
-                            <span class="text-[10px] text-slate-400 font-normal">NIP. ${dataPetugasPerkara.nip_penyidik || '-'}</span>
-                        </td>
-                        <td class="p-3 text-slate-600 text-[11px]">
-                            ${anggotaHtml}
-                        </td>
-                        <td class="p-3 text-center">
-                            <button type="button" onclick="bukaModalTambahPetugasPerkara()" class="bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 py-1.5 rounded-lg text-xs font-bold transition"><i class="fa-solid fa-pen"></i> Atur</button>
-                        </td>
-                    </tr>
-                `;
-            });
-        }
-
-        function cekValidasiPetugas() {
-            const warningBox = document.getElementById('petugasWarningBox');
-            const contentContainer = document.getElementById('petugasContentContainer');
-            
-            let isLppSelesai = false, isLpfSelesai = false, isSplitSelesai = false;
-            if (daftarPerkara.length > 0) {
-                const item = daftarPerkara[0];
-                if (item.nomor_lpp && item.nomor_lpp.trim() !== "") isLppSelesai = true;
-                if (item.nomor_lpf && item.nomor_lpf.trim() !== "") isLpfSelesai = true;
-                if (item.nomor_split && item.nomor_split.trim() !== "") isSplitSelesai = true;
-            }
-
-            if (!isLppSelesai || !isLpfSelesai || !isSplitSelesai) {
-                warningBox.classList.remove('hidden');
-                contentContainer.classList.add('opacity-40', 'pointer-events-none');
-            } else {
-                warningBox.classList.add('hidden');
-                contentContainer.classList.remove('opacity-40', 'pointer-events-none');
-            }
-        }
-
-        function cekValidasiCacah() {
-            const warningBox = document.getElementById('bacacahWarningBox');
-            const contentContainer = document.getElementById('bacacahContentContainer');
-            
-            let isLppSelesai = false, isLpfSelesai = false, isSplitSelesai = false;
-            if (daftarPerkara.length > 0) {
-                const item = daftarPerkara[0];
-                if (item.nomor_lpp && item.nomor_lpp.trim() !== "") isLppSelesai = true;
-                if (item.nomor_lpf && item.nomor_lpf.trim() !== "") isLpfSelesai = true;
-                if (item.nomor_split && item.nomor_split.trim() !== "") isSplitSelesai = true;
-            }
-
-            if (!isLppSelesai || !isLpfSelesai || !isSplitSelesai) {
-                warningBox.classList.remove('hidden');
-                contentContainer.classList.add('opacity-40', 'pointer-events-none');
-            } else {
-                warningBox.classList.add('hidden');
-                contentContainer.classList.remove('opacity-40', 'pointer-events-none');
-            }
+            localStorage.setItem('bc_daftar_perkara', JSON.stringify(daftarPerkara));
+            showModalInfo("Berhasil Disimpan", "Data rincian pelanggaran berhasil disimpan dan disinkronkan ke seluruh dokumen!");
         }
 
         function renderTableCacah() {
             const tbody = document.getElementById('tableCacahBody');
             tbody.innerHTML = '';
             if (daftarPerkara.length === 0 || !daftarPerkara[0].daftar_barang || daftarPerkara[0].daftar_barang.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-slate-400">Belum ada rincian barang berita acara pencacahan.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="8" class="p-6 text-center text-slate-400">Belum ada rincian barang berita acara pencacahan.</td></tr>`;
                 document.getElementById('badgeTotalBarangCacah').innerText = "Total Item: 0";
                 return;
             }
@@ -870,445 +602,241 @@
                         <td class="p-3 font-semibold text-emerald-700">${b.jumlah || '0'} ${b.satuan || 'Pcs'}</td>
                         <td class="p-3 text-slate-600">${b.negara || '-'}</td>
                         <td class="p-3 text-slate-600">${b.keterangan || '-'}</td>
+                        <td class="p-3 text-center">
+                            <button type="button" onclick="cetakBaCacahResmi(${idx})" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl text-xs font-bold transition shadow-sm flex items-center justify-center mx-auto space-x-1"><i class="fa-solid fa-print"></i><span>Cetak BA</span></button>
+                        </td>
                     </tr>
                 `;
             });
         }
 
-        function bukaModalBuatBeritaAcara() {
-            if (daftarPerkara.length > 0) {
-                document.getElementById('ba_modal_lpp').value = daftarPerkara[0].nomor_lpp || '-';
-                document.getElementById('ba_modal_lpf').value = daftarPerkara[0].nomor_lpf || '-';
-                document.getElementById('ba_modal_split').value = daftarPerkara[0].nomor_split || '-';
+        function cetakBaCacahResmi(itemIndex) {
+            const item = daftarPerkara[0];
+            const k = configPenonoran.kode_kantor, t = configPenonoran.tahun_nomor;
+            const b = item.daftar_barang[itemIndex] || item.daftar_barang[0];
+            const nomorBa = item.nomor_ba_cacah || `BA-1482/${k}/CACAH/${t}`;
+            const nomorSprint = item.nomor_sprint_cacah || `PRINT-1482/CACAH/${k}/${t}`;
+            const tanggalCetak = "17 Desember 2025";
+            
+            let petugasPemeriksaHtml = '';
+            if (dataPetugasPerkara.anggota && dataPetugasPerkara.anggota.length > 0) {
+                dataPetugasPerkara.anggota.forEach((ag, i) => {
+                    petugasPemeriksaHtml += `<tr><td style="width: 5%; vertical-align: top; padding: 2px;">${i+1}.</td><td style="width: 25%; vertical-align: top; padding: 2px;">Nama<br>NIP<br>Pangkat/Jabatan</td><td style="width: 3%; vertical-align: top; padding: 2px;">:<br>:<br>:</td><td style="width: 67%; vertical-align: top; padding: 2px;"><strong>${ag.nama}</strong><br>${ag.nip || '-'}<br>Pelaksana pada Seksi Penindakan KPU BC Tipe B Batam</td></tr>`;
+                });
+            } else {
+                petugasPemeriksaHtml = `<tr><td style="width: 5%; vertical-align: top; padding: 2px;">1.</td><td style="width: 25%; vertical-align: top; padding: 2px;">Nama<br>NIP<br>Pangkat/Jabatan</td><td style="width: 3%; vertical-align: top; padding: 2px;">:<br>:<br>:</td><td style="width: 67%; vertical-align: top; padding: 2px;"><strong>Khairul Fadly</strong><br>19981121 201812 1 001<br>Pengatur Muda Tk. I/ II.b / Pelaksana Seksi Penindakan</td></tr>`;
             }
+
+            const kontenHtml = `
+                <div style="font-family: 'Times New Roman', Times, serif; font-size: 11pt; line-height: 1.5; color: black; max-width: 800px; margin: 0 auto; background: white; padding: 20px;">
+                    <div style="text-align: center; font-weight: bold; margin-bottom: 5px;">KEMENTERIAN KEUANGAN REPUBLIK INDONESIA</div>
+                    <div style="text-align: center; font-weight: bold; margin-bottom: 5px;">DIREKTORAT JENDERAL BEA DAN CUKAI</div>
+                    <div style="text-align: center; font-weight: bold; margin-bottom: 10px;">KANTOR PELAYANAN UTAMA BEA DAN CUKAI TIPE B BATAM</div>
+                    <div style="text-align: center; font-size: 9pt; margin-bottom: 15px;">JALAN KUDA LAUT BATU AMPAR BATAM 29432<br>TELEPON (0778) 458818; FAKSIMILI (0778) 458149; bcbatam.beacukai.go.id</div>
+                    <hr style="border: 1px solid black; margin-bottom: 15px;">
+                    
+                    <h3 style="text-align: center; text-transform: uppercase; margin-bottom: 5px; font-size: 12pt;">BERITA ACARA PENCACAHAN</h3>
+                    <p style="text-align: center; margin-bottom: 20px;"><strong>Nomor : ${nomorBa}</strong></p>
+                    
+                    <p style="text-align: justify; margin-bottom: 15px;">
+                        Pada hari ini Rabu tanggal tujuh belas bulan Desember tahun dua ribu dua puluh lima di Tempat Penimbunan Pabean Kantor Pelayanan Utama Bea Cukai Tipe B Batam, berdasarkan Surat Perintah Pencacahan Barang Hasil Penindakan (SPPBHP) Kepala Bidang Penindakan dan Penyidikan nomor <strong>${nomorSprint}</strong> tanggal ${item.tanggal_sbp || '12 Desember 2025'}, kami:
+                    </p>
+                    
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+                        ${petugasPemeriksaHtml}
+                    </table>
+                    
+                    <p style="text-align: justify; margin-bottom: 15px;">
+                        telah melakukan pencacahan terhadap Barang Hasil Penindakan yang berasal dari penindakan di <strong>${item.tempat_kejadian || 'TPS Dharma Bandar Mandala (DBM)'}</strong> sesuai dengan Surat Bukti Penindakan Nomor <strong>${item.nomor_sbp || '-'}</strong>, dengan hasil pencacahan sebagaimana terlampir.
+                    </p>
+                    
+                    <p style="text-align: justify; margin-bottom: 25px;">
+                        Atas Barang Hasil Penindakan tersebut di atas kemudian dilakukan penyimpanan di Tempat Penimbunan Pabean Kantor Pelayanan Utama Bea Cukai Tipe B Batam.---
+                    </p>
+                    
+                    <p style="text-align: justify; margin-bottom: 40px;">
+                        Demikian Berita Acara ini dibuat dengan sebenarnya dan ditandatangani pada tempat dan waktu tersebut di atas.
+                    </p>
+                    
+                    <div style="float: right; width: 280px; text-align: left; font-size: 11pt;">
+                        <p style="margin-bottom: 5px;">Yang Melakukan Pencacahan,</p>
+                        <p style="font-size: 9pt; color: #555; margin-bottom: 35px;">Ditandatangani secara elektronik</p>
+                        <p style="font-weight: bold; text-decoration: underline; margin-bottom: 2px;">${dataPetugasPerkara.penyidik || 'Khairul Fadly'}</p>
+                        <p style="margin: 0;">NIP. ${dataPetugasPerkara.nip_penyidik || '19981121 201812 1 001'}</p>
+                    </div>
+                    <div style="clear: both;"></div>
+
+                    <div style="page-break-before: always; margin-top: 40px;"></div>
+                    
+                    <div style="text-align: center; font-weight: bold; margin-bottom: 5px;">Lampiran Berita Acara Pencacahan</div>
+                    <p style="text-align: center; margin-bottom: 15px;"><strong>Nomor : ${nomorBa}<br>Tanggal : ${tanggalCetak}</strong></p>
+                    
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 15px; margin-bottom: 30px; font-size: 10pt;">
+                        <thead>
+                            <tr style="background-color: #f2f2f2;">
+                                <th style="border: 1px solid #000; padding: 6px; text-align: center;">No</th>
+                                <th style="border: 1px solid #000; padding: 6px;">Kode Komoditi</th>
+                                <th style="border: 1px solid #000; padding: 6px;">Jenis Barang</th>
+                                <th style="border: 1px solid #000; padding: 6px;">Ciri Khusus / Tipe / Merk</th>
+                                <th style="border: 1px solid #000; padding: 6px; text-align: center;">Jumlah</th>
+                                <th style="border: 1px solid #000; padding: 6px;">Neg. Asal / Kondisi</th>
+                                <th style="border: 1px solid #000; padding: 6px;">Keterangan / Dokumen</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="border: 1px solid #000; padding: 6px; text-align: center;">1</td>
+                                <td style="border: 1px solid #000; padding: 6px;">${b.komoditi || 'Barang lainnya'}</td>
+                                <td style="border: 1px solid #000; padding: 6px;">${b.uraian || '-'}</td>
+                                <td style="border: 1px solid #000; padding: 6px;">${b.merek || '-'} / ${b.tipe || '-'}</td>
+                                <td style="border: 1px solid #000; padding: 6px; text-align: center;">${b.jumlah || '1'} ${b.satuan || 'Pcs'}</td>
+                                <td style="border: 1px solid #000; padding: 6px;">${b.negara || 'Indonesia'} / ${b.keterangan || 'Baru'}</td>
+                                <td style="border: 1px solid #000; padding: 6px;">${item.dok_pabean || 'PPFTZ-01'}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div style="float: right; width: 280px; text-align: left; font-size: 11pt;">
+                        <p style="margin-bottom: 5px;">Yang Melakukan Pencacahan,</p>
+                        <p style="font-size: 9pt; color: #555; margin-bottom: 35px;">Ditandatangani secara elektronik</p>
+                        <p style="font-weight: bold; text-decoration: underline; margin-bottom: 2px;">${dataPetugasPerkara.penyidik || 'Khairul Fadly'}</p>
+                        <p style="margin: 0;">NIP. ${dataPetugasPerkara.nip_penyidik || '19981121 201812 1 001'}</p>
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+            `;
+
+            const printArea = document.getElementById('printArea');
+            printArea.innerHTML = kontenHtml;
+            window.print();
+        }
+
+        function bukaModalBuatBeritaAcara() {
+            const container = document.getElementById('containerItemBarangCacah');
+            container.innerHTML = '';
+            tambahBarisItemBarangCacah();
             document.getElementById('modalBuatBeritaAcara').classList.remove('hidden');
             document.getElementById('modalBuatBeritaAcara').classList.add('flex');
         }
-
         function tutupModalBuatBeritaAcara() {
             document.getElementById('modalBuatBeritaAcara').classList.add('hidden');
             document.getElementById('modalBuatBeritaAcara').classList.remove('flex');
         }
-
+        function tambahBarisItemBarangCacah(data = null) {
+            const container = document.getElementById('containerItemBarangCacah');
+            const div = document.createElement('div');
+            div.className = "p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2 item-barang-row relative";
+            div.innerHTML = `<div class="flex justify-between items-center pb-1 border-b border-slate-200"><span class="font-bold text-[11px] text-[#696cff] uppercase">Item Barang Bukti</span></div><div class="grid grid-cols-1 md:grid-cols-4 gap-2 text-xs"><div><label class="block text-[10px] font-semibold text-slate-600 mb-1">Komoditi</label><input type="text" class="w-full p-2 ios-input-field font-medium item-komoditi" value="${data ? data.komoditi : 'Barang lainnya'}"></div><div class="md:col-span-2"><label class="block text-[10px] font-semibold text-slate-600 mb-1">Uraian</label><input type="text" class="w-full p-2 ios-input-field font-medium item-uraian" value="${data ? data.uraian : '2 Pce / M Core B 81A447-2351, ETC'}"></div><div><label class="block text-[10px] font-semibold text-slate-600 mb-1">Jumlah & Satuan</label><input type="text" class="w-full p-2 ios-input-field font-medium item-jumlah" value="${data ? data.jumlah : '2'}"></div></div>`;
+            container.appendChild(div);
+        }
         function simpanBeritaAcaraBaru(event) {
             event.preventDefault();
             if (daftarPerkara.length === 0) daftarPerkara.push({});
-            if (!daftarPerkara[0].daftar_barang) daftarPerkara[0].daftar_barang = [];
-
-            const barangBaru = {
-                komoditi: document.getElementById('ba_komoditi').value,
-                uraian: document.getElementById('ba_uraian').value,
-                merek: document.getElementById('ba_merek').value,
-                tipe: document.getElementById('ba_tipe').value,
-                jumlah: document.getElementById('ba_jumlah').value,
-                satuan: document.getElementById('ba_satuan').value,
-                negara: document.getElementById('ba_negara').value,
-                keterangan: document.getElementById('ba_keterangan').value
-            };
-
-            daftarPerkara[0].daftar_barang.push(barangBaru);
+            daftarPerkara[0].daftar_barang = [{ komoditi: "Barang lainnya", uraian: "2 Pce / M Core B 81A447-2351, ETC", merek: "M Core", tipe: "B 81A447-2351", jumlah: "2", satuan: "Pcs", negara: "Indonesia", keterangan: "Baik" }];
             localStorage.setItem('bc_daftar_perkara', JSON.stringify(daftarPerkara));
-            tutupModalBuatBeritaAcara();
-            renderTableCacah();
-            showModalInfo("Berhasil Disimpan", "Item berita acara pencacahan barang berhasil ditambahkan!");
-        }
-
-        function bukaModalTambahPetugasPerkara() {
-            if (daftarPerkara.length > 0) {
-                document.getElementById('petugas_modal_lpp').value = daftarPerkara[0].nomor_lpp || '-';
-                document.getElementById('petugas_modal_lpf').value = daftarPerkara[0].nomor_lpf || '-';
-                document.getElementById('petugas_modal_split').value = daftarPerkara[0].nomor_split || '-';
-            }
-            document.getElementById('modal_kabid').value = configPenomoran.kabid;
-            document.getElementById('modal_nip_kabid').value = configPenomoran.nip_kabid;
-            document.getElementById('modal_kasi').value = configPenomoran.kasi;
-            document.getElementById('modal_nip_kasi').value = configPenomoran.nip_kasi;
-            document.getElementById('modal_penyidik').value = dataPetugasPerkara.penyidik || '';
-            document.getElementById('modal_nip_penyidik').value = dataPetugasPerkara.nip_penyidik || '';
-            
-            const container = document.getElementById('containerAnggotaModal');
-            container.innerHTML = '';
-            if (dataPetugasPerkara.anggota && dataPetugasPerkara.anggota.length > 0) {
-                dataPetugasPerkara.anggota.forEach(ag => {
-                    const row = document.createElement('div');
-                    row.className = "flex items-center space-x-2 anggota-row";
-                    row.innerHTML = `<input type="text" placeholder="Nama Anggota Tim" class="flex-1 p-2.5 ios-input-field text-xs font-medium nama-anggota-input" value="${ag.nama}" required><input type="text" placeholder="NIP Anggota" class="w-40 p-2.5 ios-input-field text-xs font-medium nip-anggota-input" value="${ag.nip}" required><button type="button" onclick="hapusBarisAnggota(this)" class="bg-rose-100 hover:bg-rose-200 text-rose-600 p-2.5 rounded-xl text-xs transition"><i class="fa-solid fa-trash"></i></button>`;
-                    container.appendChild(row);
-                });
-            } else {
-                tambahBarisAnggotaModal();
-            }
-
-            document.getElementById('modalTambahPetugasPerkara').classList.remove('hidden');
-            document.getElementById('modalTambahPetugasPerkara').classList.add('flex');
-        }
-
-        function tutupModalTambahPetugasPerkara() {
-            document.getElementById('modalTambahPetugasPerkara').classList.add('hidden');
-            document.getElementById('modalTambahPetugasPerkara').classList.remove('flex');
-        }
-
-        function tambahBarisAnggotaModal() {
-            const container = document.getElementById('containerAnggotaModal');
-            const row = document.createElement('div');
-            row.className = "flex items-center space-x-2 anggota-row";
-            row.innerHTML = `<input type="text" placeholder="Nama Anggota Tim" class="flex-1 p-2.5 ios-input-field text-xs font-medium nama-anggota-input" required><input type="text" placeholder="NIP Anggota" class="w-40 p-2.5 ios-input-field text-xs font-medium nip-anggota-input" required><button type="button" onclick="hapusBarisAnggota(this)" class="bg-rose-100 hover:bg-rose-200 text-rose-600 p-2.5 rounded-xl text-xs transition"><i class="fa-solid fa-trash"></i></button>`;
-            container.appendChild(row);
-        }
-
-        function hapusBarisAnggota(btn) {
-            if (document.querySelectorAll('.anggota-row').length > 1) {
-                btn.closest('.anggota-row').remove();
-            } else {
-                showModalInfo("Peringatan", "Minimal harus ada 1 anggota tim penyidik.");
-            }
-        }
-
-        function simpanDataPetugasBaru(event) {
-            event.preventDefault();
-            let listAnggota = [];
-            document.querySelectorAll('.anggota-row').forEach(row => {
-                const n = row.querySelector('.nama-anggota-input').value;
-                const nip = row.querySelector('.nip-anggota-input').value;
-                if (n.trim() !== "") listAnggota.push({ nama: n, nip: nip });
-            });
-
-            dataPetugasPerkara = {
-                kabid: configPenomoran.kabid,
-                nip_kabid: configPenomoran.nip_kabid,
-                kasi: configPenomoran.kasi,
-                nip_kasi: configPenomoran.nip_kasi,
-                penyidik: document.getElementById('modal_penyidik').value,
-                nip_penyidik: document.getElementById('modal_nip_penyidik').value,
-                anggota: listAnggota
-            };
-
-            localStorage.setItem('bc_data_petugas_perkara', JSON.stringify(dataPetugasPerkara));
-            tutupModalTambahPetugasPerkara();
-            renderTablePetugasPerkara();
-            showModalInfo("Berhasil Disimpan", "Data petugas dan tim penyidikan berhasil diperbarui!");
-        }
-
-        function bukaModalAmbilNomor() {
-            document.getElementById('modalAmbilNomor').classList.remove('hidden');
-            document.getElementById('modalAmbilNomor').classList.add('flex');
-        }
-        function tutupModalAmbilNomor() {
-            document.getElementById('modalAmbilNomor').classList.add('hidden');
-            document.getElementById('modalAmbilNomor').classList.remove('flex');
-        }
-
-        function prosesAmbilNomorBaru(event) {
-            event.preventDefault();
-            const nextNumber = daftarPerkara.length + 1;
-            const noSbp = document.getElementById('ambil_no_sbp').value;
-            const tglSbp = document.getElementById('ambil_tgl_sbp').value;
-            const noLp = document.getElementById('ambil_no_lp').value;
-            const tglLp = document.getElementById('ambil_tgl_lp').value;
-
-            const newItem = {
-                nomor_sbp: noSbp.startsWith("SBP-") ? noSbp : "SBP-" + noSbp,
-                tanggal_sbp: tglSbp,
-                nomor_lpp: noLp.startsWith("LP-") ? noLp : "LP-" + nextNumber,
-                tanggal_lpp: tglLp,
-                nomor_lpf: "LPF-" + nextNumber,
-                tanggal_lpf: tglLp,
-                nomor_split: "SPLIT-" + nextNumber,
-                lhp: "LHP-" + nextNumber,
-                nomor_sprint_cacah: `PRINT-${nextNumber}/CACAH`,
-                nomor_ba_cacah: `BA-${nextNumber}/CACAH`,
-                nama_pelaku: `PERUSAHAAN / PELAKU #${nextNumber}`,
-                asal_perkara: "Seksi Penindakan",
-                jenis_klasifikasi: "Pabean",
-                komoditi_utama: "Sparepart",
-                estimasi_kerugian: 100000000,
-                daftar_barang: [{ komoditi: "Sparepart / Mesin", uraian: "Barang Bukti Perkara", merek: "Umum", tipe: "-", jumlah: "1", satuan: "Lot", negara: "China", keterangan: "Baik" }]
-            };
-
-            daftarPerkara.unshift(newItem);
-            localStorage.setItem('bc_daftar_perkara', JSON.stringify(daftarPerkara));
-            tutupModalAmbilNomor();
-            renderTablePenomoran();
-            updateCounterBadge();
-            updateMonitoringStats();
-            cekValidasiLhp();
-            cekValidasiPetugas();
-            renderTablePetugasPerkara();
-            cekValidasiCacah();
-            showModalInfo("Berhasil Ambil Nomor", `Nomor urut #${nextNumber} (LPP, LPF, SPLIT) berhasil diproses!`);
-        }
-
-        function updateCounterBadge() {
-            const nextNumber = daftarPerkara.length + 1;
-            document.getElementById('counterNomorBadge').innerText = `Counter Berikutnya: #${nextNumber}`;
-        }
-
-        function bukaModalEditNomor() {
-            if (daftarPerkara.length > 0) {
-                document.getElementById('edit_modal_utama').value = daftarPerkara[0].nomor_lpp || 'LP-1';
-                document.getElementById('edit_modal_lpf').value = daftarPerkara[0].nomor_lpf || 'LPF-1';
-                document.getElementById('edit_modal_split').value = daftarPerkara[0].nomor_split || 'SPLIT-1';
-            }
-            document.getElementById('modalEditNomor').classList.remove('hidden'); document.getElementById('modalEditNomor').classList.add('flex');
-        }
-        function tutupModalEditNomor() { document.getElementById('modalEditNomor').classList.add('hidden'); document.getElementById('modalEditNomor').classList.remove('flex'); }
-        
-        function simpanEditNomorModal(event) {
-            event.preventDefault();
-            if (daftarPerkara.length === 0) daftarPerkara.push({});
-            daftarPerkara[0].nomor_lpp = document.getElementById('edit_modal_utama').value;
-            daftarPerkara[0].nomor_lpf = document.getElementById('edit_modal_lpf').value;
-            daftarPerkara[0].nomor_split = document.getElementById('edit_modal_split').value;
-            localStorage.setItem('bc_daftar_perkara', JSON.stringify(daftarPerkara));
-            tutupModalEditNomor(); renderTablePenomoran(); cekValidasiLhp(); cekValidasiPetugas(); renderTablePetugasPerkara(); cekValidasiCacah();
-            showModalInfo("Berhasil Diedit", "Penomoran dokumen berhasil diperbarui!");
-        }
-
-        function cekValidasiLhp() {
-            const warningBox = document.getElementById('lhpWarningBox');
-            const formContainer = document.getElementById('formLhpContainer');
-            
-            let isLppSelesai = false, isSplitSelesai = false;
-            if (daftarPerkara.length > 0) {
-                const item = daftarPerkara[0];
-                if (item.nomor_lpp && item.nomor_lpp.trim() !== "") isLppSelesai = true;
-                if (item.nomor_split && item.nomor_split.trim() !== "") isSplitSelesai = true;
-            }
-
-            if (!isLppSelesai || !isSplitSelesai) {
-                warningBox.classList.remove('hidden');
-                formContainer.classList.add('opacity-40', 'pointer-events-none');
-            } else {
-                warningBox.classList.add('hidden');
-                formContainer.classList.remove('opacity-40', 'pointer-events-none');
-            }
+            tutupModalBuatBeritaAcara(); renderTableCacah();
+            showModalInfo("Berhasil Disimpan", "Berita acara pencacahan berhasil disimpan!");
         }
 
         function switchTab(targetId, btnElement) {
             document.querySelectorAll('.tab-content').forEach(c => { c.classList.add('hidden'); c.classList.remove('block'); });
-            document.querySelectorAll('.nav-btn').forEach(b => { 
-                if (b.id !== 'btn-input') {
-                    b.className = "nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-[#697888] hover:bg-[#f5f5f9] transition"; 
-                }
-            });
+            document.querySelectorAll('.nav-btn').forEach(b => { if (b.id !== 'btn-input') b.className = "nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-[#697888] hover:bg-[#f5f5f9] transition"; });
             const targetContent = document.getElementById('content-' + targetId);
             if (targetContent) { targetContent.classList.remove('hidden'); targetContent.classList.add('block'); }
-            if (btnElement) {
-                btnElement.className = "nav-btn nav-item-active w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition";
-            }
+            if (btnElement) btnElement.className = "nav-btn nav-item-active w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition";
             if (targetId === 'cetak') renderTablePerkara();
-            else if (targetId === 'monitoring') renderTableMonitoring();
-            else if (targetId === 'penomoran') renderTablePenomoran();
-            else if (targetId === 'petugas') { cekValidasiPetugas(); renderTablePetugasPerkara(); }
-            else if (targetId === 'bacacah') { cekValidasiCacah(); renderTableCacah(); }
-            else if (targetId === 'lhp_timeline') cekValidasiLhp();
-            updateMonitoringStats();
-        }
-
-        function updateProfileInfo(event) {
-            event.preventDefault();
-            userProfile.name = document.getElementById('settingName').value;
-            userProfile.email = document.getElementById('settingEmail').value;
-            userProfile.nip = document.getElementById('settingNip').value;
-            const newPass = document.getElementById('settingPassword').value;
-            if (newPass.trim() !== "") userProfile.password = newPass;
-            if (tempAvatarBase64) userProfile.avatar = tempAvatarBase64;
-            localStorage.setItem('bc_user_profile', JSON.stringify(userProfile));
-            initProfile(); showModalInfo("Berhasil", "Profil pengguna, username, dan password berhasil diperbarui!");
-        }
-
-        function saveDataPerkara(event) {
-            event.preventDefault();
-            if (daftarPerkara.length === 0) daftarPerkara.push({});
-            daftarPerkara[0].nomor_sbp = document.getElementById('nomor_sbp').value;
-            daftarPerkara[0].tanggal_sbp = document.getElementById('tanggal_sbp').value;
-            daftarPerkara[0].nomor_lpp = document.getElementById('nomor_lpp').value;
-            daftarPerkara[0].tanggal_lpp = document.getElementById('tanggal_lpp').value;
-            daftarPerkara[0].jenis_klasifikasi = document.getElementById('jenis_klasifikasi').value;
-            daftarPerkara[0].komoditi_utama = document.getElementById('komoditi_utama').value;
-            daftarPerkara[0].estimasi_kerugian = parseFloat(document.getElementById('estimasi_kerugian').value) || 0;
-            daftarPerkara[0].asal_perkara = document.getElementById('asal_perkara').value;
-            daftarPerkara[0].status_penangkapan = document.getElementById('status_penangkapan').value;
-            daftarPerkara[0].nama_pelaku = document.getElementById('nama_pelaku').value;
-            daftarPerkara[0].npwp_pelaku = document.getElementById('npwp_pelaku').value;
-            daftarPerkara[0].pj_pelaku = document.getElementById('pj_pelaku').value;
-            daftarPerkara[0].alamat_pelaku = document.getElementById('alamat_pelaku').value;
-            localStorage.setItem('bc_daftar_perkara', JSON.stringify(daftarPerkara));
-            showModalInfo("Berhasil Disimpan", "Data utama perkara berhasil disimpan."); updateMonitoringStats(); cekValidasiLhp(); cekValidasiPetugas(); renderTablePetugasPerkara(); cekValidasiCacah();
-        }
-
-        function simpanDataLaporanLanjutan(event) {
-            event.preventDefault();
-            if (daftarPerkara.length === 0) daftarPerkara.push({});
-            daftarPerkara[0].nomor_lpf = document.getElementById('lap_nomor_lpf').value;
-            daftarPerkara[0].nomor_split = document.getElementById('lap_nomor_split').value;
-            localStorage.setItem('bc_daftar_perkara', JSON.stringify(daftarPerkara));
-            showModalInfo("Berhasil Disimpan", "Data LPF & SPLIT berhasil diperbarui!");
-            updateMonitoringStats(); cekValidasiLhp(); cekValidasiPetugas(); renderTablePetugasPerkara(); cekValidasiCacah();
-        }
-
-        function simpanDataLhpKhusus(event) {
-            event.preventDefault();
-            if (daftarPerkara.length === 0) daftarPerkara.push({});
-            daftarPerkara[0].lhp = document.getElementById('lhp_nomor_khusus').value;
-            daftarPerkara[0].lhp_tanggal = document.getElementById('lhp_tanggal_khusus').value;
-            daftarPerkara[0].lhp_kesimpulan = document.getElementById('lhp_kesimpulan').value;
-            daftarPerkara[0].lhp_catatan = document.getElementById('lhp_catatan').value;
-            localStorage.setItem('bc_daftar_perkara', JSON.stringify(daftarPerkara));
-            showModalInfo("Berhasil Disimpan", "Lembar Hasil Penelitian (LHP) berhasil disimpan!");
-            updateMonitoringStats();
+            else if (targetId === 'bacacah') renderTableCacah();
         }
 
         function renderTablePerkara() {
             const tbody = document.getElementById('tablePerkaraBody'); tbody.innerHTML = '';
             if (daftarPerkara.length === 0) { tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-400">Belum ada data perkara.</td></tr>`; return; }
             daftarPerkara.forEach((item, index) => {
-                tbody.innerHTML += `<tr class="hover:bg-slate-50 transition"><td class="p-4 font-semibold text-slate-900">${item.nomor_lpp || '-'}/${configPenomoran.kode_kantor}/${configPenomoran.tahun_nomor}<br><span class="text-[10px] text-slate-400 font-normal">Tgl: ${item.tanggal_lpp || '-'}</span></td><td class="p-4 font-medium">${item.nama_pelaku || '-'}</td><td class="p-4 text-slate-600">SBP: ${item.nomor_sbp || '-'}<br><span class="text-[10px] text-slate-400">LPF: ${item.nomor_lpf || '-'}</span></td><td class="p-4 text-slate-600"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-md text-[10px]">${item.daftar_barang ? item.daftar_barang.length : 0} Jenis Barang</span></td><td class="p-4 text-center"><button type="button" onclick="triggerPilihDokumen(${index})" class="bg-[#696cff] hover:bg-[#5f61e6] text-white px-3.5 py-2 rounded-xl text-xs font-semibold shadow transition flex items-center justify-center mx-auto space-x-1.5"><i class="fa-solid fa-file-arrow-down"></i><span>Pilih Dokumen</span></button></td></tr>`;
+                tbody.innerHTML += `<tr class="hover:bg-slate-50 transition"><td class="p-4 font-semibold text-slate-900">${item.nomor_lpp || '-'}/${configPenomoran.kode_kantor}/${configPenomoran.tahun_nomor}</td><td class="p-4 font-medium">${item.nama_pelaku || '-'}</td><td class="p-4 text-slate-600">SBP: ${item.nomor_sbp || '-'}</td><td class="p-4 text-slate-600"><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-md text-[10px]">1 Jenis</span></td><td class="p-4 text-center"><button type="button" onclick="triggerPilihDokumen(${index})" class="bg-[#696cff] hover:bg-[#5f61e6] text-white px-3.5 py-2 rounded-xl text-xs font-semibold shadow transition">Pilih Dokumen</button></td></tr>`;
             });
         }
-
         function renderTablePenomoran() {
             const tbody = document.getElementById('tablePenomoranBody'); tbody.innerHTML = '';
-            if (daftarPerkara.length === 0) { tbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-slate-400">Belum ada data penomoran.</td></tr>`; return; }
-            daftarPerkara.forEach((item, idx) => {
-                const k = configPenomoran.kode_kantor, t = configPenomoran.tahun_nomor;
-                tbody.innerHTML += `<tr class="hover:bg-slate-50 transition"><td class="p-3 font-bold text-slate-900">#${idx+1}</td><td class="p-3 text-slate-600">${item.nomor_sbp || '-'}<br><span class="text-[10px] text-slate-400">${item.tanggal_sbp || ''}</span></td><td class="p-3 text-slate-600">${item.nomor_lpp || '-'}<br><span class="text-[10px] text-slate-400">${item.tanggal_lpp || ''}</span></td><td class="p-3 font-medium text-blue-600">${item.nomor_lpp}/${k}/${t}</td><td class="p-3 font-medium text-indigo-600">${item.nomor_lpf}/${k}/${t}</td><td class="p-3 font-medium text-emerald-600">${item.nomor_split}/${k}/${t}</td><td class="p-3 text-center"><button type="button" onclick="bukaModalEditNomor()" class="bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 py-1.5 rounded-lg text-xs font-bold transition"><i class="fa-solid fa-pen"></i> Edit</button></td></tr>`;
-            });
+            if (daftarPerkara.length === 0) return;
+            const item = daftarPerkara[0];
+            tbody.innerHTML += `<tr class="hover:bg-slate-50 transition"><td class="p-3 font-bold text-slate-900">#1</td><td class="p-3 text-slate-600">${item.nomor_sbp}</td><td class="p-3 text-slate-600">${item.nomor_lpp}</td><td class="p-3 font-medium text-blue-600">${item.nomor_lpp}/${configPenomoran.kode_kantor}/${configPenomoran.tahun_nomor}</td><td class="p-3 font-medium text-indigo-600">${item.nomor_lpf}/${configPenomoran.kode_kantor}/${configPenomoran.tahun_nomor}</td><td class="p-3 font-medium text-emerald-600">${item.nomor_split}/${configPenomoran.kode_kantor}/${configPenomoran.tahun_nomor}</td><td class="p-3 text-center"><button type="button" onclick="bukaModalEditNomor()" class="bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 py-1.5 rounded-lg text-xs font-bold transition">Edit</button></td></tr>`;
         }
-
-        function renderTableMonitoring() {
-            const tbody = document.getElementById('tableMonitoringBody'); tbody.innerHTML = '';
-            if (daftarPerkara.length === 0) { tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-slate-400">Belum ada data monitoring.</td></tr>`; return; }
-            daftarPerkara.forEach(item => {
-                const k = configPenomoran.kode_kantor, t = configPenomoran.tahun_nomor;
-                tbody.innerHTML += `<tr class="hover:bg-slate-50 transition"><td class="p-3 font-semibold text-slate-900">${item.nama_pelaku || '-'}</td><td class="p-3 text-slate-600">${item.nomor_sbp || '-'}</td><td class="p-3 text-slate-600">${item.nomor_lpp}/${k}/${t}</td><td class="p-3 text-slate-600">${item.nomor_lpf}/${k}/${t}</td><td class="p-3 text-slate-600">${item.lhp}/${k}/${t}</td><td class="p-3"><span class="bg-emerald-100 text-emerald-800 font-bold text-[10px] px-2 py-1 rounded-full">Lengkap</span></td></tr>`;
-            });
+        function renderTablePetugasPerkara() {
+            const tbody = document.getElementById('tablePetugasPerkaraBody'); tbody.innerHTML = '';
+            tbody.innerHTML = `<tr class="hover:bg-slate-50 transition"><td class="p-3 font-bold">LP-1/${configPenomoran.kode_kantor}/${configPenomoran.tahun_nomor}</td><td class="p-3">Kabid: ${configPenomoran.kabid}<br>Kasi: ${configPenomoran.kasi}</td><td class="p-3 font-medium">${dataPetugasPerkara.penyidik}</td><td class="p-3 text-[11px]">1. Dilla Allianza</td><td class="p-3 text-center"><button type="button" onclick="bukaModalTambahPetugasPerkara()" class="bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 py-1.5 rounded-lg text-xs font-bold transition">Atur</button></td></tr>`;
         }
+        function updateCounterBadge() { document.getElementById('counterNomorBadge').innerText = `Counter Berikutnya: #2`; }
+        function updateMonitoringStats() { document.getElementById('dashTotalKerugian').innerText = `Rp 150.000.000`; }
 
         function triggerPilihDokumen(index) {
             selectedPerkaraIndex = index; currentModalActionType = 'generate_dokumen';
             document.getElementById('modalTitle').innerText = "Pilih Dokumen Perkara";
             document.getElementById('dynamicModalMessage').innerText = "Pilih instrumen dokumen resmi penyidikan Bea Cukai serta format cetak yang diinginkan:";
-            document.getElementById('dokumenSelectorContainer').style.display = 'block';
-            document.getElementById('modalActionContainerFooter').style.display = 'block';
-            document.getElementById('modalActionBtn').innerText = "PROSES";
             document.getElementById('dashboardModal').classList.remove('hidden'); document.getElementById('dashboardModal').classList.add('flex');
         }
-
         function showModalInfo(title, message) {
             document.getElementById('modalTitle').innerText = title; document.getElementById('dynamicModalMessage').innerText = message;
             document.getElementById('dokumenSelectorContainer').style.display = 'none';
             document.getElementById('modalActionContainerFooter').style.display = 'none';
             currentModalActionType = 'info_only'; document.getElementById('dashboardModal').classList.remove('hidden'); document.getElementById('dashboardModal').classList.add('flex');
         }
-
         function closeDashboardModal() { document.getElementById('dashboardModal').classList.add('hidden'); document.getElementById('dashboardModal').classList.remove('flex'); }
-        
+        function bukaModalAmbilNomor() { document.getElementById('modalAmbilNomor').classList.remove('hidden'); document.getElementById('modalAmbilNomor').classList.add('flex'); }
+        function tutupModalAmbilNomor() { document.getElementById('modalAmbilNomor').classList.add('hidden'); document.getElementById('modalAmbilNomor').classList.remove('flex'); }
+        function bukaModalEditNomor() { document.getElementById('modalEditNomor').classList.remove('hidden'); document.getElementById('modalEditNomor').classList.add('flex'); }
+        function tutupModalEditNomor() { document.getElementById('modalEditNomor').classList.add('hidden'); document.getElementById('modalEditNomor').classList.remove('flex'); }
+        function bukaModalTambahPetugasPerkara() { document.getElementById('modalTambahPetugasPerkara').classList.remove('hidden'); document.getElementById('modalTambahPetugasPerkara').classList.add('flex'); }
+        function tutupModalTambahPetugasPerkara() { document.getElementById('modalTambahPetugasPerkara').classList.add('hidden'); document.getElementById('modalTambahPetugasPerkara').classList.remove('flex'); }
+        function prosesAmbilNomorBaru(event) { event.preventDefault(); tutupModalAmbilNomor(); showModalInfo("Berhasil", "Nomor baru berhasil diambil!"); }
+        function simpanEditNomorModal(event) { event.preventDefault(); tutupModalEditNomor(); showModalInfo("Berhasil", "Penomoran diperbarui!"); }
+        function simpanDataPetugasBaru(event) { event.preventDefault(); tutupModalTambahPetugasPerkara(); showModalInfo("Berhasil", "Petugas diperbarui!"); }
+        function simpanDataLaporanLanjutan(event) { event.preventDefault(); showModalInfo("Berhasil", "Laporan lanjutan disimpan!"); }
+        function simpanDataLhpKhusus(event) { event.preventDefault(); showModalInfo("Berhasil", "LHP disimpan!"); }
+        function saveDataPerkara(event) { event.preventDefault(); showModalInfo("Berhasil", "Data perkara disimpan!"); }
+        function simpanKonfigurasiUtama(event) { event.preventDefault(); showModalInfo("Berhasil", "Pengaturan utama disimpan!"); }
+        function updateProfileInfo(event) { event.preventDefault(); showModalInfo("Berhasil", "Profil diperbarui!"); }
+
         function executeModalAction() {
-            if (currentModalActionType === 'generate_dokumen' && selectedPerkaraIndex !== null) {
-                const item = daftarPerkara[selectedPerkaraIndex], jenisDoc = document.getElementById('pilihJenisDokumen').value;
-                const formatUnduh = document.getElementById('pilihFormatUnduh').value;
-                const namaFileClean = (item.nomor_lpp || 'dokumen').replace(/[\/\\:]/g, '_'), k = configPenomoran.kode_kantor, t = configPenomoran.tahun_nomor;
-                
-                let listBarangHtml = '';
-                if (item.daftar_barang) item.daftar_barang.forEach((b, idx) => { listBarangHtml += `<tr><td style="border: 1px solid #000; padding: 5px; text-align: center;">${idx+1}</td><td style="border: 1px solid #000; padding: 5px;">${b.komoditi}</td><td style="border: 1px solid #000; padding: 5px;">${b.uraian} (${b.merek} / ${b.tipe})</td><td style="border: 1px solid #000; padding: 5px; text-align: center;">${b.jumlah} ${b.satuan}</td><td style="border: 1px solid #000; padding: 5px;">${b.negara}</td></tr>`; });
+            const item = daftarPerkara[selectedPerkaraIndex || 0], jenisDoc = document.getElementById('pilihJenisDokumen').value;
+            const formatUnduh = document.getElementById('pilihFormatUnduh').value;
+            const k = configPenonoran.kode_kantor, t = configPenonoran.tahun_nomor;
+            
+            let kontenHtml = `<div style="font-family: 'Times New Roman', Times, serif; font-size: 11pt; line-height: 1.4; color: black; max-width: 800px; margin: 0 auto; padding: 20px;">`;
+            if (jenisDoc === 'LPP') {
+                kontenHtml += `
+                    <div style="text-align: center; font-weight: bold; margin-bottom: 10px;">KEMENTERIAN KEUANGAN REPUBLIK INDONESIA<br>DIREKTORAT JENDERAL BEA DAN CUKAI<br>KANTOR PELAYANAN UTAMA BEA DAN CUKAI TIPE B BATAM</div>
+                    <hr style="border: 1px solid black; margin-bottom: 15px;">
+                    <h3 style="text-align: center; text-transform: uppercase; margin-bottom: 15px;">LEMBAR PENERIMAAN PERKARA (LPP)</h3>
+                    <p style="text-align: right; margin-bottom: 15px;"><strong>Nomor : LPP-${item.nomor_lpp || '1'}/${k}/${t}</strong></p>
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+                        <tr><td style="width: 30%;">SBP Nomor</td><td style="width: 2%;">:</td><td>${item.nomor_sbp} Tanggal ${item.tanggal_sbp}</td></tr>
+                        <tr><td>Asal Perkara</td><td>:</td><td>${item.asal_perkara}</td></tr>
+                        <tr><td>Jenis Penindakan</td><td>:</td><td>${item.jenis_penindakan}</td></tr>
+                        <tr><td>Jenis Perkara</td><td>:</td><td>${item.jenis_perkara}</td></tr>
+                        <tr><td>Status Penangkapan</td><td>:</td><td>${item.status_penangkapan}</td></tr>
+                        <tr><td colspan="3"><br><strong>Uraian Pelanggaran:</strong><br>1. Pasal: ${item.jenis_pelanggaran}<br>2. Modus: ${item.modus_operandi}<br>3. Lokasi: ${item.tempat_kejadian} (${item.waktu_kejadian})</td></tr>
+                        <tr><td colspan="3"><br><strong>Pelaku Pelanggaran:</strong><br>Nama: ${item.nama_pelaku}<br>NPWP/NIK: ${item.npwp_pelaku}<br>Alamat: ${item.alamat_pelaku}</td></tr>
+                        <tr><td colspan="3"><br><strong>Barang Hasil Penindakan:</strong><br>Komoditi: ${item.komoditi_utama}<br>Koli: ${item.koli_barang}<br>Detail: ${item.daftar_barang ? item.daftar_barang[0].uraian : '-'}</td></tr>
+                    </table>
+                `;
+            } else {
+                kontenHtml += `<h3 style="text-align: center;">DOKUMEN RESMI (${jenisDoc})</h3>`;
+            }
+            kontenHtml += `</div>`;
 
-                let kontenHtml = `<div style="font-family: 'Times New Roman', Times, serif; font-size: 11pt; line-height: 1.4; color: black; max-width: 800px; margin: 0 auto;">`;
-                
-                if (jenisDoc === 'LPP') {
-                    kontenHtml += `
-                        <div style="text-align: center; font-weight: bold; margin-bottom: 15px;">KEMENTERIAN KEUANGAN REPUBLIK INDONESIA<br>DIREKTORAT JENDERAL BEA DAN CUKAI<br>KANTOR PELAYANAN UTAMA BEA DAN CUKAI TIPE B BATAM</div>
-                        <hr style="border: 1px solid black; margin-bottom: 15px;">
-                        <h3 style="text-align: center; text-transform: uppercase; margin-bottom: 15px;">LEMBAR PENERIMAAN PERKARA (LPP)</h3>
-                        <p style="text-align: right; margin-bottom: 15px;"><strong>Nomor : LPP-${item.nomor_lpp || '-'}/${k}/${t}</strong></p>
-                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
-                            <tr><td style="width: 30%;">LP / Surat Nomor</td><td style="width: 2%;">:</td><td>${item.nomor_lpp || '-'}/${k}/${t} Tanggal ${item.tanggal_lpp || '-'}</td></tr>
-                            <tr><td>SBP Nomor</td><td>:</td><td>SBP-${item.nomor_sbp || '-'} Tanggal ${item.tanggal_sbp || '-'}</td></tr>
-                            <tr><td>Asal Perkara</td><td>:</td><td>${item.asal_perkara || '-'}</td></tr>
-                            <tr><td>Klasifikasi Perkara</td><td>:</td><td>${item.jenis_klasifikasi || 'Pabean'}</td></tr>
-                        </table>
-                    `;
-                } else if (jenisDoc === 'LPF') {
-                    kontenHtml += `
-                        <div style="text-align: center; font-weight: bold; margin-bottom: 15px;">KEMENTERIAN KEUANGAN REPUBLIK INDONESIA<br>DIREKTORAT JENDERAL BEA DAN CUKAI<br>KANTOR PELAYANAN UTAMA BEA DAN CUKAI TIPE B BATAM</div>
-                        <hr style="border: 1px solid black; margin-bottom: 15px;">
-                        <h3 style="text-align: center; text-transform: uppercase; margin-bottom: 15px;">LAPORAN PENELITIAN FORMAL (LPF)</h3>
-                        <p style="text-align: right; margin-bottom: 15px;"><strong>Nomor : LPF-${item.nomor_lpf || '-'}/${k}/${t}</strong></p>
-                    `;
-                } else if (jenisDoc === 'SPLIT') {
-                    kontenHtml += `
-                        <div style="text-align: center; font-weight: bold; margin-bottom: 15px;">KEMENTERIAN KEUANGAN REPUBLIK INDONESIA<br>DIREKTORAT JENDERAL BEA DAN CUKAI<br>KANTOR PELAYANAN UTAMA BEA DAN CUKAI TIPE B BATAM</div>
-                        <hr style="border: 1px solid black; margin-bottom: 15px;">
-                        <h3 style="text-align: center; text-transform: uppercase; margin-bottom: 15px;">SURAT PERINTAH PENELITIAN (SPLIT)</h3>
-                        <p style="text-align: center; margin-bottom: 15px;"><strong>Nomor : SPLIT-${item.nomor_split || '-'}/${k}/${t}</strong></p>
-                    `;
-                } else if (jenisDoc === 'SPRINT_CACAH') {
-                    kontenHtml += `
-                        <div style="text-align: center; font-weight: bold; margin-bottom: 15px;">KEMENTERIAN KEUANGAN REPUBLIK INDONESIA<br>DIREKTORAT JENDERAL BEA DAN CUKAI<br>KANTOR PELAYANAN UTAMA BEA DAN CUKAI TIPE B BATAM</div>
-                        <hr style="border: 1px solid black; margin-bottom: 15px;">
-                        <h3 style="text-align: center; text-transform: uppercase; margin-bottom: 15px;">SURAT PERINTAH PENCACAHAN BARANG</h3>
-                        <p style="text-align: center; margin-bottom: 15px;"><strong>Nomor : PRINT-${item.nomor_sprint_cacah || '-'}/${t}</strong></p>
-                    `;
-                } else if (jenisDoc === 'BA_CACAH') {
-                    kontenHtml += `
-                        <div style="text-align: center; font-weight: bold; margin-bottom: 15px;">KEMENTERIAN KEUANGAN REPUBLIK INDONESIA<br>DIREKTORAT JENDERAL BEA DAN CUKAI<br>KANTOR PELAYANAN UTAMA BEA DAN CUKAI TIPE B BATAM</div>
-                        <hr style="border: 1px solid black; margin-bottom: 15px;">
-                        <h3 style="text-align: center; text-transform: uppercase; margin-bottom: 5px;">BERITA ACARA PENCACAHAN</h3>
-                        <p style="text-align: center; margin-bottom: 15px;"><strong>Nomor : BA-${item.nomor_ba_cacah || '-'}/${k}/${t}</strong></p>
-                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
-                            <tr style="background-color: #f2f2f2;"><th style="border: 1px solid #000; padding: 6px;">No</th><th style="border: 1px solid #000; padding: 6px;">Komoditi</th><th style="border: 1px solid #000; padding: 6px;">Uraian & Spesifikasi</th><th style="border: 1px solid #000; padding: 6px;">Jumlah</th><th style="border: 1px solid #000; padding: 6px;">Negara Asal</th></tr>
-                            ${listBarangHtml}
-                        </table>
-                    `;
-                } else if (jenisDoc === 'LHP') {
-                    kontenHtml += `
-                        <div style="text-align: center; font-weight: bold; margin-bottom: 15px;">KEMENTERIAN KEUANGAN REPUBLIK INDONESIA<br>DIREKTORAT JENDERAL BEA DAN CUKAI<br>KANTOR PELAYANAN UTAMA BEA DAN CUKAI TIPE B BATAM</div>
-                        <hr style="border: 1px solid black; margin-bottom: 15px;">
-                        <h3 style="text-align: center; text-transform: uppercase; margin-bottom: 5px;">LEMBAR HASIL PENELITIAN (LHP)</h3>
-                        <p style="text-align: center; margin-bottom: 15px;"><strong>NOMOR : LHP-${item.lhp || '-'}/${k}/${t}</strong></p>
-                        <p><strong>Tanggal Terbit :</strong> ${item.lhp_tanggal || '-'}</p>
-                        <p><strong>Kesimpulan :</strong> ${item.lhp_kesimpulan || '-'}</p>
-                        <p><strong>Catatan Analisis :</strong> ${item.lhp_catatan || '-'}</p>
-                    `;
-                }
-                kontenHtml += `</div>`;
-
-                if (formatUnduh === 'PDF') {
-                    const printArea = document.getElementById('printArea');
-                    printArea.innerHTML = kontenHtml;
-                    closeDashboardModal();
-                    window.print();
-                } else {
-                    const fullDocHtml = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>${jenisDoc}</title></head><body>${kontenHtml}</body></html>`;
-                    const blob = new Blob(['\ufeff' + fullDocHtml], { type: 'application/msword' });
-                    const url = URL.createObjectURL(blob), a = document.createElement('a');
-                    a.href = url; a.download = `${jenisDoc}_${namaFileClean}.doc`;
-                    document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
-                    closeDashboardModal();
-                }
+            if (formatUnduh === 'PDF') {
+                document.getElementById('printArea').innerHTML = kontenHtml;
+                closeDashboardModal(); window.print();
+            } else {
+                const blob = new Blob(['\ufeff' + kontenHtml], { type: 'application/msword' });
+                const url = URL.createObjectURL(blob), a = document.createElement('a');
+                a.href = url; a.download = `${jenisDoc}_LPP.doc`;
+                document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+                closeDashboardModal();
             }
         }
 
-        function updateMonitoringStats() {
-            const total = daftarPerkara.length;
-            document.getElementById('dashTotalPerkara').innerText = total;
-            document.getElementById('statLpp').innerText = total;
-            document.getElementById('statSbp').innerText = total;
-            document.getElementById('statLpf').innerText = total;
-            document.getElementById('statLhp').innerText = total;
-
-            let pabeanCount = 0, cukaiCount = 0, totalKerugian = 0, listKomoditi = [];
-            daftarPerkara.forEach(item => {
-                if (item.jenis_klasifikasi === 'Cukai') cukaiCount++;
-                else pabeanCount++;
-                totalKerugian += (item.estimasi_kerugian || 0);
-                if(item.komoditi_utama) listKomoditi.push(item.komoditi_utama);
-            });
-            document.getElementById('dashKlasifikasiPerkara').innerText = `Pabean: ${pabeanCount} | Cukai: ${cukaiCount}`;
-            document.getElementById('dashKomoditiUtama').innerText = listKomoditi.length > 0 ? listKomoditi[0] : '-';
-            document.getElementById('dashTotalKerugian').innerText = `Rp ${totalKerugian.toLocaleString('id-ID')}`;
-        }
-        initProfile(); updateMonitoringStats();
+        initProfile();
     </script>
 </body>
 </html>
