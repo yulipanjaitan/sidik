@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body { background-color: #f2f2f7; min-height: 100vh; position: relative; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-        #dashboardWallpaper { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-image: url('background.jpg'); background-size: cover; background-position: center; z-index: -2; display: block; }
+        #dashboardWallpaper { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-image: url('background.png'); background-size: cover; background-position: center; z-index: -2; display: block; }
         #wallpaperOverlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.2); z-index: -1; }
         .soft-card { background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
         .ios-container-group { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 20px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03); }
@@ -28,223 +28,287 @@
         }
     </style>
 </head>
-<body id="appBody" class="min-h-screen text-slate-800 flex p-3 md:p-6">
-    <div id="dashboardWallpaper"></div><div id="wallpaperOverlay"></div>
-    <aside id="sidebar" class="w-64 min-h-[92vh] hidden md:flex flex-col justify-between p-5 shadow-lg sticky top-4 z-30">
-        <div>
-            <div class="flex items-center space-x-3 px-3 mb-6">
-                <div class="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center font-bold text-xs shadow"><i class="fa-solid fa-cube"></i></div>
-                <span class="font-bold text-slate-900 text-sm tracking-wide">BC Batam System</span>
-            </div>
-            <hr class="border-slate-200 mb-6">
-            <div class="space-y-1.5">
-                <button type="button" onclick="switchTab('dashboard', this)" id="btn-dashboard" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold bg-slate-900 text-white shadow transition"><i class="fa-solid fa-house w-4"></i><span>Dashboard</span></button>
-                <div id="menuInputGroup" class="space-y-1.5" onmouseenter="toggleSubmenu(true)" onmouseleave="toggleSubmenu(false)">
-                    <button type="button" onclick="switchTab('input', this)" id="btn-input" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition"><i class="fa-solid fa-pen-to-square w-4"></i><span class="flex-1 text-left">Input Data Perkara</span><i class="fa-solid fa-chevron-down text-[10px]"></i></button>
-                    <div id="submenuContainer" class="pl-4 space-y-1.5 border-l-2 border-slate-200 ml-4">
-                        <button type="button" onclick="switchTab('penomoran', this)" id="btn-penomoran" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition"><i class="fa-solid fa-list-ol w-4 text-blue-500"></i><span>Penomoran</span></button>
-                        <button type="button" onclick="switchTab('petugas', this)" id="btn-petugas" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition"><i class="fa-solid fa-users w-4 text-indigo-500"></i><span>Petugas</span></button>
-                        <button type="button" onclick="switchTab('bacacah', this)" id="btn-bacacah" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition"><i class="fa-solid fa-boxes-stacked w-4 text-emerald-600"></i><span>BA Pencacahan</span></button>
+<body id="appBody" class="min-h-screen text-slate-800 flex flex-col p-3 md:p-6 justify-between">
+    <div>
+        <div id="dashboardWallpaper"></div><div id="wallpaperOverlay"></div>
+        <div class="flex">
+            <aside id="sidebar" class="w-64 min-h-[92vh] hidden md:flex flex-col justify-between p-5 shadow-lg sticky top-4 z-30">
+                <div>
+                    <div class="flex items-center space-x-3 px-3 mb-6">
+                        <div class="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center font-bold text-xs shadow"><i class="fa-solid fa-cube"></i></div>
+                        <span class="font-bold text-slate-900 text-sm tracking-wide">BC Batam System</span>
                     </div>
-                </div>
-                <button type="button" onclick="switchTab('cetak', this)" id="btn-cetak" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition"><i class="fa-solid fa-print w-4"></i><span>Cetak Dokumen Resmi</span></button>
-                <button type="button" onclick="switchTab('monitoring', this)" id="btn-monitoring" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition"><i class="fa-solid fa-chart-pie w-4"></i><span>Monitoring & Statistik</span></button>
-                <button type="button" onclick="switchTab('setting', this)" id="btn-setting" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition"><i class="fa-solid fa-gear w-4"></i><span>Pengaturan & Akun</span></button>
-            </div>
-            <p class="px-4 text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-8 mb-3">Account Pages</p>
-            <div class="space-y-1.5"><a href="index.html" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold text-rose-600 hover:bg-rose-50 transition"><i class="fa-solid fa-power-off w-4"></i><span>Sign Out</span></a></div>
-        </div>
-    </aside>
-    <div id="mainContent" class="flex-1 md:ml-6 flex flex-col min-h-screen">
-        <header class="flex justify-between items-center px-6 py-4 shadow-sm mb-6">
-            <div class="flex items-center space-x-4">
-                <button type="button" onclick="toggleSidebar()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-900 hover:text-white text-slate-700 flex items-center justify-center transition text-xs"><i class="fa-solid fa-bars"></i></button>
-                <div class="text-xs"><span class="text-slate-400">Pages / </span><span id="pageTitle" class="font-bold text-slate-800">Dashboard</span></div>
-            </div>
-            <div class="flex items-center space-x-4">
-                <div class="text-right hidden sm:block"><p id="displayProfileName" class="text-xs font-bold text-slate-800">Penyidik Utama</p><p id="displayProfileNip" class="text-[10px] text-slate-500">NIP. 198006062001121001</p></div>
-                <img id="headerProfileImg" src="logo-beacukai.png" alt="Avatar" class="w-8 h-8 rounded-full bg-slate-200 border object-cover">
-            </div>
-        </header>
-        <main class="flex-1 space-y-6">
-            <section id="content-dashboard" class="tab-content space-y-6 block">
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="soft-card p-5 rounded-2xl flex justify-between items-center"><div><p class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Total Berkas Perkara</p><h3 id="dashTotalPerkara" class="text-2xl font-bold text-slate-900 mt-1">1</h3><p class="text-[10px] text-emerald-700 font-bold mt-1">Sinkron & Aktif</p></div><div class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center text-sm shadow"><i class="fa-solid fa-folder-open"></i></div></div>
-                    <div class="soft-card p-5 rounded-2xl flex justify-between items-center"><div><p class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Perkara Pabean / Cukai</p><h3 id="dashKlasifikasiPerkara" class="text-lg font-bold text-blue-600 mt-1">Pabean: 1 | Cukai: 0</h3><p class="text-[10px] text-slate-500 mt-1">Klasifikasi Aktif</p></div><div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center text-sm shadow"><i class="fa-solid fa-scale-balanced"></i></div></div>
-                    <div class="soft-card p-5 rounded-2xl flex justify-between items-center"><div><p class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Komoditi Dominan</p><h3 id="dashKomoditiUtama" class="text-lg font-bold text-indigo-600 mt-1 truncate max-w-[150px]">Sparepart</h3><p class="text-[10px] text-slate-500 mt-1">Tekstil / Ballpress / Obat</p></div><div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-sm shadow"><i class="fa-solid fa-boxes-stacked"></i></div></div>
-                    <div class="soft-card p-5 rounded-2xl flex justify-between items-center"><div><p class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Estimasi Kerugian Negara</p><h3 id="dashTotalKerugian" class="text-lg font-bold text-rose-600 mt-1">Rp 0</h3><p class="text-[10px] text-rose-700 font-bold mt-1">Potensi Bea & Cukai</p></div><div class="w-10 h-10 rounded-xl bg-rose-600 text-white flex items-center justify-center text-sm shadow"><i class="fa-solid fa-triangle-exclamation"></i></div></div>
-                </div>
-            </section>
-            <section id="content-input" class="tab-content space-y-6 hidden">
-                <div class="ios-container-group p-6 flex justify-between items-center">
-                    <div><span class="text-[10px] font-bold text-blue-600 uppercase bg-blue-50 px-2.5 py-1 rounded-full">Database Penyidikan</span><h3 class="text-sm font-bold text-slate-900 mt-2">Form Input Data Perkara</h3><p class="text-xs text-slate-500 mt-0.5">Input data utama perkara, klasifikasi jenis perkara, komoditi, hingga kerugian negara.</p></div>
-                    <button type="button" onclick="loadSampleData()" class="ios-btn-primary px-4 py-2.5 text-xs font-semibold flex items-center space-x-2"><i class="fa-solid fa-bolt mr-1"></i><span>Muat Data Kasus Hawila</span></button>
-                </div>
-                <form id="penyidikanForm" onsubmit="saveDataPerkara(event)" class="space-y-6">
-                    <div class="ios-container-group p-6 md:p-8 space-y-5">
-                        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b pb-3 flex items-center text-blue-900"><i class="fa-solid fa-file-lines mr-2"></i> I. SBP & Lembar Penerimaan Perkara (LPP)</h4>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 text-xs">
-                            <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor SBP</label><input type="text" id="nomor_sbp" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="1659/Mandiri/KPU.2/2025"></div>
-                            <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Tanggal SBP</label><input type="date" id="tanggal_sbp" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="2025-12-12"></div>
-                            <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor LPP</label><input type="text" id="nomor_lpp" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="1482"></div>
-                            <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Tanggal LPP</label><input type="date" id="tanggal_lpp" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="2025-12-13"></div>
-                            <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Klasifikasi Jenis Perkara</label><select id="jenis_klasifikasi" class="w-full p-3.5 ios-input-field text-slate-800 font-medium"><option value="Pabean">Perkara Pabean</option><option value="Cukai">Perkara Cukai</option></select></div>
-                            <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Komoditi Utama</label><select id="komoditi_utama" class="w-full p-3.5 ios-input-field text-slate-800 font-medium"><option value="Tekstil">Tekstil / Garment</option><option value="Ballpress">Ballpress (Pakaian Bekas)</option><option value="Obat">Obat-obatan / Kosmetik</option><option value="Sparepart">Sparepart / Mesin / Lainnya</option></select></div>
-                            <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Estimasi Kerugian Negara (Rp)</label><input type="number" id="estimasi_kerugian" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="150000000"></div>
-                            <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Asal Perkara</label><input type="text" id="asal_perkara" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="Seksi Penindakan"></div>
-                            <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Status Penangkapan</label><input type="text" id="status_penangkapan" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="Penindakan Biasa"></div>
-                        </div>
-                    </div>
-                    <div class="ios-container-group p-6 md:p-8 space-y-5">
-                        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b pb-3 flex items-center text-blue-900"><i class="fa-solid fa-folder-tree mr-2"></i> II. Laporan Penelitian (LPF) & SPLIT Perkara</h4>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 text-xs">
-                            <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor LPF</label><input type="text" id="nomor_lpf" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="1482"></div>
-                            <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Tanggal LPF</label><input type="date" id="tanggal_lpf" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="2025-12-13"></div>
-                            <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor SPLIT</label><input type="text" id="nomor_split" class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="1482"></div>
-                        </div>
-                    </div>
-                    <div class="ios-container-group p-6 md:p-8 space-y-5">
-                        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b pb-3 flex items-center text-blue-900"><i class="fa-solid fa-building mr-2"></i> III. Identitas Pelaku / Perusahaan</h4>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 text-xs">
-                            <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nama Perusahaan / Pelaku</label><input type="text" id="nama_pelaku" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="PT HAWILA ADHI PERKASA"></div>
-                            <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">NPWP / Identitas</label><input type="text" id="npwp_pelaku" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="860753292225000"></div>
-                            <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Penanggung Jawab / Pemilik</label><input type="text" id="pj_pelaku" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="CHANNER SIMBOLON"></div>
-                            <div class="md:col-span-3"><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Alamat Lengkap</label><input type="text" id="alamat_pelaku" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="Ruko The Capitol Superblok Imperium Bkok B No. 41, Batam"></div>
-                        </div>
-                    </div>
-                    <div class="ios-container-group p-6 md:p-8 space-y-5">
-                        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b pb-3 flex items-center text-blue-900"><i class="fa-solid fa-location-dot mr-2"></i> IV. Locus, Tempus & Uraian Pelanggaran</h4>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 text-xs">
-                            <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Tempat Kejadian (Locus)</label><input type="text" id="tempat_kejadian" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="TPS Dharma Bandar Mandala (DBM)"></div>
-                            <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Waktu Kejadian (Tempus)</label><input type="text" id="waktu_kejadian" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="12 Desember 2025 pukul 13.00 WIB"></div>
-                            <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Jenis Pelanggaran / Pasal</label><input type="text" id="jenis_pelanggaran" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="Pasal 53 ayat (3) UU No. 17 Tahun 2006 dan Pasal 33 ayat (1), Pasal 71 ayat (1) PP No. 41 Tahun 2021"></div>
-                            <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Jenis Perkara</label><input type="text" id="jenis_perkara" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="Pengeluaran barang dari KPBPB Batam ke TLDDP tanpa/salah pemberitahuan pabean"></div>
-                            <div class="md:col-span-2"><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Modus Operandi</label><textarea id="modus_operandi" rows="2" class="w-full p-3.5 ios-input-field text-slate-800 font-medium">Mengeluarkan barang dari KPBPB Batam ke TLDDP tanpa/salah pemberitahuan pabean</textarea></div>
-                        </div>
-                    </div>
-                    <div class="flex justify-end pt-2 pb-6"><button type="submit" class="ios-btn-primary px-8 py-4 text-xs font-bold tracking-wide flex items-center space-x-2 shadow-md"><i class="fa-solid fa-floppy-disk text-sm mr-1"></i><span>Simpan Data Perkara Utama</span></button></div>
-                </form>
-            </section>
-            <section id="content-penomoran" class="tab-content space-y-6 hidden">
-                <div class="soft-card p-6 rounded-2xl shadow-sm flex justify-between items-center">
-                    <div><span class="text-[10px] font-bold text-blue-600 uppercase bg-blue-50 px-2.5 py-1 rounded-full">Menu Penomoran & Sinkronisasi</span><h3 class="text-sm font-bold text-slate-900 mt-2">Kelola, Simpan & Edit Penomoran Dokumen</h3><p class="text-xs text-slate-500 mt-0.5">Ubah atau simpan nomor urut dokumen resmi penyidikan agar otomatis tersinkron ke semua berkas.</p></div>
-                    <button type="button" onclick="bukaModalEditNomor()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow transition flex items-center space-x-2"><i class="fa-solid fa-pen-to-square"></i><span>Edit Penomoran Perkara</span></button>
-                </div>
-                <div class="ios-container-group p-6 md:p-8 space-y-6">
-                    <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b pb-3 flex items-center text-blue-900"><i class="fa-solid fa-list-ol mr-2"></i> Form Cepat Simpan & Sinkronisasi Nomor Perkara Aktif</h4>
-                    <form onsubmit="simpanDataPenomoran(event)" class="space-y-5 text-xs">
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-                            <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor Urut Utama (LPP/LPF/SPLIT/LHP)</label><input type="text" id="gen_nomor_utama" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="1482"></div>
-                            <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor Sprint Pencacahan</label><input type="text" id="gen_sprint_cacah" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="1482/CACAH"></div>
-                            <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor BA Pencacahan</label><input type="text" id="gen_ba_cacah" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="1482/CACAH"></div>
-                        </div>
-                        <div class="flex justify-end pt-2"><button type="submit" class="ios-btn-primary px-8 py-3.5 font-bold tracking-wide shadow flex items-center space-x-2"><i class="fa-solid fa-floppy-disk"></i><span>Simpan & Perbarui Nomor Dokumen</span></button></div>
-                    </form>
-                </div>
-                <div class="soft-card rounded-2xl shadow-sm overflow-hidden">
-                    <div class="p-4 bg-slate-50 border-b font-bold text-xs uppercase text-slate-700">Preview Format Nomor Lengkap (Tersinkron)</div>
-                    <div class="overflow-x-auto"><table class="w-full text-left text-xs"><thead class="border-b text-slate-500 bg-white"><tr><th class="p-3">Perusahaan / Pelaku</th><th class="p-3">No. LPP</th><th class="p-3">No. LPF</th><th class="p-3">No. SPLIT</th><th class="p-3">No. Sprint Cacah</th><th class="p-3">No. BA Cacah</th><th class="p-3">No. LHP</th><th class="p-3 text-center">Aksi Edit</th></tr></thead><tbody id="tablePenomoranBody" class="divide-y divide-slate-100"></tbody></table></div>
-                </div>
-            </section>
-            <section id="content-petugas" class="tab-content space-y-6 hidden">
-                <div class="soft-card p-6 rounded-2xl shadow-sm flex justify-between items-center">
-                    <div><span class="text-[10px] font-bold text-indigo-600 uppercase bg-indigo-50 px-2.5 py-1 rounded-full">Manajemen Personel</span><h3 class="text-sm font-bold text-slate-900 mt-2">Menu Petugas & Pejabat Penandatangan Dokumen</h3><p class="text-xs text-slate-500 mt-0.5">Pilih pejabat penandatangan dokumen yang aktif atau tambahkan pegawai/anggota baru.</p></div>
-                    <button type="button" onclick="bukaModalTambahPegawai()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow transition flex items-center space-x-2"><i class="fa-solid fa-user-plus"></i><span>Tambah Pegawai Baru</span></button>
-                </div>
-                <form onsubmit="simpanDataPetugas(event)" class="space-y-6">
-                    <div class="ios-container-group p-6 md:p-8 space-y-5">
-                        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b pb-3 flex items-center text-indigo-900"><i class="fa-solid fa-user-tie mr-2"></i> Pilih Pejabat Penandatangan Dokumen</h4>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 text-xs">
-                            <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Pilih Kepala Bidang P2</label><select id="select_kabid" class="w-full p-3.5 ios-input-field text-slate-800 font-medium"></select></div>
-                            <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Pilih Kepala Seksi Penyidikan</label><select id="select_kasi" class="w-full p-3.5 ios-input-field text-slate-800 font-medium"></select></div>
-                        </div>
-                    </div>
-                    <div class="ios-container-group p-6 md:p-8 space-y-5">
-                        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b pb-3 flex items-center text-indigo-900"><i class="fa-solid fa-users-gear mr-2"></i> Tim Penyidik & Petugas Pelaksana</h4>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 text-xs">
-                            <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Pilih Penyidik / Ketua Tim</label><select id="select_penyidik" class="w-full p-3.5 ios-input-field text-slate-800 font-medium"></select></div>
-                            <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Pilih Pembuat LPP / Anggota</label><select id="select_pembuat" class="w-full p-3.5 ios-input-field text-slate-800 font-medium"></select></div>
-                        </div>
-                    </div>
-                    <div class="flex justify-end pt-2 pb-6"><button type="submit" class="ios-btn-primary px-8 py-4 text-xs font-bold tracking-wide flex items-center space-x-2 shadow-md"><i class="fa-solid fa-floppy-disk text-sm mr-1"></i><span>Simpan Pilihan Petugas Perkara</span></button></div>
-                </form>
-                <div class="soft-card rounded-2xl shadow-sm overflow-hidden">
-                    <div class="p-4 bg-slate-50 border-b font-bold text-xs uppercase text-slate-700 flex justify-between items-center"><span>Daftar Master Pegawai Terdaftar</span><span class="text-[10px] text-slate-400 font-normal">Sinkron ke pilihan dropdown petugas</span></div>
-                    <div class="overflow-x-auto"><table class="w-full text-left text-xs"><thead class="border-b text-slate-500 bg-white"><tr><th class="p-3">Nama Pegawai</th><th class="p-3">NIP</th><th class="p-3">Jabatan / Peran</th><th class="p-3 text-center">Aksi</th></tr></thead><tbody id="tableMasterPegawai" class="divide-y divide-slate-100"></tbody></table></div>
-                </div>
-            </section>
-            <section id="content-bacacah" class="tab-content space-y-6 hidden">
-                <div class="ios-container-group p-6 flex justify-between items-center">
-                    <div><span class="text-[10px] font-bold text-emerald-600 uppercase bg-emerald-50 px-2.5 py-1 rounded-full">Modul Barang Bukti</span><h3 class="text-sm font-bold text-slate-900 mt-2">Menu Berita Acara & Sprint Pencacahan</h3><p class="text-xs text-slate-500 mt-0.5">Kelola rincian item barang bukti secara dinamis jika jumlahnya banyak.</p></div>
-                    <button type="button" onclick="tambahBarisBarang()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow transition flex items-center space-x-2"><i class="fa-solid fa-plus"></i><span>Tambah Baris Barang</span></button>
-                </div>
-                <div class="ios-container-group p-6 md:p-8 space-y-6">
-                    <div class="space-y-3 pt-2">
-                        <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider">Rincian Barang Hasil Pencacahan:</label>
-                        <div id="containerBarangCacah" class="space-y-3">
-                            <div class="flex items-center space-x-2 barang-row">
-                                <input type="text" placeholder="Uraian Nama Barang / Spesifikasi" class="flex-1 p-3 ios-input-field text-xs font-medium uraian-barang-input" value="2 Pce / M Core B 81A447-2351, ETC" required>
-                                <input type="text" placeholder="Jumlah / Satuan" class="w-36 p-3 ios-input-field text-xs font-medium jumlah-barang-input" value="2 Pcs" required>
-                                <button type="button" onclick="hapusBarisBarang(this)" class="bg-rose-100 hover:bg-rose-200 text-rose-600 p-3 rounded-xl text-xs transition"><i class="fa-solid fa-trash"></i></button>
+                    <hr class="border-slate-200 mb-6">
+                    <div class="space-y-1.5">
+                        <button type="button" onclick="switchTab('dashboard', this)" id="btn-dashboard" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold bg-slate-900 text-white shadow transition"><i class="fa-solid fa-house w-4"></i><span>Dashboard</span></button>
+                        <div id="menuInputGroup" class="space-y-1.5" onmouseenter="toggleSubmenu(true)" onmouseleave="toggleSubmenu(false)">
+                            <button type="button" onclick="switchTab('input', this)" id="btn-input" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition"><i class="fa-solid fa-pen-to-square w-4"></i><span class="flex-1 text-left">Input Data Perkara</span><i class="fa-solid fa-chevron-down text-[10px]"></i></button>
+                            <div id="submenuContainer" class="pl-4 space-y-1.5 border-l-2 border-slate-200 ml-4">
+                                <button type="button" onclick="switchTab('penomoran', this)" id="btn-penomoran" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition"><i class="fa-solid fa-list-ol w-4 text-blue-500"></i><span>Penomoran</span></button>
+                                <button type="button" onclick="switchTab('petugas', this)" id="btn-petugas" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition"><i class="fa-solid fa-users w-4 text-indigo-500"></i><span>Petugas</span></button>
+                                <button type="button" onclick="switchTab('bacacah', this)" id="btn-bacacah" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition"><i class="fa-solid fa-boxes-stacked w-4 text-emerald-600"></i><span>BA Pencacahan</span></button>
                             </div>
                         </div>
+                        <button type="button" onclick="switchTab('cetak', this)" id="btn-cetak" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition"><i class="fa-solid fa-print w-4"></i><span>Cetak Dokumen Resmi</span></button>
+                        <button type="button" onclick="switchTab('monitoring', this)" id="btn-monitoring" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition"><i class="fa-solid fa-chart-pie w-4"></i><span>Monitoring & Statistik</span></button>
+                        <button type="button" onclick="switchTab('setting', this)" id="btn-setting" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition"><i class="fa-solid fa-gear w-4"></i><span>Pengaturan & Akun</span></button>
                     </div>
-                    <div class="pt-3"><label class="block font-semibold text-slate-600 mb-1.5 ml-1 text-xs">Dokumen Pabean Asal</label><input type="text" id="input_dok_pabean" class="w-full p-3.5 ios-input-field text-slate-800 font-medium text-xs" value="PPFTZ-01 Nomor 011407 Tanggal 28 November 2025"></div>
-                    <div class="flex justify-end pt-2"><button type="button" onclick="simpanDataCacah()" class="ios-btn-primary px-8 py-3.5 text-xs font-bold tracking-wide flex items-center space-x-2 shadow-md"><i class="fa-solid fa-floppy-disk text-sm mr-1"></i><span>Simpan Rincian BA Pencacahan</span></button></div>
+                    <p class="px-4 text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-8 mb-3">Account Pages</p>
+                    <div class="space-y-1.5"><a href="index.html" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold text-rose-600 hover:bg-rose-50 transition"><i class="fa-solid fa-power-off w-4"></i><span>Sign Out</span></a></div>
                 </div>
-            </section>
-            <section id="content-cetak" class="tab-content space-y-6 hidden">
-                <div class="soft-card p-6 rounded-2xl shadow-sm"><h3 class="text-sm font-bold text-slate-900">Cetak & Generate Dokumen Resmi Penyidikan</h3><p class="text-xs text-slate-500 mt-0.5">Pilih dokumen yang ingin dicetak (LPP, LPF, SPLIT, Sprint Pencacahan, Berita Acara Pencacahan, atau LHP).</p></div>
-                <div class="soft-card rounded-2xl shadow-sm overflow-hidden">
-                    <div class="overflow-x-auto"><table class="w-full text-left text-xs"><thead class="bg-slate-50 border-b text-slate-700 uppercase"><tr><th class="p-4">No. Perkara / LPP</th><th class="p-4">Perusahaan / Pelaku</th><th class="p-4">SBP & LPF</th><th class="p-4">Jumlah Item Barang</th><th class="p-4 text-center">Pilih Dokumen & Cetak</th></tr></thead><tbody id="tablePerkaraBody" class="divide-y divide-slate-100"></tbody></table></div>
-                </div>
-            </section>
-            <section id="content-monitoring" class="tab-content space-y-6 hidden">
-                <div class="soft-card p-6 rounded-2xl shadow-sm"><h3 class="text-sm font-bold text-slate-900">Monitoring & Statistik Seluruh Berkas Perkara</h3></div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="soft-card p-5 rounded-2xl flex justify-between items-center"><div><p class="text-[10px] font-bold text-slate-500 uppercase">Total Berkas LPP</p><h3 id="statLpp" class="text-2xl font-bold text-slate-900 mt-1">1</h3></div><div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center text-sm shadow"><i class="fa-solid fa-file-lines"></i></div></div>
-                    <div class="soft-card p-5 rounded-2xl flex justify-between items-center"><div><p class="text-[10px] font-bold text-slate-500 uppercase">Total Berkas SBP</p><h3 id="statSbp" class="text-2xl font-bold text-slate-900 mt-1">1</h3></div><div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-sm shadow"><i class="fa-solid fa-shield-halved"></i></div></div>
-                    <div class="soft-card p-5 rounded-2xl flex justify-between items-center"><div><p class="text-[10px] font-bold text-slate-500 uppercase">Total Berkas LPF</p><h3 id="statLpf" class="text-2xl font-bold text-slate-900 mt-1">1</h3></div><div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-sm shadow"><i class="fa-solid fa-folder-tree"></i></div></div>
-                    <div class="soft-card p-5 rounded-2xl flex justify-between items-center"><div><p class="text-[10px] font-bold text-slate-500 uppercase">Total Dokumen LHP</p><h3 id="statLhp" class="text-2xl font-bold text-slate-900 mt-1">1</h3></div><div class="w-10 h-10 rounded-xl bg-amber-600 text-white flex items-center justify-center text-sm shadow"><i class="fa-solid fa-boxes-stacked"></i></div></div>
-                </div>
-                <div class="soft-card rounded-2xl shadow-sm overflow-hidden mt-6">
-                    <div class="p-4 bg-slate-50 border-b font-bold text-xs uppercase text-slate-700">Log Perkara & Status Dokumen</div>
-                    <div class="overflow-x-auto"><table class="w-full text-left text-xs"><thead class="border-b text-slate-500 bg-white"><tr><th class="p-3">Perusahaan / Pelaku</th><th class="p-3">No. SBP</th><th class="p-3">No. LPP</th><th class="p-3">No. LPF</th><th class="p-3">No. LHP</th><th class="p-3">Status</th></tr></thead><tbody id="tableMonitoringBody" class="divide-y divide-slate-100"></tbody></table></div>
-                </div>
-            </section>
-            <section id="content-setting" class="tab-content space-y-6 hidden">
-                <div class="soft-card p-6 rounded-2xl shadow-sm"><h3 class="text-sm font-bold text-slate-900">Pengaturan Utama & Akun Pengguna</h3></div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="soft-card p-8 rounded-2xl shadow-sm space-y-4">
-                        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b pb-3 flex items-center text-blue-900"><i class="fa-solid fa-gears mr-2"></i> Konfigurasi Kantor & Pejabat Utama</h4>
-                        <form onsubmit="simpanKonfigurasiUtama(event)" class="space-y-4 text-xs">
-                            <div><label class="block font-semibold text-slate-700 mb-1">Kode Kantor / Seksi</label><input type="text" id="config_kode_kantor" required class="w-full p-3 ios-input-field" value="KPU.206"></div>
-                            <div><label class="block font-semibold text-slate-700 mb-1">Tahun Penomoran Aktif</label><input type="text" id="config_tahun_nomor" required class="w-full p-3 ios-input-field" value="2025"></div>
-                            <div><label class="block font-semibold text-slate-700 mb-1">Nama Kepala Bidang P2 (Default)</label><input type="text" id="config_kabid" required class="w-full p-3 ios-input-field" value="Muhtadi"></div>
-                            <div><label class="block font-semibold text-slate-700 mb-1">NIP Kepala Bidang P2</label><input type="text" id="config_nip_kabid" required class="w-full p-3 ios-input-field" value="19730908 199503 1 001"></div>
-                            <div><label class="block font-semibold text-slate-700 mb-1">Nama Kasi Penyidikan (Default)</label><input type="text" id="config_kasi" required class="w-full p-3 ios-input-field" value="Johan Kunaefi"></div>
-                            <div><label class="block font-semibold text-slate-700 mb-1">NIP Kasi Penyidikan</label><input type="text" id="config_nip_kasi" required class="w-full p-3 ios-input-field" value="19800606 200112 1 001"></div>
-                            <button type="submit" class="ios-btn-primary w-full py-3 shadow">Simpan Pengaturan Utama</button>
-                        </form>
+            </aside>
+            <div id="mainContent" class="flex-1 md:ml-6 flex flex-col min-h-screen">
+                <header class="flex justify-between items-center px-6 py-4 shadow-sm mb-6">
+                    <div class="flex items-center space-x-4">
+                        <button type="button" onclick="toggleSidebar()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-900 hover:text-white text-slate-700 flex items-center justify-center transition text-xs"><i class="fa-solid fa-bars"></i></button>
+                        <div class="text-xs"><span class="text-slate-400">Pages / </span><span id="pageTitle" class="font-bold text-slate-800">Dashboard</span></div>
                     </div>
-                    <div class="soft-card p-8 rounded-2xl shadow-sm space-y-4">
-                        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b pb-3">Profil Pengguna, Username & Password</h4>
-                        <div class="flex items-center space-x-4 py-2">
-                            <img id="previewProfileImg" src="logo-beacukai.png" alt="Avatar" class="w-16 h-16 rounded-full bg-slate-200 border object-cover">
-                            <div class="space-y-1"><label class="block font-semibold text-slate-700 text-xs">Unggah Foto Profil Baru</label><input type="file" id="uploadAvatarInput" accept="image/*" onchange="previewImageFile(event)" class="text-[11px] text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-slate-900 file:text-white cursor-pointer"></div>
+                    <div class="flex items-center space-x-4">
+                        <div class="text-right hidden sm:block"><p id="displayProfileName" class="text-xs font-bold text-slate-800">Penyidik Utama</p><p id="displayProfileNip" class="text-[10px] text-slate-500">NIP. 198006062001121001</p></div>
+                        <img id="headerProfileImg" src="logo-beacukai.png" alt="Avatar" class="w-8 h-8 rounded-full bg-slate-200 border object-cover">
+                    </div>
+                </header>
+                <main class="flex-1 space-y-6">
+                    <section id="content-dashboard" class="tab-content space-y-6 block">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <div class="soft-card p-5 rounded-2xl flex justify-between items-center"><div><p class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Total Berkas Perkara</p><h3 id="dashTotalPerkara" class="text-2xl font-bold text-slate-900 mt-1">1</h3><p class="text-[10px] text-emerald-700 font-bold mt-1">Sinkron & Aktif</p></div><div class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center text-sm shadow"><i class="fa-solid fa-folder-open"></i></div></div>
+                            <div class="soft-card p-5 rounded-2xl flex justify-between items-center"><div><p class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Perkara Pabean / Cukai</p><h3 id="dashKlasifikasiPerkara" class="text-lg font-bold text-blue-600 mt-1">Pabean: 1 | Cukai: 0</h3><p class="text-[10px] text-slate-500 mt-1">Klasifikasi Aktif</p></div><div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center text-sm shadow"><i class="fa-solid fa-scale-balanced"></i></div></div>
+                            <div class="soft-card p-5 rounded-2xl flex justify-between items-center"><div><p class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Komoditi Dominan</p><h3 id="dashKomoditiUtama" class="text-lg font-bold text-indigo-600 mt-1 truncate max-w-[150px]">Sparepart</h3><p class="text-[10px] text-slate-500 mt-1">Tekstil / Ballpress / Obat</p></div><div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-sm shadow"><i class="fa-solid fa-boxes-stacked"></i></div></div>
+                            <div class="soft-card p-5 rounded-2xl flex justify-between items-center"><div><p class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Estimasi Kerugian Negara</p><h3 id="dashTotalKerugian" class="text-lg font-bold text-rose-600 mt-1">Rp 0</h3><p class="text-[10px] text-rose-700 font-bold mt-1">Potensi Bea & Cukai</p></div><div class="w-10 h-10 rounded-xl bg-rose-600 text-white flex items-center justify-center text-sm shadow"><i class="fa-solid fa-triangle-exclamation"></i></div></div>
                         </div>
-                        <form onsubmit="updateProfileInfo(event)" class="space-y-4 text-xs pt-2">
-                            <div><label class="block font-semibold text-slate-700 mb-1">Username / Nama Lengkap</label><input type="text" id="settingName" required class="w-full p-3 ios-input-field" value="Penyidik Utama"></div>
-                            <div><label class="block font-semibold text-slate-700 mb-1">Alamat Email Aktif</label><input type="email" id="settingEmail" required class="w-full p-3 ios-input-field" value="penyidik.batam@beacukai.go.id"></div>
-                            <div><label class="block font-semibold text-slate-700 mb-1">NIP (Nomor Induk Pegawai)</label><input type="text" id="settingNip" required class="w-full p-3 ios-input-field" value="198006062001121001"></div>
-                            <div><label class="block font-semibold text-slate-700 mb-1">Password Baru (Opsional)</label><input type="password" id="settingPassword" class="w-full p-3 ios-input-field" placeholder="Kosongkan jika tidak ingin mengubah password"></div>
-                            <button type="submit" class="ios-btn-primary w-full py-3 shadow">Simpan Perubahan Profil & Akun</button>
+                    </section>
+                    <section id="content-input" class="tab-content space-y-6 hidden">
+                        <div class="ios-container-group p-6 flex justify-between items-center">
+                            <div><span class="text-[10px] font-bold text-blue-600 uppercase bg-blue-50 px-2.5 py-1 rounded-full">Database Penyidikan</span><h3 class="text-sm font-bold text-slate-900 mt-2">Form Input Data Perkara</h3><p class="text-xs text-slate-500 mt-0.5">Input data utama perkara, klasifikasi jenis perkara, komoditi, hingga kerugian negara.</p></div>
+                            <button type="button" onclick="loadSampleData()" class="ios-btn-primary px-4 py-2.5 text-xs font-semibold flex items-center space-x-2"><i class="fa-solid fa-bolt mr-1"></i><span>Muat Data Kasus Hawila</span></button>
+                        </div>
+                        <form id="penyidikanForm" onsubmit="saveDataPerkara(event)" class="space-y-6">
+                            <div class="ios-container-group p-6 md:p-8 space-y-5">
+                                <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b pb-3 flex items-center text-blue-900"><i class="fa-solid fa-file-lines mr-2"></i> I. SBP & Lembar Penerimaan Perkara (LPP)</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-5 text-xs">
+                                    <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor SBP</label><input type="text" id="nomor_sbp" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="1659/Mandiri/KPU.2/2025"></div>
+                                    <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Tanggal SBP</label><input type="date" id="tanggal_sbp" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="2025-12-12"></div>
+                                    <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor LPP</label><input type="text" id="nomor_lpp" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="1482"></div>
+                                    <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Tanggal LPP</label><input type="date" id="tanggal_lpp" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="2025-12-13"></div>
+                                    <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Klasifikasi Jenis Perkara</label><select id="jenis_klasifikasi" class="w-full p-3.5 ios-input-field text-slate-800 font-medium"><option value="Pabean">Perkara Pabean</option><option value="Cukai">Perkara Cukai</option></select></div>
+                                    <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Komoditi Utama</label><select id="komoditi_utama" class="w-full p-3.5 ios-input-field text-slate-800 font-medium"><option value="Tekstil">Tekstil / Garment</option><option value="Ballpress">Ballpress (Pakaian Bekas)</option><option value="Obat">Obat-obatan / Kosmetik</option><option value="Sparepart">Sparepart / Mesin / Lainnya</option></select></div>
+                                    <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Estimasi Kerugian Negara (Rp)</label><input type="number" id="estimasi_kerugian" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="150000000"></div>
+                                    <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Asal Perkara</label><input type="text" id="asal_perkara" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="Seksi Penindakan"></div>
+                                    <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Status Penangkapan</label><input type="text" id="status_penangkapan" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="Penindakan Biasa"></div>
+                                </div>
+                            </div>
+                            <div class="ios-container-group p-6 md:p-8 space-y-5">
+                                <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b pb-3 flex items-center text-blue-900"><i class="fa-solid fa-folder-tree mr-2"></i> II. Laporan Penelitian (LPF) & SPLIT Perkara</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-5 text-xs">
+                                    <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor LPF</label><input type="text" id="nomor_lpf" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="1482"></div>
+                                    <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Tanggal LPF</label><input type="date" id="tanggal_lpf" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="2025-12-13"></div>
+                                    <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor SPLIT</label><input type="text" id="nomor_split" class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="1482"></div>
+                                </div>
+                            </div>
+                            <div class="ios-container-group p-6 md:p-8 space-y-5">
+                                <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b pb-3 flex items-center text-blue-900"><i class="fa-solid fa-building mr-2"></i> III. Identitas Pelaku / Perusahaan</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-5 text-xs">
+                                    <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nama Perusahaan / Pelaku</label><input type="text" id="nama_pelaku" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="PT HAWILA ADHI PERKASA"></div>
+                                    <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">NPWP / Identitas</label><input type="text" id="npwp_pelaku" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="860753292225000"></div>
+                                    <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Penanggung Jawab / Pemilik</label><input type="text" id="pj_pelaku" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="CHANNER SIMBOLON"></div>
+                                    <div class="md:col-span-3"><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Alamat Lengkap</label><input type="text" id="alamat_pelaku" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="Ruko The Capitol Superblok Imperium Bkok B No. 41, Batam"></div>
+                                </div>
+                            </div>
+                            <div class="ios-container-group p-6 md:p-8 space-y-5">
+                                <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b pb-3 flex items-center text-blue-900"><i class="fa-solid fa-location-dot mr-2"></i> IV. Locus, Tempus & Uraian Pelanggaran</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-5 text-xs">
+                                    <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Tempat Kejadian (Locus)</label><input type="text" id="tempat_kejadian" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="TPS Dharma Bandar Mandala (DBM)"></div>
+                                    <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Waktu Kejadian (Tempus)</label><input type="text" id="waktu_kejadian" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="12 Desember 2025 pukul 13.00 WIB"></div>
+                                    <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Jenis Pelanggaran / Pasal</label><input type="text" id="jenis_pelanggaran" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="Pasal 53 ayat (3) UU No. 17 Tahun 2006 dan Pasal 33 ayat (1), Pasal 71 ayat (1) PP No. 41 Tahun 2021"></div>
+                                    <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Jenis Perkara</label><input type="text" id="jenis_perkara" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="Pengeluaran barang dari KPBPB Batam ke TLDDP tanpa/salah pemberitahuan pabean"></div>
+                                    <div class="md:col-span-2"><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Modus Operandi</label><textarea id="modus_operandi" rows="2" class="w-full p-3.5 ios-input-field text-slate-800 font-medium">Mengeluarkan barang dari KPBPB Batam ke TLDDP tanpa/salah pemberitahuan pabean</textarea></div>
+                                </div>
+                            </div>
+                            <div class="flex justify-end pt-2 pb-6"><button type="submit" class="ios-btn-primary px-8 py-4 text-xs font-bold tracking-wide flex items-center space-x-2 shadow-md"><i class="fa-solid fa-floppy-disk text-sm mr-1"></i><span>Simpan Data Perkara Utama</span></button></div>
                         </form>
+                    </section>
+                    <section id="content-penomoran" class="tab-content space-y-6 hidden">
+                        <div class="soft-card p-6 rounded-2xl shadow-sm flex justify-between items-center">
+                            <div><span class="text-[10px] font-bold text-blue-600 uppercase bg-blue-50 px-2.5 py-1 rounded-full">Menu Penomoran & Sinkronisasi</span><h3 class="text-sm font-bold text-slate-900 mt-2">Kelola, Simpan & Edit Penomoran Dokumen</h3><p class="text-xs text-slate-500 mt-0.5">Ubah atau simpan nomor urut dokumen resmi penyidikan agar otomatis tersinkron ke semua berkas.</p></div>
+                            <button type="button" onclick="bukaModalEditNomor()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow transition flex items-center space-x-2"><i class="fa-solid fa-pen-to-square"></i><span>Edit Penomoran Perkara</span></button>
+                        </div>
+                        <div class="ios-container-group p-6 md:p-8 space-y-6">
+                            <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b pb-3 flex items-center text-blue-900"><i class="fa-solid fa-list-ol mr-2"></i> Form Cepat Simpan & Sinkronisasi Nomor Perkara Aktif</h4>
+                            <form onsubmit="simpanDataPenomoran(event)" class="space-y-5 text-xs">
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                                    <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor Urut Utama (LPP/LPF/SPLIT/LHP)</label><input type="text" id="gen_nomor_utama" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="1482"></div>
+                                    <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor Sprint Pencacahan</label><input type="text" id="gen_sprint_cacah" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="1482/CACAH"></div>
+                                    <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Nomor BA Pencacahan</label><input type="text" id="gen_ba_cacah" required class="w-full p-3.5 ios-input-field text-slate-800 font-medium" value="1482/CACAH"></div>
+                                </div>
+                                <div class="flex justify-end pt-2"><button type="submit" class="ios-btn-primary px-8 py-3.5 font-bold tracking-wide shadow flex items-center space-x-2"><i class="fa-solid fa-floppy-disk"></i><span>Simpan & Perbarui Nomor Dokumen</span></button></div>
+                            </form>
+                        </div>
+                        <div class="soft-card rounded-2xl shadow-sm overflow-hidden">
+                            <div class="p-4 bg-slate-50 border-b font-bold text-xs uppercase text-slate-700">Preview Format Nomor Lengkap (Tersinkron)</div>
+                            <div class="overflow-x-auto"><table class="w-full text-left text-xs"><thead class="border-b text-slate-500 bg-white"><tr><th class="p-3">Perusahaan / Pelaku</th><th class="p-3">No. LPP</th><th class="p-3">No. LPF</th><th class="p-3">No. SPLIT</th><th class="p-3">No. Sprint Cacah</th><th class="p-3">No. BA Cacah</th><th class="p-3">No. LHP</th><th class="p-3 text-center">Aksi Edit</th></tr></thead><tbody id="tablePenomoranBody" class="divide-y divide-slate-100"></tbody></table></div>
+                        </div>
+                    </section>
+                    <section id="content-petugas" class="tab-content space-y-6 hidden">
+                        <div class="soft-card p-6 rounded-2xl shadow-sm flex justify-between items-center">
+                            <div><span class="text-[10px] font-bold text-indigo-600 uppercase bg-indigo-50 px-2.5 py-1 rounded-full">Manajemen Personel</span><h3 class="text-sm font-bold text-slate-900 mt-2">Menu Petugas & Pejabat Penandatangan Dokumen</h3><p class="text-xs text-slate-500 mt-0.5">Pilih pejabat penandatangan dokumen yang aktif atau tambahkan pegawai/anggota baru.</p></div>
+                            <button type="button" onclick="bukaModalTambahPegawai()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow transition flex items-center space-x-2"><i class="fa-solid fa-user-plus"></i><span>Tambah Pegawai Baru</span></button>
+                        </div>
+                        <form onsubmit="simpanDataPetugas(event)" class="space-y-6">
+                            <div class="ios-container-group p-6 md:p-8 space-y-5">
+                                <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b pb-3 flex items-center text-indigo-900"><i class="fa-solid fa-user-tie mr-2"></i> Pilih Pejabat Penandatangan Dokumen</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-5 text-xs">
+                                    <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Pilih Kepala Bidang P2</label><select id="select_kabid" class="w-full p-3.5 ios-input-field text-slate-800 font-medium"></select></div>
+                                    <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Pilih Kepala Seksi Penyidikan</label><select id="select_kasi" class="w-full p-3.5 ios-input-field text-slate-800 font-medium"></select></div>
+                                </div>
+                            </div>
+                            <div class="ios-container-group p-6 md:p-8 space-y-5">
+                                <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b pb-3 flex items-center text-indigo-900"><i class="fa-solid fa-users-gear mr-2"></i> Tim Penyidik & Petugas Pelaksana</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-5 text-xs">
+                                    <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Pilih Penyidik / Ketua Tim</label><select id="select_penyidik" class="w-full p-3.5 ios-input-field text-slate-800 font-medium"></select></div>
+                                    <div><label class="block font-semibold text-slate-600 mb-1.5 ml-1">Pilih Pembuat LPP / Anggota</label><select id="select_pembuat" class="w-full p-3.5 ios-input-field text-slate-800 font-medium"></select></div>
+                                </div>
+                            </div>
+                            <div class="flex justify-end pt-2 pb-6"><button type="submit" class="ios-btn-primary px-8 py-4 text-xs font-bold tracking-wide flex items-center space-x-2 shadow-md"><i class="fa-solid fa-floppy-disk text-sm mr-1"></i><span>Simpan Pilihan Petugas Perkara</span></button></div>
+                        </form>
+                        <div class="soft-card rounded-2xl shadow-sm overflow-hidden">
+                            <div class="p-4 bg-slate-50 border-b font-bold text-xs uppercase text-slate-700 flex justify-between items-center"><span>Daftar Master Pegawai Terdaftar</span><span class="text-[10px] text-slate-400 font-normal">Sinkron ke pilihan dropdown petugas</span></div>
+                            <div class="overflow-x-auto"><table class="w-full text-left text-xs"><thead class="border-b text-slate-500 bg-white"><tr><th class="p-3">Nama Pegawai</th><th class="p-3">NIP</th><th class="p-3">Jabatan / Peran</th><th class="p-3 text-center">Aksi</th></tr></thead><tbody id="tableMasterPegawai" class="divide-y divide-slate-100"></tbody></table></div>
+                        </div>
+                    </section>
+                    <section id="content-bacacah" class="tab-content space-y-6 hidden">
+                        <div class="ios-container-group p-6 flex justify-between items-center">
+                            <div><span class="text-[10px] font-bold text-emerald-600 uppercase bg-emerald-50 px-2.5 py-1 rounded-full">Modul Barang Bukti</span><h3 class="text-sm font-bold text-slate-900 mt-2">Menu Berita Acara & Sprint Pencacahan</h3><p class="text-xs text-slate-500 mt-0.5">Kelola rincian item barang bukti secara dinamis jika jumlahnya banyak.</p></div>
+                            <button type="button" onclick="tambahBarisBarang()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow transition flex items-center space-x-2"><i class="fa-solid fa-plus"></i><span>Tambah Baris Barang</span></button>
+                        </div>
+                        <div class="ios-container-group p-6 md:p-8 space-y-6">
+                            <div class="space-y-3 pt-2">
+                                <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider">Rincian Barang Hasil Pencacahan:</label>
+                                <div id="containerBarangCacah" class="space-y-3">
+                                    <div class="flex items-center space-x-2 barang-row">
+                                        <input type="text" placeholder="Uraian Nama Barang / Spesifikasi" class="flex-1 p-3 ios-input-field text-xs font-medium uraian-barang-input" value="2 Pce / M Core B 81A447-2351, ETC" required>
+                                        <input type="text" placeholder="Jumlah / Satuan" class="w-36 p-3 ios-input-field text-xs font-medium jumlah-barang-input" value="2 Pcs" required>
+                                        <button type="button" onclick="hapusBarisBarang(this)" class="bg-rose-100 hover:bg-rose-200 text-rose-600 p-3 rounded-xl text-xs transition"><i class="fa-solid fa-trash"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pt-3"><label class="block font-semibold text-slate-600 mb-1.5 ml-1 text-xs">Dokumen Pabean Asal</label><input type="text" id="input_dok_pabean" class="w-full p-3.5 ios-input-field text-slate-800 font-medium text-xs" value="PPFTZ-01 Nomor 011407 Tanggal 28 November 2025"></div>
+                            <div class="flex justify-end pt-2"><button type="button" onclick="simpanDataCacah()" class="ios-btn-primary px-8 py-3.5 text-xs font-bold tracking-wide flex items-center space-x-2 shadow-md"><i class="fa-solid fa-floppy-disk text-sm mr-1"></i><span>Simpan Rincian BA Pencacahan</span></button></div>
+                        </div>
+                    </section>
+                    <section id="content-cetak" class="tab-content space-y-6 hidden">
+                        <div class="soft-card p-6 rounded-2xl shadow-sm"><h3 class="text-sm font-bold text-slate-900">Cetak & Generate Dokumen Resmi Penyidikan</h3><p class="text-xs text-slate-500 mt-0.5">Pilih dokumen yang ingin dicetak (LPP, LPF, SPLIT, Sprint Pencacahan, Berita Acara Pencacahan, atau LHP).</p></div>
+                        <div class="soft-card rounded-2xl shadow-sm overflow-hidden">
+                            <div class="overflow-x-auto"><table class="w-full text-left text-xs"><thead class="bg-slate-50 border-b text-slate-700 uppercase"><tr><th class="p-4">No. Perkara / LPP</th><th class="p-4">Perusahaan / Pelaku</th><th class="p-4">SBP & LPF</th><th class="p-4">Jumlah Item Barang</th><th class="p-4 text-center">Pilih Dokumen & Cetak</th></tr></thead><tbody id="tablePerkaraBody" class="divide-y divide-slate-100"></tbody></table></div>
+                        </div>
+                    </section>
+                    <section id="content-monitoring" class="tab-content space-y-6 hidden">
+                        <div class="soft-card p-6 rounded-2xl shadow-sm"><h3 class="text-sm font-bold text-slate-900">Monitoring & Statistik Seluruh Berkas Perkara</h3></div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <div class="soft-card p-5 rounded-2xl flex justify-between items-center"><div><p class="text-[10px] font-bold text-slate-500 uppercase">Total Berkas LPP</p><h3 id="statLpp" class="text-2xl font-bold text-slate-900 mt-1">1</h3></div><div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center text-sm shadow"><i class="fa-solid fa-file-lines"></i></div></div>
+                            <div class="soft-card p-5 rounded-2xl flex justify-between items-center"><div><p class="text-[10px] font-bold text-slate-500 uppercase">Total Berkas SBP</p><h3 id="statSbp" class="text-2xl font-bold text-slate-900 mt-1">1</h3></div><div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-sm shadow"><i class="fa-solid fa-shield-halved"></i></div></div>
+                            <div class="soft-card p-5 rounded-2xl flex justify-between items-center"><div><p class="text-[10px] font-bold text-slate-500 uppercase">Total Berkas LPF</p><h3 id="statLpf" class="text-2xl font-bold text-slate-900 mt-1">1</h3></div><div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-sm shadow"><i class="fa-solid fa-folder-tree"></i></div></div>
+                            <div class="soft-card p-5 rounded-2xl flex justify-between items-center"><div><p class="text-[10px] font-bold text-slate-500 uppercase">Total Dokumen LHP</p><h3 id="statLhp" class="text-2xl font-bold text-slate-900 mt-1">1</h3></div><div class="w-10 h-10 rounded-xl bg-amber-600 text-white flex items-center justify-center text-sm shadow"><i class="fa-solid fa-boxes-stacked"></i></div></div>
+                        </div>
+                        <div class="soft-card rounded-2xl shadow-sm overflow-hidden mt-6">
+                            <div class="p-4 bg-slate-50 border-b font-bold text-xs uppercase text-slate-700">Log Perkara & Status Dokumen</div>
+                            <div class="overflow-x-auto"><table class="w-full text-left text-xs"><thead class="border-b text-slate-500 bg-white"><tr><th class="p-3">Perusahaan / Pelaku</th><th class="p-3">No. SBP</th><th class="p-3">No. LPP</th><th class="p-3">No. LPF</th><th class="p-3">No. LHP</th><th class="p-3">Status</th></tr></thead><tbody id="tableMonitoringBody" class="divide-y divide-slate-100"></tbody></table></div>
+                        </div>
+                    </section>
+                    <section id="content-setting" class="tab-content space-y-6 hidden">
+                        <div class="soft-card p-6 rounded-2xl shadow-sm"><h3 class="text-sm font-bold text-slate-900">Pengaturan Utama & Akun Pengguna</h3></div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="soft-card p-8 rounded-2xl shadow-sm space-y-4">
+                                <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b pb-3 flex items-center text-blue-900"><i class="fa-solid fa-gears mr-2"></i> Konfigurasi Kantor & Pejabat Utama</h4>
+                                <form onsubmit="simpanKonfigurasiUtama(event)" class="space-y-4 text-xs">
+                                    <div><label class="block font-semibold text-slate-700 mb-1">Kode Kantor / Seksi</label><input type="text" id="config_kode_kantor" required class="w-full p-3 ios-input-field" value="KPU.206"></div>
+                                    <div><label class="block font-semibold text-slate-700 mb-1">Tahun Penomoran Aktif</label><input type="text" id="config_tahun_nomor" required class="w-full p-3 ios-input-field" value="2025"></div>
+                                    <div><label class="block font-semibold text-slate-700 mb-1">Nama Kepala Bidang P2 (Default)</label><input type="text" id="config_kabid" required class="w-full p-3 ios-input-field" value="Muhtadi"></div>
+                                    <div><label class="block font-semibold text-slate-700 mb-1">NIP Kepala Bidang P2</label><input type="text" id="config_nip_kabid" required class="w-full p-3 ios-input-field" value="19730908 199503 1 001"></div>
+                                    <div><label class="block font-semibold text-slate-700 mb-1">Nama Kasi Penyidikan (Default)</label><input type="text" id="config_kasi" required class="w-full p-3 ios-input-field" value="Johan Kunaefi"></div>
+                                    <div><label class="block font-semibold text-slate-700 mb-1">NIP Kasi Penyidikan</label><input type="text" id="config_nip_kasi" required class="w-full p-3 ios-input-field" value="19800606 200112 1 001"></div>
+                                    <button type="submit" class="ios-btn-primary w-full py-3 shadow">Simpan Pengaturan Utama</button>
+                                </form>
+                            </div>
+                            <div class="soft-card p-8 rounded-2xl shadow-sm space-y-4">
+                                <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider border-b pb-3">Profil Pengguna, Username & Password</h4>
+                                <div class="flex items-center space-x-4 py-2">
+                                    <img id="previewProfileImg" src="logo-beacukai.png" alt="Avatar" class="w-16 h-16 rounded-full bg-slate-200 border object-cover">
+                                    <div class="space-y-1"><label class="block font-semibold text-slate-700 text-xs">Unggah Foto Profil Baru</label><input type="file" id="uploadAvatarInput" accept="image/*" onchange="previewImageFile(event)" class="text-[11px] text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-slate-900 file:text-white cursor-pointer"></div>
+                                </div>
+                                <form onsubmit="updateProfileInfo(event)" class="space-y-4 text-xs pt-2">
+                                    <div><label class="block font-semibold text-slate-700 mb-1">Username / Nama Lengkap</label><input type="text" id="settingName" required class="w-full p-3 ios-input-field" value="Penyidik Utama"></div>
+                                    <div><label class="block font-semibold text-slate-700 mb-1">Alamat Email Aktif</label><input type="email" id="settingEmail" required class="w-full p-3 ios-input-field" value="penyidik.batam@beacukai.go.id"></div>
+                                    <div><label class="block font-semibold text-slate-700 mb-1">NIP (Nomor Induk Pegawai)</label><input type="text" id="settingNip" required class="w-full p-3 ios-input-field" value="198006062001121001"></div>
+                                    <div><label class="block font-semibold text-slate-700 mb-1">Password Baru (Opsional)</label><input type="password" id="settingPassword" class="w-full p-3 ios-input-field" placeholder="Kosongkan jika tidak ingin mengubah password"></div>
+                                    <button type="submit" class="ios-btn-primary w-full py-3 shadow">Simpan Perubahan Profil & Akun</button>
+                                </form>
+                            </div>
+                        </div>
+                    </section>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER INSTANSI RESMI (GAYA BLUE DARK) DI BAWAH DASHBOARD -->
+    <footer class="w-full bg-[#1b2559] text-white mt-12 py-10 px-6 sm:px-12 rounded-3xl">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 items-start text-xs">
+            
+            <!-- Kolom 1: Logo & Alamat Instansi -->
+            <div class="space-y-3">
+                <div class="flex items-center space-x-3">
+                    <img src="logo-beacukai.png" alt="Logo Bea Cukai" class="w-10 h-10 object-contain bg-white/10 p-1 rounded-lg">
+                    <div>
+                        <p class="font-bold text-white">Direktorat Jenderal Bea dan Cukai</p>
+                        <p class="text-[11px] text-blue-200">Kantor Pelayanan Utama Bea dan Cukai Tipe B Batam</p>
                     </div>
                 </div>
-            </section>
-        </main>
-    </div>
+                <p class="text-slate-300 leading-relaxed text-[11px]">
+                    Jl. Kuda Laut, Batu Ampar, Batam 29432<br>
+                    Email : bc.batam@kemenkeu.go.id
+                </p>
+                <div class="pt-2">
+                    <p class="text-slate-200 font-semibold leading-relaxed text-[11px]">
+                        Direktorat Jenderal Bea dan Cukai<br>
+                        <strong>SIDIKMAN (SISTEM APLIKASI PENYIDIKAN MANTAP)</strong> adalah Sistem Aplikasi untuk membuat laporan penyidikan lebih mudah dan cepat.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Kolom 2: Ikuti Kami (Media Sosial) -->
+            <div class="space-y-3">
+                <p class="font-bold uppercase tracking-wider text-blue-200 text-[11px]">Ikuti Kami</p>
+                <div class="flex space-x-3">
+                    <a href="#" class="w-9 h-9 rounded-full bg-white/10 hover:bg-blue-500 flex items-center justify-center text-white transition"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="w-9 h-9 rounded-full bg-white/10 hover:bg-rose-600 flex items-center justify-center text-white transition"><i class="fa-brands fa-youtube"></i></a>
+                    <a href="#" class="w-9 h-9 rounded-full bg-white/10 hover:bg-pink-600 flex items-center justify-center text-white transition"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="w-9 h-9 rounded-full bg-white/10 hover:bg-sky-400 flex items-center justify-center text-white transition"><i class="fa-brands fa-twitter"></i></a>
+                </div>
+            </div>
+
+            <!-- Kolom 3: Statistik Pengunjung -->
+            <div class="space-y-2">
+                <p class="font-bold uppercase tracking-wider text-blue-200 text-[11px]">Statistik Pengunjung</p>
+                <div class="space-y-1 text-slate-300 text-[11px]">
+                    <div class="flex justify-between max-w-xs border-b border-white/10 pb-1">
+                        <span>Hari Ini</span>
+                        <span class="font-bold text-white">130</span>
+                    </div>
+                    <div class="flex justify-between max-w-xs border-b border-white/10 pb-1">
+                        <span>Minggu Ini</span>
+                        <span class="font-bold text-white">0</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Copyright Bawah -->
+        <div class="max-w-7xl mx-auto mt-8 pt-6 border-t border-white/10 text-center text-[11px] text-slate-400">
+            &copy; 2026 Direktorat Jenderal Bea dan Cukai. All rights reserved.
+        </div>
+    </footer>
+
     <div id="modalEditNomor" class="fixed inset-0 ios-overlay hidden items-center justify-center z-50 p-4">
         <div class="w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden ios-alert-box border border-slate-200 p-6 space-y-4">
             <div class="flex justify-between items-center border-b pb-3"><h3 class="text-sm font-bold text-slate-950"><i class="fa-solid fa-pen-to-square text-blue-600 mr-2"></i> Edit Penomoran Dokumen Perkara</h3><button type="button" onclick="tutupModalEditNomor()" class="text-slate-400 hover:text-slate-600 text-xs"><i class="fa-solid fa-xmark text-base"></i></button></div>
@@ -329,7 +393,7 @@
             document.getElementById('config_nip_kasi').value = configPenomoran.nip_kasi;
             muatDropdownPetugas(); applyWallpaper();
         }
-        function applyWallpaper() { document.getElementById('dashboardWallpaper').style.backgroundImage = `url('${(userProfile.background && userProfile.background.trim() !== "") ? userProfile.background : 'background.jpg'}')`; }
+        function applyWallpaper() { document.getElementById('dashboardWallpaper').style.backgroundImage = `url('${(userProfile.background && userProfile.background.trim() !== "") ? userProfile.background : 'background.png'}')`; }
         function toggleSubmenu(show) { document.getElementById('submenuContainer').style.display = show ? 'block' : 'none'; }
         function previewImageFile(event) {
             const file = event.target.files[0];
